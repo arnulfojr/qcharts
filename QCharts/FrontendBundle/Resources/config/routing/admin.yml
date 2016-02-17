@@ -1,0 +1,10 @@
+
+qcharts.frontend.user_admin: #TODO: DELETE THIS
+    path: /admin
+    defaults: { _controller: FrontendBundle:Admin:admin }
+    methods: [ GET ]
+
+qcharts.frontend.snapshot_console:
+    path: /snapshots
+    defaults: { _controller: FrontendBundle:Admin:snapshot }
+    methods: [ GET ]

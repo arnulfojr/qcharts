@@ -1,0 +1,22 @@
+#apibundle routing
+
+directory:
+    resource: "@ApiBundle/Resources/config/routing/directory.yml"
+
+query:
+    resource: "@ApiBundle/Resources/config/routing/query.yml"
+
+database:
+    resource: "@ApiBundle/Resources/config/routing/database.yml"
+
+snapshot:
+    resource: "@ApiBundle/Resources/config/routing/snapshots.yml"
+
+user:
+    resource: "@ApiBundle/Resources/config/routing/user.yml"
+
+favorite:
+    resource: "@ApiBundle/Resources/config/routing/favorite.yml"
+
+urls:
+    resource: "@ApiBundle/Resources/config/routing/url.yml"

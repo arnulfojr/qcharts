@@ -1,0 +1,5 @@
+
+qcharts.frontend.table_information:
+    path: /tableInfo
+    defaults: { _controller: FrontendBundle:Database:tableInfo }
+    methods: [ GET ]

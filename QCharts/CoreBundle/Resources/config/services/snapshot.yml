@@ -1,0 +1,11 @@
+services:
+    qcharts.core.snapshot_service:
+        class: QCharts\CoreBundle\Service\Snapshot\SnapshotService
+        arguments:
+            - "@qcharts.core.snapshot_manager"
+            - "@qcharts.query_validator"
+    qcharts.core.snapshot_manager:
+        class: QCharts\CoreBundle\Service\Snapshot\FileSystem\SnapshotManager
+        arguments:
+            - "@filesystem"
+            - "%qcharts.paths%"

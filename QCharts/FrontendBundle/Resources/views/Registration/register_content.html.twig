@@ -1,0 +1,15 @@
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% form_theme form with '@FrontendBundle/Resources/views/Form/custom_form_bootstrap_ace.html.twig' %}
+
+<div class="row custom-row">
+    <div class="col-sm-12">
+        <h3>Please enter your information</h3>
+    </div>
+</div>
+
+{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register form-horizontal'}}) }}
+	{{form_widget(form)}}
+        <input class="btn btn-default" type="submit" value="{{ 'registration.submit'|trans }}" />
+{{ form_end(form) }}

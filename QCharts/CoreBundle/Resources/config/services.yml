@@ -1,0 +1,77 @@
+# CoreBundle Services'
+imports:
+    - { resource: 'services/repositories.yml' }
+    - { resource: 'services/directory.yml' }
+    - { resource: 'services/snapshot.yml' }
+    - { resource: 'services/favorite.yml' }
+
+services:
+    qcharts.query_modifier:
+        class: QCharts\CoreBundle\Service\QuerySyntaxService
+        arguments:
+            - "@qcharts.core_limits"
+    qcharts.query_validator:
+        class: QCharts\CoreBundle\Service\QueryValidatorService
+        arguments:
+            - "@qcharts.query_repo"
+            - "@qcharts.dynamic_repo"
+            - "@qcharts.query_modifier"
+            - %qcharts.chart_types%
+            - "@qcharts.core_limits"
+    qcharts.core.fetching_factory:
+        class: QCharts\CoreBundle\Service\FetchingStrategy\StrategyFactory
+        arguments:
+            - "@qcharts.core.snapshot_service"
+
+    qcharts.query:
+        class: QCharts\CoreBundle\Service\QueryService
+        arguments:
+            - "@qcharts.query_repo"
+            - "@qcharts.directory.directory_service"
+            - "@qcharts.dynamic_repo"
+            - "@qcharts.serializer"
+            - "@qcharts.query_validator"
+    qcharts.query_results_formatter_factory:
+        class: QCharts\CoreBundle\ResultFormatter\ResultsFormatterFactory
+        arguments:
+            - "@qcharts.chart_validator"
+            - %qcharts.limits%
+    qcharts.query_results_formatter:
+        class: QCharts\CoreBundle\Service\QueryResultsFormatter
+        arguments:
+            - "@qcharts.query_results_formatter_factory"
+            - %qcharts.limits%
+    qcharts.chart_validator:
+        class: QCharts\CoreBundle\Service\ChartValidation
+        arguments:
+            - %qcharts.chart_types%
+    qcharts.serializer_factory:
+        class: QCharts\CoreBundle\Service\SerializerFactory
+    qcharts.serializer:
+        class: QCharts\CoreBundle\Service\SerializationService
+        arguments:
+            - "@qcharts.serializer_factory"
+
+    qcharts.core_limits:
+        class: QCharts\CoreBundle\Service\LimitsService
+        arguments:
+            - %qcharts.limits%
+
+    qcharts.user_formatter:
+        class: QCharts\CoreBundle\Service\UserFormatter
+    qcharts.user_service:
+        class: QCharts\CoreBundle\Service\UserService
+        arguments:
+            - "@qcharts.user_repo"
+            - "@qcharts.serializer_factory"
+            - "@fos_user.user_manager"
+            - "@qcharts.user_formatter"
+    qcharts.user_registration_success.subscriber:
+        class: QCharts\CoreBundle\EventSubscriber\UserRegistrationSubscriber
+        arguments: []
+        tags:
+            - { name: kernel.event_subscriber }
+    qcharts.user_registration.form:
+        class: QCharts\CoreBundle\Form\UserRegistrationType
+        tags:
+            - { name: form.type, alias: core_user_registration_form }

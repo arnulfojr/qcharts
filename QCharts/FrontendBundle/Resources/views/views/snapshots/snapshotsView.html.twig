@@ -1,0 +1,103 @@
+{% extends '@Frontend/base.html.twig' %}
+
+{% block mainView %}
+    <div class = "container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Time Machine Console</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-sm-5">
+                    <!-- table for queries that have snapshot files -->
+                    <div class="panel panel-default panel-dir-browser">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Time Machine enabled queries</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-sm-12" id="pathContainer"></div>
+                            <div class="col-sm-12 no-side-padding">
+                                <div class="col-xs-12" id="directoryContent"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-7">
+                    <!-- snapshot list view -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Snapshots</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-sm-12">
+                                <!--<p class="">Click on the snapshot to delete it</p>-->
+                            </div>
+                            <div id="snapshotCalendar" class="col-sm-12"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        var options = {
+            modal: {
+                "id": "modal"
+            },
+            loading: {
+                "id": "homeBtn"
+            },
+            calendar: {
+                "id": "snapshotCalendar"
+            },
+            directory: {
+                "id": "directoryContent"
+            },
+            path: {
+                "id": "pathContainer"
+            },
+            download: {
+                button: {
+                    "id": undefined
+                }
+            }
+        };
+
+        var consoleController = new SnapshotConsoleController(
+                "{{ url('qcharts.api.urls') }}",
+                $.ajax,
+                options
+        );
+        consoleController.init();
+    </script>
+
+{% endblock %}
+
+{% block js %}
+    {% javascripts
+        '@FrontendBundle/Resources/public/js/general/Classes.js'
+        '@FrontendBundle/Resources/public/js/table/directoryClasses.js'
+        '@FrontendBundle/Resources/public/js/moment/moment.min.js'
+        '@FrontendBundle/Resources/public/js/fullCalendar/fullCalendar.min.js'
+        '@FrontendBundle/Resources/public/js/fullCalendar/zcalendarController.js'
+        '@FrontendBundle/Resources/public/js/Browser/browser.js'
+        '@FrontendBundle/Resources/public/js/SnapshotConsole/snapshot_console.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+
+    {% stylesheets '@FrontendBundle/Resources/public/css/general/animate.css' %}
+        <link rel="stylesheet" href="{{asset_url}}"/>
+    {% endstylesheets %}
+
+    {% stylesheets '@FrontendBundle/Resources/public/css/fullCalendar/fullCalendar.min.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+{% endblock %}

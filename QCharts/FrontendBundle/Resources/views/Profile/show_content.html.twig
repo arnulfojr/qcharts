@@ -1,0 +1,32 @@
+{% extends 'FOSUserBundle::layout.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content %}
+<div class="fos_user_user_show">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    User Profile information
+                </div>
+                <div class="panel-body">
+                    <p><b>{{ 'profile.show.username'|trans }}:</b> {{ user.username }}</p>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <p>
+                            <b>{{ 'profile.show.email'|trans }}:</b> {{ user.email }}
+                        </p>
+                    </li>
+                    <li class="list-group-item">
+                        <p>
+                            <b>{{ 'profile.show.name'|trans }}:</b> {{ user.name }}
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

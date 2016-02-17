@@ -1,0 +1,5 @@
+
+qcharts.frontend.directory:
+    path: /directory
+    defaults: { _controller: FrontendBundle:Directory:directory }
+    methods: [ GET ]

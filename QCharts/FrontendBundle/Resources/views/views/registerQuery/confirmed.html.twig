@@ -1,0 +1,14 @@
+{% extends '@Frontend/base.html.twig' %}
+
+{% block mainView %}
+    <h2>The Query was submitted</h2>
+    <div class="col-sm-12">
+	<a href="/" class="btn btn-primary">Back to Main</a>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+	{% stylesheets '@FrontendBundle/Resources/public/css/general/*' %}
+	<link rel="stylesheet" href="{{asset_url}}"/>
+	{% endstylesheets %}
+{% endblock %}

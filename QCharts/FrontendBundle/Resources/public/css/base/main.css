@@ -1,0 +1,196 @@
+
+.home {
+    padding-top: 85px;
+    padding-bottom: 50px;
+}
+
+.panel {
+    border-radius: 0;
+    -webkit-transition: all .4s ease-in-out;
+    -moz-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.panel-dir-browser {
+    overflow: hidden;
+}
+
+.main-page-panel {
+    min-height: 50vh !important;
+}
+
+.form-control {
+    border-radius: 0;
+}
+
+.list-group-item:first-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.list-group-item:last-child {
+    margin-bottom: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.bounce, .fadeInRight, .fadeOut, .fadeInDown, .fadeOutUp {
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-delay: 0s;
+    -moz-animation-delay: 0s;
+    -moz-animation-duration: 0.5s;
+    animation-delay: 0s;
+    animation-duration: 0.5s;
+}
+
+.fav-icon {
+
+    -webkit-transition: ease-in-out;
+    -moz-transition: ease-in-out;
+    -ms-transition: ease-in-out;
+    -o-transition: ease-in-out;
+    transition: ease-in-out;
+
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    -o-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+
+    -webkit-animation-duration: 1.5s;
+    -moz-animation-duration: 1.5s;
+    -o-animation-duration: 1.5s;
+    animation-duration: 1.5s;
+
+    -webkit-animation-delay: 0s;
+    -moz-animation-delay: 0s;
+    -o-animation-delay: 0s;
+    animation-delay: 0s;
+}
+
+.fadeIn {
+    -webkit-animation-duration: 1s !important;
+    -moz-animation-duration: 1s !important;
+    animation-duration: 1s !important;
+    -webkit-animation-delay: 0.2s !important;
+    -moz-animation-delay: 0.2s !important;
+    animation-delay: 0.2s !important;
+}
+
+li > div > div > p {
+    padding: 0 0 0 10px;
+    display: inline;
+    font-size: 14px;
+}
+
+li > a {
+    color: #40a372;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+li > span {
+
+}
+
+.empty-title {
+    color: #aaa;
+}
+
+#directoryContent > ul > li > .row > div > a,
+#favContainer > ul > li > .row > div > a
+{
+    color: #003300 !important;
+}
+
+.active > a  {
+    color: #6c6c6c !important;
+}
+
+.breadcrumb > li+li:before {
+    color: #777777;
+}
+
+.createButtonContainer {
+	margin-bottom: 20px;
+    height: 40px;
+}
+
+#codeEditor {
+	height: 20vh;
+}
+
+.table-section {
+    margin-top: 45px;
+}
+
+.cell-main-text {
+    display: inline;
+    font-size: 15px;
+}
+
+.spin {
+    -webkit-animation: mySpin 2s infinite linear;
+    animation: mySpin 2s infinite linear;
+}
+
+@-webkit-keyframes mySpin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+
+@keyframes mySpin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+
+.threeTimes {
+    -webkit-animation-iteration-count: 3;
+    -moz-animation-iteration-count: 3;
+    -o-animation-iteration-count: 3;
+}
+
+.twoTimes {
+    -webkit-animation-iteration-count: 2;
+    -moz-animation-iteration-count: 2;
+    -o-animation-iteration-count: 2;
+}
+
+.selected, .selected:hover {
+    background-color: #337ab7;
+    color: #f0f0f0;
+}
+
+.form-control > div {
+    overflow: hidden;
+}
+
+#cron_id {
+    margin-top: 5px;
+}
+
+table {
+    color: #1f1f1f;
+    background-color: #fafafa;
+}
+
+.details {
+    font-size: 14px;
+}
+
+#graphContainer {
+    height: 55vh !important;
+}

@@ -1,0 +1,5 @@
+services:
+    qcharts.core.favorite_service:
+        class: QCharts\CoreBundle\Service\Favourite\FavouriteService
+        arguments:
+            - "@qcharts.query_repo"

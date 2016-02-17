@@ -1,0 +1,53 @@
+{% extends '@Frontend/base.html.twig' %}
+
+{% block mainView %}
+    <h2>{{ tableName }} table</h2>
+    <div class="col-sm-12 table-responsive">
+        <table id="table" class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>COLUMN_NAME</th>
+                    <th>IS_NULLABLE</th>
+                    <th>DATA_TYPE</th>
+                    <th>COLUMN_TYPE</th>
+                    <th>COLUMN_KEY</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script>
+
+        var tableName = "{{ tableName }}";
+        var url = "{{ url('qcharts.api.table_info') }}?tableName=" + tableName;
+        console.log(url);
+        var table = $("#table").DataTable({
+            ajax: url,
+            columns: [
+                {"data": "COLUMN_NAME"},
+                {"data": "IS_NULLABLE"},
+                {"data": "DATA_TYPE"},
+                {"data": "COLUMN_TYPE"},
+                {"data" : "COLUMN_KEY"}
+            ]
+        });
+    </script>
+{% endblock %}
+
+{% block js %}
+    {% javascripts '@FrontendBundle/Resources/public/js/main/*' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@FrontendBundle/Resources/public/js/table/*' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+    {% stylesheets '@FrontendBundle/Resources/public/css/general/*' %}
+    <link rel="stylesheet" href="{{asset_url}}"/>
+    {% endstylesheets %}
+    {% stylesheets '@FrontendBundle/Resources/public/css/table/datatables.min.css' %}
+    <link rel="stylesheet" href="{{asset_url}}"/>
+    {% endstylesheets %}
+{% endblock %}

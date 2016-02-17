@@ -1,0 +1,16 @@
+#frontend routing
+
+query:
+    resource: "@FrontendBundle/Resources/config/routing/query.yml"
+
+directory:
+    resource: "@FrontendBundle/Resources/config/routing/directory.yml"
+
+database:
+    resource: "@FrontendBundle/Resources/config/routing/database.yml"
+
+general:
+    resource: "@FrontendBundle/Resources/config/routing/general.yml"
+
+admin:
+    resource: "@FrontendBundle/Resources/config/routing/admin.yml"

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+    {% block stylesheets %}
+    {% endblock %}
+
+    {% javascripts
+        '@FrontendBundle/Resources/public/js/general/Classes.js'
+        '@FrontendBundle/Resources/public/js/general/*'
+    %}
+    <script src="{{asset_url}}"></script>
+    {% endjavascripts %}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    {% stylesheets filter='cssrewrite' '@FrontendBundle/Resources/public/css/base/*' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+    {% block attributes %}
+    {% endblock %}
+
+    {% block js %}
+    {% endblock %}
+
+</head>
+<body class="animated fadeIn">
+<header>
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav">
+                    <span class="sr-only">Toggle navigation></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url('qcharts.frontend.homepage') }}"><span class="glyphicon glyphicon-home" id="homeBtn"></span></a>
+            </div>
+            <div class="collapse navbar-collapse" id="main-nav">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{{ url('qcharts.frontend.about') }}">About this</a>
+                    </li>
+                    {% if is_granted(user_roles.super_admin) %}
+                        <li>
+                            <a href="{{ path('qcharts.frontend.user_admin') }}">User Admin</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('qcharts.frontend.snapshot_console') }}">
+                                Snapshots
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        <li>
+                            <a href="{{ redirectUrls.redirects.user_profile }}">My profile</a>
+                        </li>
+                        <li>
+                            <a href="{{ redirectUrls.redirects.logout }}">
+                                Log out
+                            </a>
+                        </li>
+                    {% else %}
+                        <!-- not even supposed to run in any case -->
+                        <li>
+                            <a href="{{ redirectUrls.redirects.login }}">
+                                Log in
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<section class="home">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+
+                <!-- this is the main view -->
+                <!-- show the correct view depending on the type of user -->
+                {% block mainView %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalTitle">Modal title</h4>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer" id="modalFooter">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</html>

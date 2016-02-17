@@ -1,0 +1,9 @@
+#no routing
+#query_homepage:
+#    path:     /query/register
+#    defaults: { _controller: CoreBundle:Core:register }
+#    methods: [POST, GET]
+#query_view:
+#    path:     /query/show/{queryId}
+#    defaults: { _controller: CoreBundle:Core:show }
+#    methods: [GET]

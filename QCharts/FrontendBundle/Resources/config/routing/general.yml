@@ -1,0 +1,18 @@
+qcharts.frontend.homepage:
+    path: /
+    defaults: { _controller: FrontendBundle:Main:main }
+    methods: [ GET ]
+
+qcharts.frontend.about:
+    path: /about
+    defaults: { _controller: FrontendBundle:Main:about }
+    methods: [ GET ]
+
+qcharts.frontend.base:
+    path: /query
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: qcharts.frontend.homepage, permanent: true }
+
+qcharts.frontend.query_register_success:
+    path: /query/register/success
+    defaults: { _controller: FrontendBundle:Main:success }
+    methods: [ GET ]

@@ -1,0 +1,23 @@
+
+qcharts.frontend.query_view: #query_view:
+    path: /query/{queryId}
+    requirements:
+        queryId: \d+
+    defaults : { _controller: FrontendBundle:Query:show }
+    methods: [ GET ]
+
+qcharts.frontend.query_redirect_home: #redirect to home, is invalid url
+    path: /query/
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: qcharts.frontend.homepage, permanent: true }
+
+qcharts.frontend.query_register: #query_register
+    path: /query/register
+    defaults: { _controller: FrontendBundle:Query:register }
+    methods: [ GET ]
+
+qcharts.frontend.query_edit: #query_edit:
+    path: /query/edit/{queryId}
+    defaults: { _controller: FrontendBundle:Query:edit }
+    requirements:
+        queryId: \d+
+    methods: [ GET ]

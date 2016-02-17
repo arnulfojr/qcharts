@@ -1,0 +1,25 @@
+services:
+
+    qcharts.dynamic_repo:
+        class: QCharts\CoreBundle\Repository\DynamicRepository
+        arguments:
+            - "@doctrine"
+
+    qcharts.query_repo:
+        class: QCharts\CoreBundle\Repository\QueryRepository
+        #class: Doctrine\ORM\EntityRepository
+        factory: [ @doctrine.orm.entity_manager, getRepository ]
+        arguments:
+            - QCharts\CoreBundle\Entity\QueryRequest
+
+    qcharts.directory.repository:
+        class: Doctrine\ORM\EntityRepository
+        factory: [ @doctrine.orm.entity_manager, getRepository ]
+        arguments:
+            - QCharts\CoreBundle\Entity\Directory
+
+    qcharts.user_repo:
+        class: QCharts\CoreBundle\Repository\UserRepository
+        factory: [ @doctrine.orm.entity_manager, getRepository ]
+        arguments:
+            - QCharts\CoreBundle\Entity\User\QChartsSubjectInterface

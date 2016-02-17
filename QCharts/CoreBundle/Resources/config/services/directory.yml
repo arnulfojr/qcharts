@@ -1,0 +1,6 @@
+services:
+    qcharts.directory.directory_service:
+        class: QCharts\CoreBundle\Service\Directory\DirectoryService
+        arguments:
+            - "@qcharts.directory.repository"
+            - "@qcharts.serializer"
