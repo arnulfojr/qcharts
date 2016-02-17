@@ -1,7 +1,7 @@
 {
     "name": "arnulfosolis/qcharts",
     "homepage": "https://github.com/arnulfojr/qcharts",
-    "description": "Formats query results in order to graph them for a more analytical solution",
+    "description": "Graphical interpretation from the results from the registered queries",
     "license": "MIT",
     "type": "symfony-bundle",
     "minimum-stability": "dev",
@@ -23,8 +23,6 @@
         "doctrine/orm": "^2.4.8",
         "doctrine/doctrine-bundle": "~1.4",
         "symfony/assetic-bundle": "~2.3",
-        "symfony/swiftmailer-bundle": "~2.3",
-        "symfony/monolog-bundle": "~2.4",
         "sensio/distribution-bundle": "~4.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
@@ -37,7 +35,6 @@
         "sensio/generator-bundle": "~2.3",
         "phpunit/phpunit" : "4.*",
         "phpspec/phpspec":"2.*",
-        "phpspec/prophecy" : "1.5.*",
         "nelmio/api-doc-bundle": "2.*"
     },
     "scripts": {

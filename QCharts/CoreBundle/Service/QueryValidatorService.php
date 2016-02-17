@@ -10,7 +10,6 @@ use QCharts\CoreBundle\Validation\ChartValidationFactory;
 use QCharts\CoreBundle\Validation\SyntaxSemanticValidationFactory;
 use QCharts\CoreBundle\Validation\ValidationInterface\ValidatorInterface;
 use QCharts\CoreBundle\Validation\Validator\ExistenceValidator;
-use Symfony\Bridge\Monolog\Logger;
 
 
 class QueryValidatorService
