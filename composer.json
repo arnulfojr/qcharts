@@ -6,7 +6,7 @@
     "type": "symfony-bundle",
     "minimum-stability": "dev",
     "version":"1.0",
-    "keywords": ["query", "formatter", "charter"],
+    "keywords": ["query", "formatter", "charter", "qcharts"],
     "authors": [{
       "name": "Arnulfo Solis Ramirez",
       "email": "arnulfojr@kuzzy.com",
