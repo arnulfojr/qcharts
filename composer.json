@@ -26,7 +26,6 @@
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/doctrine-migrations-bundle": "^1.0",
-        "friendsOfSymfony/user-bundle": "~2.0@dev",
         "twbs/bootstrap": "^3.3",
         "jdorn/sql-formatter": "^1.2",
         "mtdowling/cron-expression": "1.1.*"
