@@ -1,8 +1,10 @@
 {
     "name": "arnulfosolis/qcharts",
+    "homepage": "https://github.com/arnulfojr/qcharts",
     "description": "Formats query results in order to graph them for a more analytical solution",
     "license": "MIT",
     "type": "symfony-bundle",
+    "minimum-stability": "dev",
     "version":"1.0",
     "keywords": ["query", "formatter", "charter"],
     "authors": [{
