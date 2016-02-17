@@ -1,7 +1,7 @@
 {
     "name": "arnulfosolis/qcharts",
     "homepage": "https://github.com/arnulfojr/qcharts",
-    "description": "Graphical interpretation from the results from the registered queries",
+    "description": "Graphical interpretation from the results of the registered queries",
     "license": "MIT",
     "type": "symfony-bundle",
     "minimum-stability": "dev",

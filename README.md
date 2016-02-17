@@ -18,28 +18,30 @@ composer install
 ```
 
 - QCharts needs some configuration in the target project prior to the execution.
-    + For a more in-depth configuration please refer to the ```CONFIG_README.md``` file located in QCharts directory.
+    + For a more in-depth configuration please refer to the ```CONFIG_README.md``` file located in QChart's directory.
 ```yml
 #app/config/config.yml
 
-#QCharts, this will be filled by the defauls
+#QCharts, this will be filled by the defaults
 core:
-    url:
+    urls:
     limits:
     paths:
     roles:
     charts:
 ```
 
-- QCharts requires access to your target's database, since QCharts requires creating it's own
-tables in the database, so:
+- Resolve QCharts User interface on ```orm```'s definition to your User Class.
+    + Refer to the ```CONFIG_README.md``` file for further details.
+    + ```resolve_target_entities```
+
+- QCharts requires access to your target's database, since QCharts requires to persists inforamtion, so:
 ```
 php app/console doctrine:database:create
 php app/console doctrine:schema:update --force
 ```
 
-- Since the project comes included with an application interface,
-QCharts requires that you dump the assets:
+- Since the project comes included with a web application, QCharts requires assetic to be dumped.
     + You have to register QChart's ```FrontendBundle``` in the assetic's configuration.
 ```
 php app/console assetic:dump
