@@ -2,7 +2,8 @@
     "name": "arnulfosolis/qcharts",
     "description": "Formats query results in order to graph them for a more analytical solution",
     "license": "MIT",
-    "type": "project",
+    "type": "symfony-bundle",
+    "version":"1.0",
     "keywords": ["query", "formatter", "charter"],
     "authors": [{
       "name": "Arnulfo Solis Ramirez",
