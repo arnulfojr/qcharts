@@ -5,6 +5,7 @@ namespace QCharts\CoreBundle\Service\Snapshot\FileSystem;
 use QCharts\CoreBundle\Entity\QueryRequest;
 use QCharts\CoreBundle\Exception\SnapshotException;
 use QCharts\CoreBundle\Exception\TypeNotValidException;
+use QCharts\CoreBundle\Exception\WriteReadException;
 use QCharts\CoreBundle\Repository\Snapshot\SnapshotRepository;
 use QCharts\CoreBundle\Service\Snapshot\FileSystem\Saving\Saver\SaverInterface;
 use QCharts\CoreBundle\Service\Snapshot\FileSystem\Saving\SaverFactory;
@@ -106,7 +107,7 @@ class SnapshotManager extends SnapshotRepository
         catch (IOException $e)
         {
             //creating symlink was not possible or mostly not probable the filename already exists in the same context
-            throw $e;
+            throw new WriteReadException("Couldn't write or read", 500, $e);
         }
     }
 

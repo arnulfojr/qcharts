@@ -12,35 +12,107 @@ FrontendBundle Documentation
 	
     - FrontendBundle
         - Controller
-            * MainController.php
+            * AdminController
+            * DatabaseController
+            * DirectoryController
+            * MainController
+            * QueryController
         - DependencyInjection
             ...
+        - Twig
+            * FetchingModesFilter
         - Resources
             - config
-                * routing.yml
+                - routing
+                    * admin
+                    * database
+                    * directory
+                    * general
+                    * query
+                - services
+                    * twig_extensions
+                * routing
+                * services
             - public
                 - css
+                    - ace #Ace Code Editor stylesheet
+                        * ace-twilight
                     - base
                         * main.css
+                        * grayscale.css #Grayscale theme
+                        * bootstrap.min.css
+                        * bootstrap.min.css.map
+                    - cron
+                        * jquery-cron.css
+                    - fullCalendar
+                        * fullCalendar.min.css
+                        * fullCalendar.print.css
                     - general
                         * animate.css
                     - login
                         * login.css
+                    - table
+                        * datatables.min.css
+                        * fixedColumns.bootstrap.min.css
+                        * fixHeader.boostrap.min.css
+                        * jquery.dynatable.css
+                        * responsive.bootstrap.min.css
+                        * tableStyle.css
                 - js
                     - ace
+                        * ace.js
+                        * ace.twilight.theme.js
+                    - Browser
+                        * browser.js
+                    - cron
+                        * cron_adapter.js
+                        * jquery-cron.js
+                    - DeleteQuery
+                        * delete.js
+                    - favorite
+                        * favorite.js
+                    - fullCalendar
+                        * fullCalendar.min.js
+                        * zcalendarController.js
                     - general
-                        * ajquery.min.js
+                        * ajquery.min.js #v 2.1.4
+                        * bootstrap.min.js
                         * Classes.js
-                    - highChartsTheme
-                        * highChartsTheme.js
+                        * grayscale.js
+                    - highcharts
+                        - theme
+                            * highChartsTheme.js
+                        * ahighcharts.js
+                        * hcExporting.min.js
+                        * hcOfflineExporting.min.js
+                        * highchartsExtras.js
                     - main
                         * main.js
+                    - moment
+                        * moment.min.js
+                    - SnapshotConsole
+                        * snapshot_console.js
+                    - table
+                        * adatatables.min.js
+                        * buttons.print.min.js
+                        * dataTables.autoFill.min.js
+                        * dataTables.buttons.min.js
+                        * dataTables.fixedColumns.min.js
+                        * dataTables.fixedHeader.min.js
+                        * dataTables.responsive.min.js
+                        * dataTables.select.min.js
+                        * directoryClasses.js
+                        * jquery.dynatable.js
+                        * tableController.js
+                        * TablesClasses.js
             - views
                 - views
                     - about
                         * about.html.twig
                     - admin
                         * admin.html.twig
+                    - directory
+                        * directory.html.twig
                     - editQuery
                         * editQuery.html.twig
                     - main
@@ -53,6 +125,8 @@ FrontendBundle Documentation
                     - showQuery
                         * invalidQuery.html.twig
                         * mainView.html.twig
+                    - snapshots
+                        * snapshotsView.html.twig
                     - tableInfo
                         * tableInfo.html.twig
                 - Form
@@ -65,75 +139,75 @@ FrontendBundle Documentation
                     * login.html.twig
                 * layout.html.twig
                 * base.html.twig
+                * showQueryBase.html.twig
         * FrontendBundle.php
 
 - FrontendBundle Routing
-    - defined in ```FrontendBundle/Resources/config/routing.yml``` and Actions are 
-    defined in ```FrontendBundle/Controller/FrontendController.php```:
-    - ```homepage```
-        - Path: ```/```
-        - Methods: ```[ GET ]```
-        - Action:
-            + ```GET```: ```mainAction```
-    - ```about```
-        - Path: ```/about```
-        - Methods: ``` [ GET ] ```
-        - Action:
-            + ```GET```: ```aboutAction```
-    - ```query_view```
-        - Path: ```/query/{queryId}```
-        - Requirement:
-            - ```queryId``` should be numeric ```\d+```
-        - Methods: ```[ GET ]```
-        - Action:
-            + ```GET```: ```showAction```
-        - Notes:
-            - Renders the requested Query information.
-    - ```query_register```
-        - Path: ```/query/register```
-        - Methods: ```[ GET ]```
-        - Action:
-            + ```GET```: ```registerAction```
-        - Notes:
-            - Renders the registration form
-    - ```query_edit```
-        - Path: ```/query/edit/{queryId}```
-        - Requirement:
-            - ```queryId``` should be numeric ```\d+```
-        - Methods: ```[ GET ]```
-        - Action:
-            + ```GET```: ```editAction```
-        - Notes:
-            - Renders the form to edit the requested Query.
-    - ```query_register_success```
-        - Path: ```/query/register/success```
-        - Methods: ```[ GET ]```
-        - Action:
-            + ```GET```: ```successAction```
-        - Notes:
-            - Renders a simple confirmation if the registration was successful.
-
-
+    - Defined in ```FrontendBundle/Resources/config/routing/general.yml``` and Actions are 
+    defined in the controller```FrontendBundle/Controller/MainController```:
+        - ```qcharts.frontend.homepage```
+            - Path: ```/```
+            - Methods: ```[ GET ]```
+            - Action:
+                + ```GET```: ```mainAction```
+        - ```qcharts.frontend.about```
+            - Path: ```/about```
+            - Methods: ``` [ GET ] ```
+            - Action:
+                + ```GET```: ```aboutAction```
+        - ```qcharts.frontend.query_register_success```
+            - Path: ```/query/register/success```
+            - Methods: ```[ GET ]```
+            - Action:
+                + ```GET```: ```successAction```
+            - Notes:
+                - Renders a simple confirmation if the registration was successful.
+    - Defined in ```FrontendBundle/Resources/config/routing/query.yml``` and Actions are defined in
+    the controller ```FrontendBundle/Controller/QueryController```
+        - ```qcharts.frontend.query_view```
+            - Path: ```/query/{queryId}```
+            - Requirement:
+                - ```queryId``` should be numeric ```\d+```
+            - Methods: ```[ GET ]```
+            - Action:
+                + ```GET```: ```showAction```
+            - Notes:
+                - Renders the requested Query information.
+        - ```qcharts.frontend.query_register```
+            - Path: ```/query/register```
+            - Methods: ```[ GET ]```
+            - Action:
+                + ```GET```: ```registerAction```
+            - Notes:
+                - Renders the registration form
+        - ```qcharts.frontend.query_edit```
+            - Path: ```/query/edit/{queryId}```
+            - Requirement:
+                - ```queryId``` should be numeric ```\d+```
+            - Methods: ```[ GET ]```
+            - Action:
+                + ```GET```: ```editAction```
+            - Notes:
+                - Renders the form to edit the requested Query.
+    - Defined in ```FrontendBundle/Resources/config/routing/database.yml``` and Actions are defined in 
+    the controller ```FrontendBundle/Controller/DatabaseController```
+        - ```qcharts.frontend.table_information```
+            - Path: ```/tableInfo```
+            - Methods: ```[ GET ]```
+            - Action:
+                + ```GET```: ```tableInfo```
+        
 - Controller
-    + You can find all controllers in ```FrontendBundle/Controller``` directory.
+    + You can find all controllers in ```FrontendBundle/Controller``` namespace.
         - ```MainController.php```
             * The Controller handles the requested routing mapped in the Routing file
-             found in the Bundle's directory ```/Resources/config/routing.yml```
-            * It's worth mentioning that this Controller has been declared as a Global Service.
-                - Service called: ```frontend.main_controller```
-                - Since the Controller is defined as a Service, this Controller has dependency on other services:
-                    + ```qcharts.service```
-                    + ```security.authorization_checker```
-                    + ```templating```
-                    + ```routing```
-                    + ```qcharts.query_form_factory```
-                    + ```qcharts.query_results_formatter```
+             found in the Bundle's directory ```/Resources/config/routing/general.yml```
             * Actions
-                - ```mainAction(Request $request)```
+                - ```mainAction()```
                     - Route:
                         + ```homepage```
-                    - ROLE required:
-                        - ```ROLE_USER```
+                    - QCharts mapped role required:
+                        - ```user```
                     - File rendered:
                         - Renders ```main.html.twig``` found in the
                         bundles's ```/Resources/views/views/main``` directory
@@ -152,6 +226,13 @@ FrontendBundle Documentation
                         - ```Exception```:
                             - The page still is rendered but without any listed requested Queries,
                             as the above Exception.
+                - ```successAction()```
+                    - Route:
+                        + ```query_register_success```
+                    - File rendered:
+                        - ```confirmed.html.twig``` from the ```/Resources/views/views/registerQuery``` directory.
+        - ```QueryController.php```
+            * The controller handles the rendering of the views related to show, edit and register Queries
                 - ```showAction($queryId)```
                     - Route:
                         + ```query_view```
@@ -199,18 +280,13 @@ FrontendBundle Documentation
                     - Return value:
                         - ```Response```
                         - ```RedirectResponse```
-                - ```successAction()```
-                    - Route:
-                        + ```query_register_success```
-                    - File rendered:
-                        - ```confirmed.html.twig``` from the ```/Resources/views/views/registerQuery``` directory.
 - Important notice about JS and CSS files:
     + Assetic is required for the files to be rendered.
-        - To do this, the command in the terminal is as follows:
+        - Register QChart's ```FrontendBundle``` in Assetic.
+        - To do dump Assetic files, the command in the terminal is as follows:
             - ```php app/console assetic:dump```
         - If problems arise please clear the cache with the following command and try to dump again the Assetic:
             - ```php app/console cache:clear```
-    + All JS helper classes are found in the ```Classes.js``` and in ```databasetables.js``` // TODO: edit here
-    file found in the ```/Resources/public/js/...``` directory.
-    + For more information about this classes please refer to the
-    directory mentioned above and find the README file attached.
+    + All JS helper classes are found in ```/Resources/public/js/...``` directory.
+    + For more information about this classes please refer to the directory
+    mentioned above and find the README file attached.

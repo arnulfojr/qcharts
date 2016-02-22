@@ -46,9 +46,9 @@
                         <a href="{{ url('qcharts.frontend.about') }}">About this</a>
                     </li>
                     {% if is_granted(user_roles.super_admin) %}
-                        <li>
-                            <a href="{{ path('qcharts.frontend.user_admin') }}">User Admin</a>
-                        </li>
+                        {#<li>#}
+                            {#<a href="{{ path('qcharts.frontend.user_admin') }}">User Admin</a>#}
+                        {#</li>#}
                         <li>
                             <a href="{{ url('qcharts.frontend.snapshot_console') }}">
                                 Snapshots

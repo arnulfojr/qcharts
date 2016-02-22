@@ -22,14 +22,11 @@ services:
         class: QCharts\CoreBundle\Service\FetchingStrategy\StrategyFactory
         arguments:
             - "@qcharts.core.snapshot_service"
-
     qcharts.query:
         class: QCharts\CoreBundle\Service\QueryService
         arguments:
             - "@qcharts.query_repo"
-            - "@qcharts.directory.directory_service"
             - "@qcharts.dynamic_repo"
-            - "@qcharts.serializer"
             - "@qcharts.query_validator"
     qcharts.query_results_formatter_factory:
         class: QCharts\CoreBundle\ResultFormatter\ResultsFormatterFactory

@@ -22,6 +22,8 @@ class SnapshotService
     const FILE_DATE_FORMAT = "d, M, Y h:i:s";
     const FRIENDLY_FILE_NAME = 'h:i T, d M Y';
     const LIVE_MODE = 0;
+    const CACHE_MODE = 1;
+    const TIME_MACHINE_MODE = 2;
 
     /** @var SnapshotManager $snapshotManager */
     private $snapshotManager;

@@ -4,8 +4,6 @@ namespace QCharts\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use QCharts\CoreBundle\Entity\Query;
-use QCharts\CoreBundle\Entity\ChartConfig;
 use QCharts\CoreBundle\Entity\User\QChartsSubjectInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\JoinColumn;

@@ -2,7 +2,6 @@
  * @param containerId
  * @param baseApiUrl
  * @param service
- * @param modalId
  * @param options
  * @constructor
  */
@@ -15,7 +14,7 @@ var CalendarController = function(containerId, baseApiUrl, service, options) {
     this.snapshots = undefined;
     /** @var ChartManager this.chartManager */
     this.chartManager = undefined;
-    /** @var TableController this.tableController */
+    /** @var SnapshotTableController this.tableController */
     this.tableController = undefined;
     this.customCellClickEvent = undefined;
     this.downloadButtonController = new SnapshotFileDownload(

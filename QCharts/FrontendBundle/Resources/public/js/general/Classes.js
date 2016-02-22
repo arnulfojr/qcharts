@@ -20,11 +20,14 @@ EditorManager.prototype.initializeEditor = function () {
     document.getElementById(this.editorName).style.fontSize = '14px';
 };
 
+/**
+ * @param commService
+ */
 EditorManager.prototype.setUpTestRunCommand = function(commService) {
     var commandOptions = {
         name:"testRun",
         bindKey: {win: 'Ctrl-r', mac: 'Command-r'},
-        exec: function(editor) {
+        exec: function() { //receives the editor as parameter!
             commService.getResultsFromQuery(commService.query, commService.limit);
         }
     };
@@ -45,6 +48,9 @@ EditorManager.prototype.getEditorValue = function () {
     return this.editor.getValue();
 };
 
+/**
+ * @param valueToAppend
+ */
 EditorManager.prototype.addText = function(valueToAppend) {
     this.editor.insert(valueToAppend);
 };
@@ -59,6 +65,9 @@ EditorManager.prototype.bindWithInputById = function () {
     });
 };
 
+/**
+ * @param objInstance
+ */
 EditorManager.prototype.bindWithVariable = function (objInstance) {
     var store = this;
     objInstance.setQuery(this.getEditorValue());
@@ -199,11 +208,13 @@ ObjectBuilder.prototype.createList = function(list, content, attributes) {
     var ul = document.createElement("ul");
     ul.setAttribute("class", "list-group");
     for (var i in list) {
-        var li = document.createElement('li');
-        var element = list[i];
-        li = attributes(li, element);
-        li.appendChild(content(element));
-        ul.appendChild(li);
+        if (list.hasOwnProperty(i)) {
+            var li = document.createElement('li');
+            var element = list[i];
+            li = attributes(li, element);
+            li.appendChild(content(element));
+            ul.appendChild(li);
+        }
     }
     return ul;
 };
@@ -751,6 +762,7 @@ var FormManager = function (formId, apiUrl, method, service, redirectBaseUrl ,ca
         },
         onFail: function (jqXHR, textStatus) {
             alert('Error in connection, ' + textStatus);
+            console.log(jqXHR);
         }
     };
 
@@ -776,6 +788,9 @@ FormManager.prototype.getFormId = function() {
     return this.formId;
 };
 
+/**
+ * @param setUp
+ */
 FormManager.prototype.bindFormWithService = function(setUp) {
     var store = this;
     this.myForm.addEventListener('submit', function (event) {
@@ -806,6 +821,9 @@ FormManager.prototype.clearForm = function() {
     console.log("form was cleared");
 };
 
+/**
+ * @param callbacks
+ */
 FormManager.prototype.setCallBacks = function (callbacks) {
     if (callbacks != undefined && callbacks.onDone != undefined && callbacks.onFail != undefined)
         this.callbacks = callbacks;

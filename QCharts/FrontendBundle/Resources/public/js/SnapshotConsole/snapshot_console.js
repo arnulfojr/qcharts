@@ -9,9 +9,10 @@
  */
 var SnapshotConsoleController = function(baseApiUrl, service, options) {
     Communicator.call(this, baseApiUrl, service, options);
+
     /** @var DirectoryController this.dirController */
     this.dirController = undefined;
-    /** @var CalendatController this.calendarController */
+    /** @var CalendarController this.calendarController */
     this.calendarController = undefined;
 
     this.currentQueryId = undefined;

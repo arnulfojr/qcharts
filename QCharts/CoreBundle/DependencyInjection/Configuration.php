@@ -30,7 +30,9 @@ class Configuration implements ConfigurationInterface
             "table"=>"Table of Contents",
             "polar_line"=>"Polar Lines",
             "polar_area"=>"Polar Area",
-            "polar_spline"=>"Polar SpLine"
+            "polar_spline"=>"Polar SpLine",
+            "polar_bar" => "Polar Bar",
+            "polar_column" => "Polar Column"
         ];
 
 //        $defaultLimits = [
@@ -38,7 +40,8 @@ class Configuration implements ConfigurationInterface
 //            "time"=>1
 //        ];
 
-        $snapshotsPath = "";
+        $snapshotsPath = "/";
+
         $urls = [
             "redirects"=>[
                 "login" => "/login",

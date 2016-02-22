@@ -1,4 +1,4 @@
-QCharts
+QCharts Client App
 =============
 
 

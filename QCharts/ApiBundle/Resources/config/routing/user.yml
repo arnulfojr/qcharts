@@ -1,13 +1,13 @@
 
 qcharts.api.user_roles_get: #api_users_roles_get:
     path: /api/user/role
-    defaults: { _controller: ApiBundle:Api:getUsers}
+    defaults: { _controller: ApiBundle:User:getUsers}
     methods: [ GET ]
 qcharts.api.user_promote: #api_users_role_promote:
     path: /api/user/role
-    defaults: { _controller: ApiBundle:Api:promote }
+    defaults: { _controller: ApiBundle:User:promote }
     methods: [ POST ]
 qcharts.api.user_demote: #api_users_role_demote:
     path: /api/user/role
-    defaults: { _controller: ApiBundle:Api:demote }
+    defaults: { _controller: ApiBundle:User:demote }
     methods: [ DELETE ]

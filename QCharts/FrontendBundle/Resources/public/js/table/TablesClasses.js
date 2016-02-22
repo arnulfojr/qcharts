@@ -217,6 +217,9 @@ TableController.prototype.setEditor = function (editor) {
     this.editor = editor;
 };
 
+/**
+ * @returns {undefined|EditorManager}
+ */
 TableController.prototype.getEditor = function() {
     return this.editor;
 };
@@ -375,6 +378,7 @@ TableController.prototype.handleDoubleClick = function(root) {
 
 /**
  * @param tableName
+ * @param url
  * @returns {*}
  */
 TableController.openInNewWindow = function(tableName, url) {

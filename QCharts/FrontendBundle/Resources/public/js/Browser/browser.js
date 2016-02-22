@@ -1,6 +1,5 @@
 
 //This class is responsable of calling everything to the server
-// NOT USED!
 /**
  * @param baseApiUrl
  * @param service
@@ -14,6 +13,7 @@ var Communicator = function(baseApiUrl, service, options) {
     this.modalController = new ModalController(options["modal"]["id"]);
     this.loadingController = new LoadingIcon(options["loading"]["id"]);
     this.urls = undefined;
+    this.options = options;
     this.responseCodes = undefined;
 };
 

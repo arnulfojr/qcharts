@@ -1,0 +1,13 @@
+table tr td a {
+    color: #1f1b9c;
+}
+table tr td a :hover,
+table tr td a :focus {
+    color: #2c28d8;
+}
+
+@media (min-width: 768px) {
+    .article-container {
+        padding: 0 100px 0 100px;
+    }
+}

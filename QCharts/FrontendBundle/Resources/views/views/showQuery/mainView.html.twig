@@ -109,7 +109,6 @@
         </div>
     </div>
 
-    {% if queryRequest.config.typeOfChart != "table" %}
     <div class="col-sm-12">
         <div class="col-sm-12 col-md-5 col-lg-4">
             <div class="panel panel-default">
@@ -161,13 +160,20 @@
                 {% endif %}
             </div>
         </div>
+        {% if queryRequest.config.typeOfChart != "table" %}
         <div class="col-sm-12 col-md-7 col-lg-8">
-        <!-- graphic -->
-        <div id="graphContainer"></div>
-        <!-- endgraphic -->
+
+            <!-- graphic -->
+            <div id="graphContainer"></div>
+            <!-- endgraphic -->
+
+            <!-- compare Graphs -->
+            <div id="compareContainer"></div>
+            <!-- end compare-Graphs -->
+
         </div>
+        {% endif %}
     </div>
-    {% endif %}
 
     <!-- table -->
 	<div class="col-sm-12 table-section">

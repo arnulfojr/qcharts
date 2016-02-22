@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 1/26/16
- * Time: 10:30 AM
- */
 
 namespace QCharts\CoreBundle\Validation\Validator;
 

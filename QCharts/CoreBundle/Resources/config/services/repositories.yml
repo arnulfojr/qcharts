@@ -7,7 +7,6 @@ services:
 
     qcharts.query_repo:
         class: QCharts\CoreBundle\Repository\QueryRepository
-        #class: Doctrine\ORM\EntityRepository
         factory: [ @doctrine.orm.entity_manager, getRepository ]
         arguments:
             - QCharts\CoreBundle\Entity\QueryRequest

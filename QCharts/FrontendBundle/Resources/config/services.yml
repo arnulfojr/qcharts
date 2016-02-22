@@ -1,4 +1,4 @@
 imports:
-    - { resource: "twig_extensions.yml" }
+    - { resource: "services/twig_extensions.yml" }
 
 services:

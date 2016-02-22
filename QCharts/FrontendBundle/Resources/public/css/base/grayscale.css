@@ -24,7 +24,7 @@ h4,
 h5,
 h6 {
     margin: 0 0 35px;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: 700;
     letter-spacing: 1px;
@@ -373,10 +373,12 @@ ol > .active :after {
     border: 1px solid darkred;
 }
 
-.btn-default-arny {
+.btn-default-arny,
+.btn-default-arny:focus:disabled,
+.btn-default-arny:hover:disabled {
     font-size: 12px;
     border: 2px solid #2c28d8;
-    color: #1f1f1f;
+    color: #2c28d8;
     background-color: transparent;
 }
 

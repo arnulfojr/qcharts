@@ -19,7 +19,6 @@ var CronController = function(formId, inputName, modalId) {
 CronController.prototype = Object.create(ObjectBuilder.prototype);
 CronController.prototype.constructor = CronController;
 
-
 CronController.prototype.init = function(stateInput) {
 
     this.isInit = true;

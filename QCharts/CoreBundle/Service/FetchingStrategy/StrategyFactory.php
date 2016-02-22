@@ -89,12 +89,12 @@ class StrategyFactory implements FetchingStrategyFactoryInterface
 
         switch ($mode)
         {
-            case 0:
+            case SnapshotService::LIVE_MODE:
                 $strategy = new LiveStrategy();
                 $strategy->setDependencies(["QueryValidator"=>$this->queryValidator]);
                 break;
-            case 1:
-            case 2:
+            case SnapshotService::CACHE_MODE:
+            case SnapshotService::TIME_MACHINE_MODE:
                 $strategy = new SnapshotStrategy();
                 $strategy->setDependencies([
                     "SnapshotService"=>$this->snapshotService,

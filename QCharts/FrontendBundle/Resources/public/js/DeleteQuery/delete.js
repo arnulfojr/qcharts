@@ -7,7 +7,7 @@
  * @constructor
  */
 var DeleteController = function(queryId, buttonId, service, baseApiUrl, options) {
-    UrlFetcher.call(this, baseApiUrl, service, options["modalId"], options["loadingIconId"]);
+    UrlFetcher.call(this, baseApiUrl, service, options["modal"]["id"], options["loading"]["id"]);
     this.queryId = queryId;
     this.buttonId = buttonId;
     this.urls = undefined;

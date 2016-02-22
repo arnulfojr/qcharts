@@ -179,8 +179,12 @@
         editFormManager.bindFormWithService();
 
         var options = {
-            "modalId": "modal",
-            "loadingIconId": "homeBtn"
+            "modal": {
+                "id": "modal"
+            },
+            "loading": {
+                "id": "homeBtn"
+            }
         };
 
         var deleteController = new DeleteController(queryId, 'query_request_delete', $.ajax, "{{ url('qcharts.api.urls') }}", options);

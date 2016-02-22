@@ -11,9 +11,9 @@ use QCharts\CoreBundle\Exception\OffLimitsException;
 use QCharts\CoreBundle\Exception\ParameterNotPassedException;
 use QCharts\CoreBundle\Exception\TypeNotValidException;
 use QCharts\CoreBundle\Exception\ValidationFailedException;
+use QCharts\CoreBundle\Exception\OverlappingException;
 use QCharts\CoreBundle\Repository\DynamicRepository;
 use QCharts\CoreBundle\Repository\QueryRepository;
-use QCharts\CoreBundle\Service\Directory\DirectoryService;
 use QCharts\CoreBundle\Service\ServiceInterface\QueryServiceInterface;
 use Doctrine\DBAL\DBALException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -27,36 +27,26 @@ class QueryService implements QueryServiceInterface
 
     /** @var QueryRepository $repository */
     private $repository = null;
-    /** @var \QCharts\CoreBundle\Service\SerializationService|null  */
-    private $serializeService = null;
     /** @var \QCharts\CoreBundle\Service\QueryValidatorService|null s */
     private $queryValidator = null;
     /** @var null|DynamicRepository $dynamicRepo */
     private $dynamicRepo = null;
-    /** @var null|DirectoryService $dirService */
-    private $dirService = null;
 
     /**
      * QueryService constructor.
      * @param EntityRepository $repo
-     * @param DirectoryService $directoryService
      * @param DynamicRepository $dynamicRepository
-     * @param SerializationService $ser
      * @param QueryValidatorService $val
      */
     public function __construct(
         EntityRepository $repo,
-        DirectoryService $directoryService,
         DynamicRepository $dynamicRepository,
-        SerializationService $ser,
         QueryValidatorService $val
         )
 	{
         $this->repository = $repo;
         $this->dynamicRepo = $dynamicRepository;
-        $this->serializeService = $ser;
         $this->queryValidator = $val;
-        $this->dirService = $directoryService;
     }
 
     /**
@@ -68,11 +58,11 @@ class QueryService implements QueryServiceInterface
     }
 
     /**
+     * Returns all queries ordered by date
      * @return array
      */
     public function getAllQueries()
     {
-        //return all queries formatted
         $allQueries = $this->repository->findAllOrderedByDateCreated();
         return $allQueries;
     }
@@ -158,11 +148,11 @@ class QueryService implements QueryServiceInterface
     /**
      * @param Form $form
      * @param QChartsSubjectInterface $user
-     * @return string
+     * @return array
      * @throws OffLimitsException
      * @throws ParameterNotPassedException
+     * @throws TypeNotValidException
      * @throws ValidationFailedException
-     * @throws \Exception
      */
     public function add(Form $form, QChartsSubjectInterface $user)
     {
@@ -249,7 +239,7 @@ class QueryService implements QueryServiceInterface
      * @throws DatabaseException
      * @throws OffLimitsException
      * @throws ValidationFailedException
-     * @throws \QCharts\CoreBundle\Exception\OverlappingException
+     * @throws OverlappingException
      */
     public function edit(FormInterface $form, QChartsSubjectInterface $user, $queryId)
     {
@@ -334,7 +324,6 @@ class QueryService implements QueryServiceInterface
         {
             throw new ParameterNotPassedException('The given Query was not valid', 500);
         }
-        //TODO: delete favorites too!
     	$this->repository->deleteQuery($queryRequest);
     }
 
@@ -372,15 +361,15 @@ class QueryService implements QueryServiceInterface
     }
 
     /**
-     * @param ParameterBag $query
+     * @param ParameterBag $parameterBag
      * @return array
      * @throws InstanceNotFoundException
      * @throws ParameterNotPassedException
      */
-    public function getTableInformation(ParameterBag $query)
+    public function getTableInformation(ParameterBag $parameterBag)
     {
-        $tableName = $query->get('tableName', '');
-        $connectionName = $query->get('connection', 'default');
+        $tableName = $parameterBag->get('tableName', '');
+        $connectionName = $parameterBag->get('connection', 'default');
 
         if ($tableName == '')
         {
