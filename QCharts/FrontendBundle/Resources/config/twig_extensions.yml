@@ -1,5 +1,0 @@
-services:
-    qcharts.frontend.twig_extension.fetching_modes:
-        class: QCharts\FrontendBundle\Twig\FetchingModesFilter
-        tags:
-            - { name: twig.extension }
