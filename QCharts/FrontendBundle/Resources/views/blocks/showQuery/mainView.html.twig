@@ -1,0 +1,310 @@
+{% extends '@Frontend/showQueryBase.html.twig' %}
+
+{% block mainView %}
+	<div class="col-sm-12">
+		<div class="col-sm-12">
+			<h2>{{queryRequest.title}}, <small>created by: {{queryRequest.createdBy.name}}</small></h2>
+		</div>
+	</div>
+
+    <div class="row">
+        <div class="col-sm-12" id="topPanel">
+            <!-- Configuration -->
+            <div class="col-sm-12 col-md-4 col-lg-3 ">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Configuration</h4>
+                    </div>
+                    <table class="table table-condensed childPanel">
+                        <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Chart</td>
+                            <td>{{ queryRequest.config.typeOfChart }}</td>
+                        </tr>
+                        {% if queryRequest.config.databaseConnection %}
+                            <tr>
+                                <td>Connection</td>
+                                <td>{{ queryRequest.config.databaseConnection }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td>Mode</td>
+                            <td>{{ queryRequest.config.isCached | mode }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Limits -->
+            <div class="col-sm-12 col-md-4 col-lg-3 ">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Limits</h4>
+                    </div>
+                    <table class="table table-condensed childPanel">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Exec. Duration</td>
+                            <td>{{ queryRequest.config.executionLimit }} secs.</td>
+                        </tr>
+                        <tr>
+                            <td>Row</td>
+                            <td>{{ queryRequest.config.queryLimit }}</td>
+                        </tr>
+                        <tr>
+                            <td>Row offset</td>
+                            <td>{{ queryRequest.config.offset }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="col-sm-12 col-md-4 col-lg-3 ">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            Description
+                            <span class="glyphicon glyphicon-chevron-up pull-right toggleCollapse"></span>
+                        </h4>
+                    </div>
+                    <div class="panel-body childPanel" style=" display: block; ">
+                        {{queryRequest.description}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Query -->
+            <div class="col-sm-12 col-md-12 col-lg-3 ">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            Query
+                            <span class="glyphicon glyphicon-chevron-up pull-right toggleCollapse"></span>
+                        </h4>
+                    </div>
+                    <div class="panel-body childPanel">
+                        {{queryRequest.query.queryHTML | raw}}
+                        {% if app.user and is_granted(user_roles.admin) %}
+                            <a class="btn btn-edit btn-small" href="{{ path('qcharts.frontend.query_edit', {"queryId": queryRequest.id}) }}">Edit</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-sm-12">
+        <div class="col-sm-12 col-md-5 col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        Execution Details
+                        <span class="glyphicon glyphicon-chevron-up pull-right toggleCollapse"></span>
+                    </h4>
+                </div>
+
+                <table class="table table-condensed">
+                    <thead>
+                    <tr>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Value
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if queryRequest.config.isCached == 0 %}
+                    <tr>
+                        <td>Database Connection time</td>
+                        <td id="queryDuration"></td>
+                    </tr>
+                    {% endif %}
+                    {% if queryRequest.config.isCached >= 1 %}
+                        <tr>
+                            <td>Snapshot used</td>
+                            <td id="snapshotUsed"></td>
+                        </tr>
+                        <tr>
+                            <td>Download snapshot</td>
+                            <td>
+                                <button class="btn btn-sm btn-download pull-right" type="button" id="snapshotDownload">
+                                    <span class="glyphicon glyphicon-download-alt"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+                {% if queryRequest.config.isCached == 2 %}
+                <div class="panel-body">
+                    <div id="snapshotCalendar"></div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% if queryRequest.config.typeOfChart != "table" %}
+        <div class="col-sm-12 col-md-7 col-lg-8">
+
+            <!-- graphic -->
+            <div id="graphContainer"></div>
+            <!-- endgraphic -->
+
+            <!-- compare Graphs -->
+            <div id="compareContainer"></div>
+            <!-- end compare-Graphs -->
+
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- table -->
+	<div class="col-sm-12 table-section">
+		<div class="col-sm-12">
+			<h2>Resulting data from Query</h2>
+			<small>{{exceptionMessage}}</small>
+
+		</div>
+		<div class="col-sm-12 ">
+            <table class="table table-condensed table-bordered" id="resultsTable"></table>
+        </div>
+	</div>
+	<!-- end table -->
+	<!-- chart script -->
+	<script type="text/javascript">
+
+        var chart = new ChartManager(
+                "graphContainer",
+                '{{ queryRequest.title }}',
+                '{{ queryRequest.description }}',
+                $.ajax, {{ queryRequest.id }},
+                '{{ queryRequest.config.typeOfChart }}',
+                "{{ url('qcharts.api.chart_data') }}",
+                'snapshotUsed'
+        );
+        chart.initializeChart();
+
+        var tableController = new SnapshotTableController(
+                'resultsTable',
+                '{{ url("qcharts.api.urls") }}',
+                $.ajax,
+                '{{ queryRequest.id }}',
+                {
+                    loadingIconId: "homeBtn",
+                    modalId: "modal"
+                });
+        tableController.init();
+
+        var configuration = {
+            "modal": {
+                "id": "modal"
+            },
+            "loading": {
+                "id": "homeBtn"
+            },
+            "queryId": {{ queryRequest.id }},
+            "download": {
+                "button": {
+                    "id": "snapshotDownload"
+                }
+            }
+        };
+
+        {% if queryRequest.config.isCached == 1 %}
+        {# Is snapshot mode #}
+
+        var snapshotDownloadController = new SnapshotFileDownload(
+            configuration["download"]["button"]["id"],
+            $.ajax,
+            "{{ url('qcharts.api.urls') }}",
+            configuration["queryId"],
+            configuration
+        );
+
+        snapshotDownloadController.init();
+
+        {% endif %}
+
+        {% if queryRequest.config.isCached == 2 %}
+        {# Time Machine mode #}
+        var calendarController = new CalendarController(
+                'snapshotCalendar',
+                '{{ url('qcharts.api.urls') }}',
+                $.ajax,
+                configuration
+        );
+        calendarController.setChart(chart);
+        calendarController.setTable(tableController);
+        calendarController.init();
+        {% endif %}
+
+	</script>
+	<!-- end chart script -->
+{% endblock %}
+
+{% block stylesheets %}
+
+    {% stylesheets
+        '@FrontendBundle/Resources/public/css/vendor/dataTables/*'
+        '@FrontendBundle/Resources/public/css/vendor/dataTables/plugins/*'
+        '@FrontendBundle/Resources/public/css/vendor/fullCalendar/fullCalendar.min.css'
+        '@FrontendBundle/Resources/public/css/calendarTheme/*'
+    %}
+    <link rel="stylesheet" href="{{asset_url}}"/>
+    {% endstylesheets %}
+
+{% endblock %}
+
+{% block attributes %}
+    <title>{{ queryRequest.title }}</title>
+{% endblock %}
+
+{% block js %}
+
+    {% javascripts
+        '@FrontendBundle/Resources/public/js/general/Classes.js'
+        '@FrontendBundle/Resources/public/js/vendor/highcharts/ahighcharts.js'
+        '@FrontendBundle/Resources/public/js/vendor/highcharts/plugins/*'
+        '@FrontendBundle/Resources/public/js/vendor/highcharts/theme/*'
+        '@FrontendBundle/Resources/public/js/vendor/moment/*'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% javascripts '@FrontendBundle/Resources/public/js/main/*'%}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% javascripts
+        '@FrontendBundle/Resources/public/js/table/*'
+        '@FrontendBundle/Resources/public/js/vendor/dataTables/*'
+        '@FrontendBundle/Resources/public/js/vendor/dataTables/plugins/*'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% javascripts
+        '@FrontendBundle/Resources/public/js/vendor/fullCalendar/*'
+        '@FrontendBundle/Resources/public/js/calendar/*'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock %}

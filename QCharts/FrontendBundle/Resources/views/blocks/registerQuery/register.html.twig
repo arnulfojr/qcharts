@@ -1,0 +1,277 @@
+{% extends '@Frontend/base.html.twig' %}
+
+{% form_theme form 'FrontendBundle:Form:custom_form_bootstrap_ace.html.twig' %}
+{% form_theme dirForm 'FrontendBundle:Form:custom_form_bootstrap_ace.html.twig' %}
+
+{% block mainView %}
+    <h2>{{title}}</h2>
+
+    <!-- Main Form for query request -->
+    <div class="col-sm-12 col-md-6 col-lg-6">
+        <div class="col-sm-12">
+            {{form_start(form, {'attr':{'id':'myForm'}})}}
+            {{form_widget(form)}}
+            {{form_end(form)}}
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-6">
+        <!-- Schemas Info Panel -->
+
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <span class="glyphicon glyphicon-chevron-up toggleCollapse pull-right"></span>
+                        <span class="glyphicon glyphicon glyphicon-info-sign pull-left"></span>
+                        Database's Tables
+                    </h4>
+                </div>
+                <div class="panel-body" style="display: block;">
+                    <div class="col-sm-12" style="padding-bottom: 10px;">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="schemaSelect" class="col-sm-2 control-label">Schema: </label>
+                                <div class="col-sm-10">
+                                    <select id="schemaSelect" class="form-control"></select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="table-responsive col-sm-12">
+                        <table id="databaseTableNames" class="table table-hover header-fixed table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Table Name
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="openInTableInformationNewWindow"> Open in a new window
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Directory Form! -->
+        <div class="col-sm-12">
+            <div class="panel panel-default panel-dir-browser">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <span class="glyphicon glyphicon-chevron-down toggleCollapse pull-right"></span>
+                        Folder Browser
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <div class="col-xs-12">
+                        <em>Saving Query in the path:</em>
+                    </div>
+                    <div class="col-sm-12" id="pathContainer"></div>
+                    <div class="col-sm-12">
+                        <div class="col-xs-8" id="directoryContent"></div>
+                        <div class="col-xs-4">
+                            <div class="col-sm-12">
+                                <h4>Add new folder</h4>
+                            </div>
+                            <div class="col-sm-12">
+                                <!-- directory form -->
+                                {{ form_start(dirForm, {"attr": {"id": "dirForm"}}) }}
+                                {{ form_widget(dirForm) }}
+                                {{ form_end(dirForm)}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<span class="glyphicon glyphicon-chevron-up toggleCollapse pull-right"></span>
+                    Instructions:
+				</h4>
+			</div>
+			<div class="panel-body" style="display: none;">
+				<ul class="list-group">
+					<li class="list-group-item">
+						<p>The <b>X Axis</b> will be taken for the first column from the left.</p>
+					</li>
+					<li class="list-group-item">
+						<p>For <b>Pie Charts</b> only two column tables are supported, being the first column
+							from left to right, the label and its value the right column</p>
+					</li>
+					<li class="list-group-item">
+						<p>For multiple <b>Y Axis Values</b>, the value of the <b>X Axis</b> will be taken
+							as the first column from left to right, as expected.
+							Each following column will be held as a <b>Y Axis</b></p>
+					</li>
+                    <li class="list-group-item">
+                        <p>
+                            The <b>limitation of rows</b> happens in the insertion of a SQL <code>LIMIT</code> statement
+                            over the requested query.
+                        </p>
+                    </li>
+                    <li class="list-group-item">
+                        <p>
+                            The Query should have all the desired tables explicitly stated in the Query, no <code>*</code>
+                            selector allowed.
+                        </p>
+                    </li>
+                    <li class="list-group-item">
+                        <p>
+                            Using alias to the selected columns will override the charting's default Series name.
+                            For example: <code>SELECT [column_name] as 'column title' ...</code>
+                        </p>
+                    </li>
+                    <li class="list-group-item">
+                        <p>
+                            <b>Tip:</b> while editing the query, use the command <code>ctrl + r</code> or <code>cmd + r</code>
+                            to test run the Query.
+                        </p>
+                    </li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-sm-12">
+        <div class="col-sm-4">
+            <p class="details">Results are Pie Chart compatible: <code id="isPieChartCompatible"></code></p>
+        </div>
+        <div class="col-sm-4">
+            <p class="details">Query execution time: <code id="queryDuration">No query ran yet</code></p>
+        </div>
+        <div class="col-sm-4">
+            <button class="btn btn-sm btn-default" type="button" id="runBtn">Test Run</button>
+        </div>
+		<div class="col-sm-12">
+            <table id="resultsTable" class="table table-responsive table-hover table-stripped">
+                <!--table for previews-->
+                <thead id="tablePreviewHead"></thead>
+                <tbody id="tablePreviewBody"></tbody>
+            </table>
+		</div>
+	</div>
+    <script>
+
+        var editor = new EditorManager(
+            'codeEditor',
+            'ace/theme/twilight',
+            'ace/mode/sql',
+            'query_request_query_query');
+
+        editor.initializeEditor();
+        editor.bindWithInputById();
+
+        var callbacks = {
+        	onDone: function (data) {
+        		if (data["status"] == 200 || data["status"] == 201) {
+        			alert(data["textStatus"]);
+        			window.location.replace("{{ url('qcharts.frontend.homepage') }}");
+        		}else{
+        			alert(data["textStatus"]);
+        		}
+        		console.log(data);
+        	},
+        	onFail: function() {
+        		alert('Connection error');
+        	}
+        };
+
+        var registerFormManager = new FormManager('myForm', '{{ url("qcharts.api.query_register") }}', 'POST', $.ajax, undefined, callbacks);
+        
+        registerFormManager.bindFormWithService();
+        
+        var comsService = new CommunicatorService($.ajax, undefined, "{{ url('qcharts.api.run_query') }}");
+        editor.bindWithVariable(comsService);
+        comsService.bindWithButton('runBtn');
+        comsService.bindInputForLimitById('query_request_config_queryLimit');
+        comsService.bindInputForConnectionById('query_request_config_databaseConnection');
+
+        editor.setUpTestRunCommand(comsService);
+
+        var tableController = new TableController(
+                'databaseTableNames',
+                'myForm',
+                'query_request_config_databaseConnection',
+                'schemaSelect',
+                $.ajax,
+                "{{ url('qcharts.api.urls') }}",
+                'modal'
+        );
+
+        tableController.setEditor(editor);
+        tableController.init("myDynamicTable");
+
+        var cronController = new CronController("myForm", "query_request[cronExpression]", "modal");
+        cronController.init("query_request_config_isCached");
+
+        var dirController = new DirectoryController(
+                'directoryContent',
+                'pathContainer',
+                'dirForm',
+                'modal',
+                'homeBtn',
+                $.ajax,
+                '{{ url("qcharts.api.urls") }}'
+        );
+
+        dirController.setInputFromForm("myForm");
+        dirController.init();
+    </script>
+
+
+{% endblock %}
+
+{% block js %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js"></script>
+	{% javascripts
+        '@FrontendBundle/Resources/public/js/main/*'
+        '@FrontendBundle/Resources/public/js/general/Classes.js'
+    %}
+	<script src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+
+    {% javascripts
+    '@FrontendBundle/Resources/public/js/table/*'
+    '@FrontendBundle/Resources/public/js/vendor/dataTables/*'
+    '@FrontendBundle/Resources/public/js/vendor/dataTables/plugins/*'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% javascripts
+        "@FrontendBundle/Resources/public/js/vendor/cron/*"
+        "@FrontendBundle/Resources/public/js/cron/*"
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+
+    {% stylesheets
+        '@FrontendBundle/Resources/public/css/vendor/dataTables/*'
+        '@FrontendBundle/Resources/public/css/vendor/dataTables/plugins/*'
+    %}
+    <link rel="stylesheet" href="{{asset_url}}"/>
+    {% endstylesheets %}
+
+    {% stylesheets '@FrontendBundle/Resources/public/css/vendor/cron/*' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+{% endblock %}
