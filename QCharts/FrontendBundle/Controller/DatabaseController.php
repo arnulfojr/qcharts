@@ -30,7 +30,7 @@ class DatabaseController extends Controller
             return new RedirectResponse($urls["redirects"]["login"]);
         }
 
-        return $this->render('@Frontend/views/tableInfo/tableInfo.html.twig', [
+        return $this->render('@Frontend/blocks/tableInfo/tableInfo.html.twig', [
             'tableName' => $request->query->get('tableName'),
             "redirectUrls" => $urls,
             "user_roles" => $roles,

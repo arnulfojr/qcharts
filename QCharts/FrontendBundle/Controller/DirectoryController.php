@@ -33,7 +33,7 @@ class DirectoryController extends Controller
             return new JsonResponse(ApiController::getNotValidCredentials());
         }
 
-        return $this->render('@Frontend/views/directory/directory.html.twig', [
+        return $this->render('@Frontend/blocks/directory/directory.html.twig', [
             "user_roles" => $roles,
             "redirectUrls" => $urls
         ]);

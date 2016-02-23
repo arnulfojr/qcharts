@@ -6,7 +6,9 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class FrontendBundle extends Bundle
 {
-	public function getParent() {
-		return 'FOSUserBundle';
-	}
+// Make FrontendBundle a child from FOSUserBundle to override the forms
+//    public function getParent()
+//    {
+//        return "FOSUserBundle";
+//    }
 }

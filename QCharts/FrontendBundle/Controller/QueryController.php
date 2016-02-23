@@ -9,11 +9,13 @@
 namespace QCharts\FrontendBundle\Controller;
 
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use QCharts\CoreBundle\Entity\QueryRequest;
 use QCharts\CoreBundle\Exception\InstanceNotFoundException;
 use QCharts\CoreBundle\Form\Directory\DirectoryType;
 use QCharts\CoreBundle\Form\QueryRequestType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class QueryController extends Controller
@@ -41,7 +43,7 @@ class QueryController extends Controller
             /** @var QueryRequest $queryRequest */
             $queryRequest = $queryService->getQueryRequestById($queryId);
 
-            return $this->render('@Frontend/views/showQuery/mainView.html.twig', [
+            return $this->render('@Frontend/blocks/showQuery/mainView.html.twig', [
                 'queryRequest'=>$queryRequest,
                 'user_roles'=>$roles,
                 'exceptionMessage' => '',
@@ -69,14 +71,16 @@ class QueryController extends Controller
             return new RedirectResponse($urls["redirects"]["login"]);
         }
 
+        /** @var FormFactory $formFactory */
         $formFactory = $this->get("form.factory");
         $charts = $this->getParameter("qcharts.chart_types");
+        /** @var Registry $doctrine */
         $doctrine = $this->get("doctrine");
         $form = $formFactory->create(new QueryRequestType($doctrine, $charts));
 
         $dirForm = $formFactory->create(new DirectoryType($doctrine));
 
-        return $this->render('@Frontend/views/registerQuery/register.html.twig',
+        return $this->render('@Frontend/blocks/registerQuery/register.html.twig',
             array(
                 'title'=>'Create a new Query',
                 'form' => $form->createView(),
@@ -112,8 +116,9 @@ class QueryController extends Controller
             {
                 throw new InstanceNotFoundException('The given Query does not exists.');
             }
-
+            /** @var FormFactory $formFactory */
             $formFactory = $this->get("form.factory");
+            /** @var Registry $doctrine */
             $doctrine = $this->get("doctrine");
             $chartTypes = $this->getParameter("qcharts.chart_types");
             $editForm = $formFactory->create(new QueryRequestType($doctrine, $chartTypes), $queryRequest);
@@ -129,12 +134,12 @@ class QueryController extends Controller
                 "user_roles" => $roles
             );
 
-            return $this->render('@Frontend/views/editQuery/editQuery.html.twig', $opts);
+            return $this->render('@Frontend/blocks/editQuery/editQuery.html.twig', $opts);
 
         }
         catch(InstanceNotFoundException $e)
         {
-            return $this->render('@Frontend/views/main/unexpectedError.html.twig', [
+            return $this->render('@Frontend/blocks/main/unexpectedError.html.twig', [
                 'errorMessage' => $e->getMessage()
             ]);
         }

@@ -36,7 +36,8 @@ class UrlController extends Controller
             $connections = $this->generateUrl('qcharts.api.connection_names');
             $connectionSchemas = $this->generateUrl('qcharts.api.connection_schemas');
 
-            $roleUrl = $this->generateUrl('qcharts.api.user_promote');
+            //$roleUrl = $this->generateUrl('qcharts.api.user_promote');
+            $roleUrl = "";
 
             $frontendTableInfo = $this->generateUrl('qcharts.frontend.table_information');
             $frontendHomepage = $this->generateUrl('qcharts.frontend.homepage');

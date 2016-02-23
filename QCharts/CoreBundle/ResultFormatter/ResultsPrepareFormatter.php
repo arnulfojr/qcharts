@@ -26,6 +26,11 @@ class ResultsPrepareFormatter
      */
     public function prepareResults(array $results)
     {
+        if (count($results) === 0)
+        {
+            return [];
+        }
+
         $headers = $this->getEmptyDictionary($this->getHeadersFromList($results[0]));
         foreach ($results as $row)
         {

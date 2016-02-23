@@ -57,23 +57,25 @@ EditorManager.prototype.addText = function(valueToAppend) {
 
 EditorManager.prototype.bindWithInputById = function () {
     this.syncWithInput();
-    var store = this;
-    this.editor.getSession().on('change', function() {
-        //store.inputText.setAttribute('value', store.removeFeedLines(store.getEditorValue()));
-        store.inputText.setAttribute('value', store.getEditorValue());
-        console.log('input value after: ' + store.inputText.value);
-    });
+
+    var actionEvent = function () {
+        this.inputText.setAttribute('value', this.getEditorValue());
+    };
+
+    this.editor.getSession().on('change', actionEvent.bind(this));
 };
 
 /**
  * @param objInstance
  */
 EditorManager.prototype.bindWithVariable = function (objInstance) {
-    var store = this;
     objInstance.setQuery(this.getEditorValue());
-    this.editor.getSession().on('change', function () {
-        objInstance.setQuery(store.getEditorValue());
-    });
+
+    var actionEvent = function() {
+        objInstance.setQuery(this.getEditorValue());
+    };
+
+    this.editor.getSession().on('change', actionEvent.bind(this));
 };
 
 EditorManager.prototype.syncWithInput = function () {
@@ -424,6 +426,40 @@ var UrlFetcher = function(baseApiUrl, service, modalId, loadingIconId) {
     this.loadingIconId = loadingIconId;
     this.modalController = new ModalController(modalId);
     this.loadingIcon = new LoadingIcon(loadingIconId);
+
+    this.actions = {
+        fetchUrls: { //has callbacks set dynamically under name: callback
+            success: function(response) {
+                this.loadingIcon.setLoading(false);
+                if (response["status"] == 200) {
+                    if (this.actions.fetchUrls.callback != null) {
+                        this.actions.fetchUrls.callback(response["urls"]);
+                    }
+                    return;
+                }
+                this.actions.presentModal({
+                    title:"Error fetching the urls",
+                    body: response.data["textStatus"],
+                    footer: ""
+                });
+            },
+            error: function(response) {
+                var data = {
+                    title:"Error in the connection",
+                    body: response["data"],
+                    footer: ""
+                };
+                this.loadingIcon.setLoading(false);
+                this.actions.presentModal(data);
+            }
+        },
+        presentModal: function(data) {
+            this.modalController.init();
+            this.modalController.setSmallModal();
+            this.modalController.setModal(data);
+            this.modalController.pop();
+        }
+    };
 };
 
 UrlFetcher.prototype = Object.create(ObjectBuilder.prototype);
@@ -433,42 +469,14 @@ UrlFetcher.prototype.constructor = UrlFetcher;
  * @param callback
  */
 UrlFetcher.prototype.fetchUrls = function(callback) {
-    var store = this;
     var configuration = this.getObject('get', this.baseApiUrl, {});
     this.loadingIcon.setLoading(true);
-
-    this.service(configuration).then(function(response) {
-        //success
-        store.loadingIcon.setLoading(false);
-        if (response["status"] == 200) {
-            if (callback != undefined) {
-                callback(response["urls"]);
-            }
-            return;
-        }
-
-        store.modalController.init();
-        store.modalController.setSmallModal();
-        store.modalController.setModal({
-            title:"Error fetching the urls",
-            body: response.data["textStatus"],
-            footer: ""
-        });
-
-        store.modalController.pop();
-    }, function(response) {
-        //on error
-        store.modalController.init();
-        store.modalController.setSmallModal();
-        store.modalController.setModal({
-            title:"Error in the connection",
-            body: response.data,
-            footer: ""
-        });
-        store.loadIcon.setLoading(false);
-        store.modalController.pop();
-    });
-
+    this.actions.fetchUrls.callback = callback;
+    this.service(configuration)
+        .then(
+            this.actions.fetchUrls.success.bind(this),
+            this.actions.fetchUrls.error.bind(this)
+        );
 };
 
 
@@ -481,81 +489,115 @@ UrlFetcher.prototype.fetchUrls = function(callback) {
  */
 var CommunicatorService = function (service, formId, runApiUrl, modalId) {
     this.service = service;
-    this.objectBuilder = new ObjectBuilder(formId);
     this.query = "";
     this.limit = 0;
     this.databaseConnection = 'default';
     this.table = undefined;
     this.runApiUrl = (runApiUrl == undefined) ? '/api/run' : runApiUrl;
-    this.modal = new ModalController((modalId == undefined) ? 'modal' : modalId);
+
+    this.dependencies = {
+        loadingIcon: new LoadingIcon('homeBtn'),
+        objectBuilder: new ObjectBuilder(formId),
+        modal: new ModalController((modalId == undefined) ? 'modal' : modalId)
+    };
+    this.elements = {}; //hols DOM elements!
+    this.actions = {
+        buttonBind: function(e) {
+            e.preventDefault();
+            this.getResultsFromQuery(this.query, this.limit);
+        },
+        inputBind: {
+            connection: function(e) {
+                e.preventDefault();
+                this.databaseConnection = this.elements.connectionInput.value;
+            },
+            limits: function(e) {
+                e.preventDefault();
+                this.setLimit(this.elements.limitsInput.value);
+            }
+        },
+        connectionError: {
+            simpleErrorReport: function(response) {
+                alert("Error in connection");
+                this.dependencies.loadingIcon.setLoading(false);
+                console.log(response);
+            }
+        }
+    };
 };
 
+/**
+ * @param limit
+ */
 CommunicatorService.prototype.setLimit = function (limit) {
     this.limit = parseInt(limit);
 };
 
+/**
+ * @param query
+ */
 CommunicatorService.prototype.setQuery = function (query) {
     this.query = query;
 };
 
+/**
+ * @param buttonID
+ */
 CommunicatorService.prototype.bindWithButton = function (buttonID) {
-    var button = document.getElementById(buttonID);
-    var store = this;
-    button.addEventListener('click', function (event) {
-        event.preventDefault();
-        //do the request
-        console.log("Query to send: " + store.query);
-        store.getResultsFromQuery(store.query, store.limit);
-    });
+    this.elements.testRunButton = document.getElementById(buttonID);
+    this.elements.testRunButton.addEventListener('click', this.actions.buttonBind.bind(this));
 };
 
+/**
+ * @param inputId
+ */
 CommunicatorService.prototype.bindInputForConnectionById = function (inputId) {
-    var input = document.getElementById(inputId);
-    var store = this;
-
-    input.addEventListener('change', function(event) {
-        event.preventDefault();
-        store.databaseConnection = input.value;
-        console.log(input.value);
-    });
+    this.elements.connectionInput = document.getElementById(inputId);
+    this.elements.connectionInput.addEventListener('change', this.actions.inputBind.connection.bind(this));
 };
 
+/**
+ * @param inputId
+ */
 CommunicatorService.prototype.bindInputForLimitById = function (inputId) {
-    var input = document.getElementById(inputId);
-    var store = this;
-    this.setLimit(input.value);
-    input.addEventListener('change', function(event) {
-        event.preventDefault();
-        store.setLimit(input.value);
-        console.log(input.value);
-    });
+    this.elements.limitsInput = document.getElementById(inputId);
+    this.setLimit(this.elements.limitsInput.value);
+    this.elements.limitsInput.addEventListener('change', this.actions.inputBind.limits.bind(this));
 };
 
+/**
+ * @param schema
+ * @returns {*}
+ */
 CommunicatorService.prototype.setSchema = function(schema) {
     this.schema = schema;
+    return this.schema;
 };
 
+/**
+ * @param con
+ * @returns {*}
+ */
 CommunicatorService.prototype.setConnection = function(con) {
     this.databaseConnection = con;
+    return this.databaseConnection;
 };
 
 CommunicatorService.prototype.getResultsFromQuery = function () {
-    var loadingIcon = new LoadingIcon('homeBtn');
-    loadingIcon.setLoading(true);
+    this.dependencies.loadingIcon.setLoading(true);
     var store = this;
 
     var dataToWrap =  {
-        query: store.query,
-        limit: store.limit,
-        connection: store.databaseConnection
+        query: this.query,
+        limit: this.limit,
+        connection: this.databaseConnection
     };
 
-    var dataToSend = this.objectBuilder.getObject('post', store.runApiUrl, dataToWrap);
+    var dataToSend = this.dependencies.objectBuilder.getObject('post', this.runApiUrl, dataToWrap);
 
     this.service(dataToSend).then(function (data) {
         if (data['status'] == 200) {
             //put the results in table
-
             var isPieChartCompatibleQuery = "#isPieChartCompatible";
 
             document.getElementById('queryDuration').innerHTML = (data['queryDuration'] + ' seconds');
@@ -596,21 +638,18 @@ CommunicatorService.prototype.getResultsFromQuery = function () {
             });
 
         }else {
-            store.modal.init();
-            store.modal.setLargeModal();
-            store.modal.setModal({
+            store.dependencies.modal.init();
+            store.dependencies.modal.setLargeModal();
+            store.dependencies.modal.setModal({
                 title: "Oups!",
                 body: data["textStatus"],
                 footer: ""
             });
-            store.modal.pop();
+            store.dependencies.modal.pop();
         }
 
-        loadingIcon.setLoading(false);
-    }, function() {
-        alert('Error');
-        loadingIcon.setLoading(false);
-    });
+        store.dependencies.loadingIcon.setLoading(false);
+    }, this.actions.connectionError.simpleErrorReport.bind(this));
 };
 
 /**
@@ -751,7 +790,7 @@ var FormManager = function (formId, apiUrl, method, service, redirectBaseUrl ,ca
                 store.modalController.init();
                 store.modalController.setSmallModal();
                 store.modalController.setModal(modalData);
-                store.modalController.toggle();
+                store.modalController.pop();
                 //window.location.replace(store.redirectBaseUrl + data["queryId"]);
             }else if(data["status"] == 202) {
                 alert(data["textStatus"]);
@@ -847,6 +886,10 @@ FormManager.prototype.setUrl = function(url) {
     this.url = url;
 };
 
+/**
+ * @param overRide
+ * @returns {*}
+ */
 FormManager.prototype.getEncapsulatedData = function (overRide) {
     if (overRide == undefined) {
         var data = {
@@ -949,9 +992,8 @@ ResultsFetcher.prototype.getResults = function(callback) {
     if (this.snapshot != undefined) {
         opts["snapshot"] = this.snapshot;
     }
-    var store = this;
 
-    this.service(this.objectBuilder.getObject('get', store.url, opts))
+    this.service(this.objectBuilder.getObject('get', this.url, opts))
         .then(function(response) {
             if (response.status == 200) {
                 callback(response);
@@ -1012,8 +1054,6 @@ ResultsFetcher.prototype.setOptionsForPieChart = function(callback) {
     var store = this;
 
     this.parseNumbersFromData();
-
-    //console.log(this.chartData);
 
     this.options = {
         chart: store.chartData['chart']
@@ -1157,24 +1197,63 @@ ChartManager.prototype = Object.create(ResultsFetcher.prototype);
 ChartManager.prototype.constructor = ChartManager;
 
 ChartManager.prototype.initializeChart = function() {
-    var store = this;
+
     if (this.chartType != 'table') {
-        this.fetchData(function() {
-            //console.log(store.options);
-            store.updateSnapshotUsedText();
-            store.container.highcharts(store.options);
-        });
+
+        this.fetchData(this.setUp.bind(this));
     }
     this.updateSnapshotUsedText();
 };
 
+ChartManager.prototype.setUp = function() {
+    this.updateSnapshotUsedText();
+    this.container.highcharts(this.options);
+};
+
+/**
+ * @param snapshotId
+ */
+ChartManager.prototype.addSnapshot = function(snapshotId) {
+    //add the snapshot information to the chart
+    this.setSnapshot(snapshotId);
+    this.getResults(this.addChartData.bind(this));
+};
+
+/**
+ * TODO: Just need to call it! and check compatibility with the charts
+ * @param data
+ */
+ChartManager.prototype.addChartData = function (data) {
+
+    var counter = this.options.series.length;
+
+    for (var x in data["chartData"]["series"]) {
+        if (data["chartData"]["series"].hasOwnProperty(x)) {
+            var current = data["chartData"]["series"][x];
+            current["name"] = data["snapshot"];
+            current["yAxis"] = counter++;
+            data["chartData"]["series"][x]["data"] = this.parseFloatArray(data["chartData"]["series"][x]["data"]);
+        }
+    }
+
+    for (var i in data["chartData"]["yAxis"]) {
+        if (data["chartData"]["yAxis"].hasOwnProperty(i)) {
+            var current = data["chartData"]["yAxis"][i];
+            current["title"]["text"] = data["snapshot"];
+        }
+    }
+
+    this.options.series = this.options.series.concat(data["chartData"]["series"]);
+    this.options.yAxis = this.options.yAxis.concat(data["chartData"]["yAxis"]);
+    //redraw!
+    this.container.highcharts(this.options);
+};
+
 ChartManager.prototype.updateSnapshotUsedText = function()
 {
-    console.log("snapshotUsedText called");
-    var store = this;
-    var snapshotContainer = document.getElementById(store.snapshotUsedContainerId);
+    var snapshotContainer = document.getElementById(this.snapshotUsedContainerId);
     if (snapshotContainer != undefined) {
-        snapshotContainer.innerHTML = store.snapshotUsed;
+        snapshotContainer.innerHTML = this.snapshotUsed;
     }
 };
 
@@ -1200,20 +1279,20 @@ SnapshotFileDownload.prototype.constructor = SnapshotFileDownload;
 
 SnapshotFileDownload.prototype.init = function() {
 
-    var store = this;
-    this.fetchUrls(function(urls) {
-        store.urls = urls;
-        //set up
-        store.setUpButton();
-    });
+    var setUp = function(urls) {
+        this.urls = urls;
+        this.setUpButton();
+    };
+
+    this.fetchUrls(setUp.bind(this));
 };
 
 SnapshotFileDownload.prototype.setUpButton = function() {
-    var store = this;
-    store.button = document.getElementById(store.buttonId);
 
-    if (store.button != undefined) {
-        store.bindButton();
+    this.button = document.getElementById(this.buttonId);
+
+    if (this.button != undefined) {
+        this.bindButton();
     }
 };
 
@@ -1233,17 +1312,15 @@ SnapshotFileDownload.prototype.setQueryId = function(queryId) {
 
 SnapshotFileDownload.prototype.bindButton = function() {
 
-    var store = this;
-
-    this.button.addEventListener("click", function() {
-        //download the file!
-
-        var snapshotUrl = (store.snapshotId != undefined) ? "&snapshot=" + store.snapshotId : "";
-        var url = store.urls["snapshots"]["download"];
-        url += "?q=" + store.queryId + snapshotUrl;
+    var action = function() {
+        var snapshotUrl = (this.snapshotId != undefined) ? "&snapshot=" + this.snapshotId : "";
+        var url = this.urls["snapshots"]["download"];
+        url += "?q=" + this.queryId + snapshotUrl;
         console.log(url);
         window.open(url);
-    });
+    };
+
+    this.button.addEventListener("click", action.bind(this));
 
 };
 

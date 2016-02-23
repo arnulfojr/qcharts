@@ -8,15 +8,20 @@
     {% endblock %}
 
     {% javascripts
-        '@FrontendBundle/Resources/public/js/general/Classes.js'
-        '@FrontendBundle/Resources/public/js/general/*'
+        '@FrontendBundle/Resources/public/js/vendor/jquery/ajquery.min.js'
+        '@FrontendBundle/Resources/public/js/vendor/bootstrap/*'
+        '@FrontendBundle/Resources/public/js/vendor/grayscale/*'
     %}
     <script src="{{asset_url}}"></script>
     {% endjavascripts %}
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
-    {% stylesheets filter='cssrewrite' '@FrontendBundle/Resources/public/css/base/*' %}
+    {% stylesheets filter='cssrewrite'
+        '@FrontendBundle/Resources/public/css/vendor/grayscale/*'
+        '@FrontendBundle/Resources/public/css/vendor/animate/*'
+        '@FrontendBundle/Resources/public/css/base/*'
+    %}
     <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 

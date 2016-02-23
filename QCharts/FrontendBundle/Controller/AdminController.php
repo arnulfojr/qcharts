@@ -28,7 +28,7 @@ class AdminController extends Controller
         {
             return new RedirectResponse($urls["redirects"]["logout"]);
         }
-        return $this->render('@Frontend/views/admin/admin.html.twig', [
+        return $this->render('@Frontend/blocks/admin/admin.html.twig', [
             "redirectUrls" => $urls,
             "user_roles" => $roles
         ]);
@@ -48,7 +48,7 @@ class AdminController extends Controller
             return new RedirectResponse($urls["redirects"]["login"]);
         }
 
-        return $this->render('@Frontend/views/snapshots/snapshotsView.html.twig', [
+        return $this->render('@Frontend/blocks/snapshots/snapshotsView.html.twig', [
             "redirectUrls" => $urls,
             "user_roles" => $roles
         ]);

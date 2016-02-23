@@ -35,15 +35,19 @@ class NumericListValidator implements ValidatorInterface
         try
         {
             // results come from the data base, hence is an array of mapped array
-            if ($this->limits[$this->key] == 'table')
+            if ($this->limits[$this->key] === 'table')
             {
                 return true;
             }
-            if ($this->limits[$this->key] == 'pie')
+            if ($this->limits[$this->key] === 'pie')
             {
                 $formatter = new ResultsPrepareFormatter();
                 $values = $formatter->prepareResults($this->values);
                 $values = end($values);
+                if ($values === false)
+                {
+                    throw new ValidationFailedException("Results are not Pie Compatible", 500);
+                }
                 array_map([$this, 'isValueNumeric'], $values);
                 return true;
             }

@@ -22,7 +22,7 @@ class MainController extends Controller
         {
             try
             {
-                return $this->render('@Frontend/views/main/main.html.twig', array(
+                return $this->render('@Frontend/blocks/main/main.html.twig', array(
                     'isAdmin' => $authChecker->isGranted($roles["admin"]),
                     'user_roles' => $roles,
                     'redirectUrls' => $urls
@@ -30,7 +30,7 @@ class MainController extends Controller
             }
             catch (NoTableNamesException $e)
             {
-                return $this->render('@Frontend/views/main/main.html.twig', array(
+                return $this->render('@Frontend/blocks/main/main.html.twig', array(
                     'queries' => [],
                     'user_roles' => $roles,
                     'redirectUrls' => $urls
@@ -56,7 +56,7 @@ class MainController extends Controller
             return new RedirectResponse($urls["redirects"]["login"]);
         }
 
-        return $this->render('@Frontend/views/registerQuery/confirmed.html.twig', [
+        return $this->render('@Frontend/blocks/registerQuery/confirmed.html.twig', [
             'redirectUrls' => $urls,
             "user_roles" => $roles
         ]);
@@ -69,7 +69,7 @@ class MainController extends Controller
     public function aboutAction()
     {
         $urls = $this->getParameter("qcharts.urls");
-        return $this->render('@Frontend/views/about/about.html.twig', [
+        return $this->render('@Frontend/blocks/about/about.html.twig', [
             "user_roles" => $this->getParameter("qcharts.user_roles"),
             'redirectUrls' => $urls
         ]);

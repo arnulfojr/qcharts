@@ -2,3 +2,7 @@ imports:
     - { resource: "services/twig_extensions.yml" }
 
 services:
+    qcharts.fos_user_registration.form:
+        class: QCharts\CoreBundle\Form\UserRegistrationType
+        tags:
+            - { name: form.type, alias: core_user_registration_form }

@@ -12,8 +12,8 @@ database:
 snapshot:
     resource: "@ApiBundle/Resources/config/routing/snapshots.yml"
 
-user:
-    resource: "@ApiBundle/Resources/config/routing/user.yml"
+#user:
+#    resource: "@ApiBundle/Resources/config/routing/user.yml"
 
 favorite:
     resource: "@ApiBundle/Resources/config/routing/favorite.yml"
