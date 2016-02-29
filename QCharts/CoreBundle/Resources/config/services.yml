@@ -13,7 +13,6 @@ services:
     qcharts.query_validator:
         class: QCharts\CoreBundle\Service\QueryValidatorService
         arguments:
-            - "@qcharts.query_repo"
             - "@qcharts.dynamic_repo"
             - "@qcharts.query_modifier"
             - %qcharts.chart_types%

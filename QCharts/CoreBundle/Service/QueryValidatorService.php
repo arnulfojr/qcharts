@@ -14,8 +14,6 @@ use QCharts\CoreBundle\Validation\Validator\ExistenceValidator;
 
 class QueryValidatorService
 {
-	/** @var QueryRepository  */
-	private $repository;
     /** @var QuerySyntaxService $querySyntax */
     private $querySyntax;
     /** @var array $chartTypes */
@@ -26,21 +24,18 @@ class QueryValidatorService
     private $limits;
 
     /**
-     * @param QueryRepository $repo
      * @param DynamicRepository $dynamicRepository
      * @param QuerySyntaxService $syx
      * @param array $chartTypes
      * @param LimitsService $limits
      */
     public function __construct(
-        QueryRepository $repo,
         DynamicRepository $dynamicRepository,
         QuerySyntaxService $syx,
         array $chartTypes,
         LimitsService $limits)
     {
         $this->dynamicRepo = $dynamicRepository;
-		$this->repository = $repo;
         $this->querySyntax = $syx;
         $this->chartTypes = $chartTypes;
         $this->limits = $limits;

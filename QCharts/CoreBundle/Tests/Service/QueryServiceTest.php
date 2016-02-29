@@ -2,140 +2,295 @@
 
 namespace QCharts\CoreBundle\Tests\Service;
 
+use \PHPUnit_Framework_TestCase as Unit_TestCase;
+use QCharts\CoreBundle\Entity\ChartConfig;
+use QCharts\CoreBundle\Entity\Query;
+use QCharts\CoreBundle\Entity\QueryRequest;
+use QCharts\CoreBundle\Entity\User\QChartsSubjectInterface;
+use QCharts\CoreBundle\Repository\DynamicRepository;
+use QCharts\CoreBundle\Repository\QueryRepository;
 use QCharts\CoreBundle\Service\QueryService;
-use Prophecy\Prophet;
+use QCharts\CoreBundle\Service\QueryValidatorService;
+use Symfony\Component\Form\Form;
+use \SqlFormatter;
 
-class QueryServiceTest extends \PHPUnit_Framework_TestCase
+class ClassNames
+{
+    const SERVICE_NAMESPACE = 'QCharts\CoreBundle\Service';
+
+    const LIMITS_SERVICE = 'QCharts\CoreBundle\Service\LimitsService';
+
+    const QUERY_SERVICE = 'QCharts\CoreBundle\Service\QueryService';
+
+    const QUERY_VALIDATOR_SERVICE = 'QCharts\CoreBundle\Service\QueryValidatorService';
+
+    const QUERY_REQUEST = 'QCharts\CoreBundle\Entity\QueryRequest';
+
+    const QUERY = 'QCharts\CoreBundle\Entity\Query';
+
+    const CHART_CONFIG = 'QCharts\CoreBundle\Entity\ChartConfig';
+
+    const QUERY_REPOSITORY = 'QCharts\CoreBundle\Repository\QueryRepository';
+
+    const DYNAMIC_REPOSITORY = 'QCharts\CoreBundle\Repository\DynamicRepository';
+
+    const QUERY_SYNTAX_SERVICE = 'QCharts\CoreBundle\Service\QuerySyntaxService';
+
+    const QCHARTS_USER_INTERFACE = 'QCharts\CoreBundle\Entity\User\QChartsSubjectInterface';
+
+    const SYMFONY_FORM = 'Symfony\Component\Form\Form';
+}
+
+class QueryServiceTest extends Unit_TestCase
 {
 
-	private $prophet;
+    /**
+     * Tests a query of a valid Query Id
+     */
+    public function testGetQueryRequestById()
+    {
+        //Get Mocks
+        $qrRepositoryMock = $this->prophesize(ClassNames::QUERY_REPOSITORY);
+        $dynamicRepoMock = $this->prophesize(ClassNames::DYNAMIC_REPOSITORY);
+        $queryValidatorMock = $this->prophesize(ClassNames::QUERY_VALIDATOR_SERVICE);
+        $queryRequestMock = $this->prophesize(ClassNames::QUERY_REQUEST);
 
-	public function testGetQueryRequestById()
-	{
-		//test for getting the QueryRequest
-		//mock the queryRequest
-		$qrProphecy = $this->getQueryRequestMock();
-        $qr = $qrProphecy->reveal();
-		$qrRepository = $this->getQueryRequestRepository();
-		$qrRepository->find(40)->willReturn($qr);
-        $qrRepository = $qrRepository->reveal();
+        //parameters:
+        $queryRequestId = 40;
 
-		$serMock = $this->getSerializationMock();
-        $ser = $serMock->reveal();
-		$queryValidator = $this->getQueryValidatorMock();
-        $queryValidator = $queryValidator->reveal();
-        $formEntityMock = $this->getFormEntityAdapter();
-        $formEntity = $formEntityMock->reveal();
+        //Config
+        /** @var QueryRequest $queryRequest */
+        $queryRequest = $queryRequestMock->reveal();
 
-        $chartValMock = $this->getChartValidationMock();
-        $chartVal = $chartValMock->reveal();
+        $qrRepositoryMock
+            ->find($queryRequestId)
+            ->willReturn($queryRequest)
+            ->shouldBeCalled();
+        /** @var QueryRepository $qrRepository */
+        $qrRepository = $qrRepositoryMock->reveal();
 
-		$qrService = new QueryService($qrRepository, $ser, $queryValidator, $formEntity, $chartVal);
-
-        $this->assertEquals($qr, $qrService->getQueryRequestById(40));
-	} 
-
-	/**
-	* @expectedException Exception
-	*/
-
-	public function testGetQueryRequestByIdException()
-	{
-		$qr = $this
-			->getQueryRequestMock();
-
-		$qrRepo = $this->getQueryRequestRepository();
-        $qrRepo->find()->willReturn(null);
-
-		$serMock = $this->getSerializationMock();
-		$queryValidatorMock = $this->getQueryValidatorMock();
-        $formEntityAdapterMock = $this->getFormEntityAdapter();
-        $formEntityAdapter = $formEntityAdapterMock->reveal();
+        /** @var DynamicRepository $dynamicRepo */
+        $dynamicRepo = $dynamicRepoMock->reveal();
+        /** @var QueryValidatorService $queryValidator */
         $queryValidator = $queryValidatorMock->reveal();
 
-        $chartValMock = $this->getChartValidationMock();
-        $chartVal = $chartValMock->reveal();
-
-        $qrService = new QueryService($qrRepo->reveal(), $serMock->reveal(), $queryValidator, $formEntityAdapter, $chartVal);
-		$this->assertEquals($qr, $qrService->getQueryRequestById(100));
+        //let's role!
+        $queryService = new QueryService($qrRepository, $dynamicRepo, $queryValidator);
+        $returned = $queryService->getQueryRequestById($queryRequestId);
+        $this->assertEquals($queryRequest, $returned);
 	}
 
-
-	/**
-	*
-	* @expectedException \Exception
-	*/
-
-	public function testDeleteException()
+    /** @noinspection PhpUndefinedNamespaceInspection */
+    /**
+     * Tests a call to an invalid QueryRequest Id
+     * @expectedException QCharts\CoreBundle\Exception\InstanceNotFoundException
+     */
+	public function testGetQueryRequestByIdException()
 	{
-		$queryRequest = $this->prophesize('CoreBundle\Entity\QueryRequest');
-		$repository = $this->prophesize('\Doctrine\ORM\EntityRepository');
-		$repository->delete($queryRequest)->willReturn(null);
-		
-		$serializationMock = $this->prophet->prophesize('CoreBundle\Service\SerializationService');
-		$formEntMock = $this->getFormEntityAdapter();
-        $formEntityAdapter = $formEntMock->reveal();
+        //Mocks:
+        $qrRepositoryMock = $this->prophesize(ClassNames::QUERY_REPOSITORY);
+        $dynamicRepoMock = $this->prophesize(ClassNames::DYNAMIC_REPOSITORY);
+        $queryValidatorMock = $this->prophesize(ClassNames::QUERY_VALIDATOR_SERVICE);
+        $queryRequestMock = $this->prophesize(ClassNames::QUERY_REQUEST);
 
-        $repository = $repository->reveal();
+        //config
+        $queryRequestId = 40;
 
-        $chartValMock = $this->getChartValidationMock();
+        $qrRepositoryMock
+            ->find($queryRequestId)
+            ->willReturn(null)
+            ->shouldBeCalled();
 
-		$qService = new QueryService(
-				$repository,
-				$serializationMock->reveal(),
-				$this->getQueryValidatorMock()->reveal(),
-                $formEntityAdapter,
-                $chartValMock->reveal()
-            );
-		$this->assertEquals($qService->deleteQuery($queryRequest->reveal()), true);
+        //reveal objects:
+        /** @var QueryRequest $queryRequest */
+        $queryRequest = $queryRequestMock->reveal();
+        /** @var QueryRepository $qrRepository */
+        $qrRepository = $qrRepositoryMock->reveal();
+        /** @var DynamicRepository $dynamicRepo */
+        $dynamicRepo = $dynamicRepoMock->reveal();
+        /** @var QueryValidatorService $queryValidator */
+        $queryValidator = $queryValidatorMock->reveal();
+
+        //setUp service!
+        $queryService = new QueryService(
+            $qrRepository,
+            $dynamicRepo,
+            $queryValidator
+        );
+
+        $queryService->getQueryRequestById($queryRequestId);
 	}
 
-    protected function getQuerySyntaxMock()
+    /** @noinspection PhpUndefinedNamespaceInspection */
+    /**
+     * @expectedException QCharts\CoreBundle\Exception\InstanceNotFoundException
+     */
+    public function testDeleteException()
     {
-        return $this->prophesize('CoreBundle\Service\QuerySyntaxService');
+        //Mocks:
+        $qrRepositoryMock = $this->prophesize(ClassNames::QUERY_REPOSITORY);
+        $dynamicRepoMock = $this->prophesize(ClassNames::DYNAMIC_REPOSITORY);
+        $queryValidatorMock = $this->prophesize(ClassNames::QUERY_VALIDATOR_SERVICE);
+
+        //config
+        $queryRequestID = 40;
+
+        $qrRepositoryMock
+            ->find($queryRequestID)
+            ->willReturn(null)
+            ->shouldBeCalled();
+
+        //reveal objects:
+        /** @var QueryRepository $qrRepository */
+        $qrRepository = $qrRepositoryMock->reveal();
+        /** @var DynamicRepository $dynamicRepo */
+        $dynamicRepo = $dynamicRepoMock->reveal();
+        /** @var QueryValidatorService $queryValidator */
+        $queryValidator = $queryValidatorMock->reveal();
+
+        //Let's roll
+        $queryService = new QueryService(
+            $qrRepository,
+            $dynamicRepo,
+            $queryValidator
+        );
+
+        $queryService->delete($queryRequestID);
     }
 
-	protected function getQueryRequestMock()
+    public function testOffLimitsAdd()
     {
-        $qr = $this->prophesize('CoreBundle\Service\QueryRequest');
-        return $qr;
+        //Mocks:
+        $qrRepositoryMock = $this->prophesize(ClassNames::QUERY_REPOSITORY);
+        $dynamicRepoMock = $this->prophesize(ClassNames::DYNAMIC_REPOSITORY);
+        $queryValidatorMock = $this->prophesize(ClassNames::QUERY_VALIDATOR_SERVICE);
+
+        $formMock = $this->prophesize(ClassNames::SYMFONY_FORM);
+        $userMock = $this->prophesize(ClassNames::QCHARTS_USER_INTERFACE);
+        $queryRequestMock = $this->prophesize(ClassNames::QUERY_REQUEST);
+        $queryMock = $this->prophesize(ClassNames::QUERY);
+        $chartConfigMock = $this->prophesize(ClassNames::CHART_CONFIG);
+
+        //reveal
+        /** @var QueryRepository $qrRepository */
+        $qrRepository = $qrRepositoryMock->reveal();
+        /** @var DynamicRepository $dynamicRepo */
+        $dynamicRepo = $dynamicRepoMock->reveal();
+        /** @var QueryValidatorService $queryValidator */
+        $queryValidator = $queryValidatorMock->reveal();
+        /** @var Form $form */
+        $form = $formMock->reveal();
+        /** @var Query $query */
+        $query = $queryMock->reveal();
+        /** @var ChartConfig $chartConfig */
+        $chartConfig = $chartConfigMock->reveal();
+        /** @var QChartsSubjectInterface $user */
+        $user = $userMock->reveal();
+        /** @var QueryRequest $queryRequest */
+        $queryRequest = $queryRequestMock->reveal();
+
+        //config
+        $queryString = 'SELECT * FROM Master;';
+        $formattedQueryString = SqlFormatter::format($queryString);
+        $chartTypeString = "line";
+        $dbConnectionName = "default";
+        $cronExpressionString = "*/5 * * * *";
+        $rowLimit = 1500; //rows
+        $timeLimit = 2; //seconds
+        $offset = 0; //rows
+        $config = [
+            "time"=>$timeLimit,
+            "rows"=>$rowLimit,
+            "chartType"=>$chartTypeString,
+            "offset"=>$offset,
+            "connection"=>$dbConnectionName,
+            "cronExpression"=>$cronExpressionString
+        ];
+
+        $formMock
+            ->getData()
+            ->willReturn($queryRequest)
+            ->shouldBeCalled();
+
+        $queryRequestMock
+            ->getQuery()
+            ->willReturn($query)
+            ->shouldBeCalled();
+
+        $queryRequestMock
+            ->getCronExpression()
+            ->willReturn($cronExpressionString);
+
+        $queryRequestMock
+            ->getConfig()
+            ->willReturn($chartConfig)
+            ->shouldBeCalled();
+
+        $queryRequestMock
+            ->setCreatedBy($user)
+            ->shouldBeCalled();
+
+        $queryRequestMock
+            ->setModifiedLastBy($user)
+            ->shouldBeCalled();
+
+        $queryRequestMock
+            ->setQuery($query)
+            ->shouldBeCalled();
+
+        $queryRequestMock
+            ->setConfig($chartConfig)
+            ->shouldBeCalled();
+
+        $queryMock
+            ->getQuery()
+            ->willReturn($queryString);
+
+        $queryMock
+            ->setQueryHTML($formattedQueryString)
+            ->shouldBeCalled();
+
+        $queryMock
+            ->getQueryHTML()
+            ->willReturn($formattedQueryString);
+
+        $chartConfigMock
+            ->getExecutionLimit()
+            ->willReturn($timeLimit);
+
+        $chartConfigMock
+            ->getQueryLimit()
+            ->willReturn($rowLimit);
+
+        $chartConfigMock
+            ->getTypeOfChart()
+            ->willReturn($chartTypeString);
+
+        $chartConfigMock
+            ->getOffset()
+            ->willReturn($offset);
+
+        $chartConfigMock
+            ->getDatabaseConnection()
+            ->willReturn($dbConnectionName);
+
+        $queryValidatorMock
+            ->isValidQuery($queryString, $dbConnectionName)
+            ->willReturn(true);
+
+        $queryValidatorMock
+            ->validateQueryExecution($queryString, $config)
+            ->willReturn(true);
+
+        //Let's roll!
+        $queryService = new QueryService(
+            $qrRepository,
+            $dynamicRepo,
+            $queryValidator
+        );
+
+        $queryService->add($form, $user);
+
     }
 
-    protected function getFormEntityAdapter()
-    {
-        return $this->prophesize('CoreBundle\Service\FormEntityAdapter');
-    }
-
-	protected function getSerializationMock()
-	{
-		return $this->prophesize('CoreBundle\Service\SerializationService');
-	}
-	
-	protected function getQueryValidatorMock()
-	{
-		return $this->prophesize('CoreBundle\Service\QueryValidatorService');
-	}
-	
-	protected function getQueryRequestRepository()
-	{
-		$qrRepo = $this->prophesize('CoreBundle\Repository\QueryRepository');
-		return $qrRepo;
-	}
-
-	protected function getChartValidationMock()
-	{
-		$mock = $this->prophesize('CoreBundle\Service\ChartValidation');
-		return $mock;
-	}
-
-	public function setUp()
-	{
-		$this->prophet = new Prophet();
-	}
-	
-	public function tearDown()
-	{
-		$this->prophet->checkPredictions();
-	}
-	
 }

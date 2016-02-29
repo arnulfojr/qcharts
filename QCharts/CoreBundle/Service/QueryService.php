@@ -103,7 +103,7 @@ class QueryService implements QueryServiceInterface
     }
 
     /**
-     * @param $id
+     * @param number $id
      * @return QueryRequest
      * @throws InstanceNotFoundException
      */
@@ -115,13 +115,13 @@ class QueryService implements QueryServiceInterface
         }
 
         /** @var QueryRequest $query */
-    	$query = $this->repository->find($id);
+        $query = $this->repository->find($id);
 
         if (!$query)
         {
             throw new InstanceNotFoundException("Requested Query not found", 404);
         }
-    	return $query;
+        return $query;
     }
 
     /**
