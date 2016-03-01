@@ -9,7 +9,7 @@ How to quick-install
 - Require QCharts with composer.
     + Alternate installation would be to add directly QCharts to a target project.
 ```
-composer require arnulfosolis/qcharts
+composer require arnulfosolis/qcharts @dev
 ```
 
 - Installing QCharts using composer is pretty simple
