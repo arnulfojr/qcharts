@@ -1,7 +1,7 @@
 {
     "name": "arnulfosolis/qcharts",
     "homepage": "https://github.com/arnulfojr/qcharts",
-    "description": "Graphical interpretation from the results of the registered queries",
+    "description": "Business tool desing to aid the analysis of SQL data in a graphical way to empower users among a team.",
     "license": "MIT",
     "type": "symfony-bundle",
     "minimum-stability": "dev",
