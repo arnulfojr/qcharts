@@ -44,13 +44,14 @@ class ApiController extends Controller
      * @param $authService
      * @param array $roles
      * @param $role
+     * @param bool $allow_demo_users
      * @return bool
      * @throws InvalidCredentialsException
      */
-    public static function checkCredentials($authService, array $roles, $role)
+    public static function checkCredentials($authService, array $roles, $role, $allow_demo_users = false)
     {
         /** @var AuthorizationChecker $authService */
-        if ($authService->isGranted($roles[$role]))
+        if ($authService->isGranted($roles[$role]) || $allow_demo_users)
         {
             return true;
         }
@@ -510,8 +511,9 @@ class ApiController extends Controller
 		$authChecker = $this->get('security.authorization_checker');
 		$queryService = $this->get('qcharts.query');
         $roles = $this->getParameter('qcharts.user_roles');
+        $allow_demo_users = $this->getParameter('qcharts.allow_demo_users');
 
-		if (!$authChecker->isGranted($roles["user"]))
+		if (!$authChecker->isGranted($roles["user"]) && !$allow_demo_users)
         {
 			return $this->getCredentialsNotValid($roles["user"]);
 		}

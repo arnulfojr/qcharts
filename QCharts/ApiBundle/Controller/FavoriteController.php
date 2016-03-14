@@ -101,7 +101,7 @@ class FavoriteController extends Controller
 
         try
         {
-            ApiController::checkCredentials($authService, $roles, "user");
+            ApiController::checkCredentials($authService, $roles, ApiController::USER);
 
             $user = $this->getUser();
             $queryId = $request->request->get("q", null);
@@ -117,7 +117,7 @@ class FavoriteController extends Controller
         {
             $options = [
                 "status" => $e->getCode(),
-                "textStatus" => $e->getMessage()
+                "textStatus" => "To add to favorites valid credentials are required. {$e->getMessage()}"
             ];
         }
         catch (InstanceNotFoundException $e)

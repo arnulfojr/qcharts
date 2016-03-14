@@ -9,7 +9,7 @@ it needs some security preparations.
     - Install QCharts using composer ```composer install arnulfosolis/qcharts```
         + If you choose to add QCharts as a part of the project,
         then go ahead and add the QCharts directory in the target project.
-    - Then, make sure to add the three QCharts Bundles in the target's AppKernel.
+    - Then, make sure to add the three QCharts Bundles in the target's ```AppKernel```.
         + ```QCharts\ApiBundle\ApiBundle```
         + ```QCharts\FrontendBundle\FrontendBundle```
         + ```QCharts\CoreBundle\CoreBundle```
@@ -81,11 +81,15 @@ core:
             - super_admin: role that manages users and has access the snapshot console.
         + Tip: QCharts works better when the roles are organized in a hierarchical way. 
         + Map the wished roles to use to give your users availability to use QCharts.
+    - QCharts comes with a demo option called ```allow_demo_users```, this option
+     allows ALL users to access the application in a ```user``` mode, without the possibility to add
+     Favorites.
         
 ```yml
 #Full example of QChart's configurations 
 #QCharts
 core:
+    allow_demo_users: False
     urls:
        redirects: #custom user information urls
            login: /myLogin

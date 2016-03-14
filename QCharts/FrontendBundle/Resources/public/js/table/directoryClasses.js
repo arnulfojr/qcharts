@@ -42,7 +42,7 @@ DirectoryFetcher.prototype.fetchContentFromDirectory = function(directoryId, cal
     };
 
     var data = this.getObject('get', this.urls["directory"]["base"], content);
-    console.log(data);
+    //console.log(data);
     var store = this;
 
     this.loadingIcon.setLoading(true);
@@ -80,7 +80,7 @@ DirectoryFetcher.prototype.fetchQueriesInDirectory = function(directoryId, callb
 
     var data = this.getObject('get', this.urls["directory"]["query"], content);
 
-    console.log(data);
+    //console.log(data);
     var store = this;
 
     this.service(data).then(function(r) {
@@ -333,7 +333,7 @@ DirectoryController.prototype.filterObjects = function (content) {
  * @param cellCallback
  */
 DirectoryController.prototype.addObjects = function(content, cellCallback) {
-    console.log(content);
+    //console.log(content);
     var store = this;
 
     if (this.onlyTimeMachineFiles) {
@@ -362,10 +362,11 @@ DirectoryController.prototype.addObjects = function(content, cellCallback) {
             var left = store.createColumn("col-xs-10");
 
             left.addEventListener("click", function() {
-                if (cellCallback == undefined) {
+                if (cellCallback === undefined) {
                     window.location = redirectUrl;
+                } else {
+                    cellCallback(elem);
                 }
-                cellCallback(elem);
             });
 
             var buttons = [{
@@ -400,7 +401,7 @@ DirectoryController.prototype.addObjects = function(content, cellCallback) {
                 //change the content from the right section!
                 var heart = store.createBeatingHeart(elem["id"], function() {
                     //clicked on the heart!
-                    console.log("clicked");
+                    //console.log("clicked");
                     var queryId = this.getAttribute("query-id");
                     store.favoriteController.removeFavorite(queryId, function() {
                         //update view
@@ -446,9 +447,9 @@ DirectoryController.prototype.setUp = function(response, animate) {
     var content = response["directories"];
 
     //set up the breadcrumbs
-    console.log("current folder on setup:" + this.currentDir);
+    //console.log("current folder on setup:" + this.currentDir);
 
-    console.log(response);
+    //console.log(response);
     var store = this;
 
     this.configuration["cache"] = content;
@@ -467,7 +468,7 @@ DirectoryController.prototype.setUp = function(response, animate) {
         }
         path.unshift({id:undefined, name:"."});
         this.configuration["history"] = path;
-        console.log(this.configuration);
+        //console.log(this.configuration);
         this.isInit = false;
     }
 

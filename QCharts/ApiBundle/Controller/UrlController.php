@@ -27,9 +27,11 @@ class UrlController extends Controller
         //return the URLs for using the user admin
         $roles = $this->getParameter('qcharts.user_roles');
         $authChecker = $this->get("security.authorization_checker");
+        $allow_demo_users = $this->getParameter('qcharts.allow_demo_users');
+
         try
         {
-            ApiController::checkCredentials($authChecker, $roles, "user");
+            ApiController::checkCredentials($authChecker, $roles, ApiController::USER, $allow_demo_users);
 
             $tableInfo = $this->generateUrl('qcharts.api.table_info');
             $tablesUrl = $this->generateUrl('qcharts.api.tables');

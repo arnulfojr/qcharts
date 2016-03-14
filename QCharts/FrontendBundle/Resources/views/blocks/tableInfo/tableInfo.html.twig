@@ -38,16 +38,16 @@
     {% javascripts '@FrontendBundle/Resources/public/js/main/*' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    {% javascripts '@FrontendBundle/Resources/public/js/table/*' %}
+    {% javascripts
+        '@FrontendBundle/Resources/public/js/table/*'
+        '@FrontendBundle/Resources/public/js/vendor/dataTables/adatatables.min.js'
+    %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
 
 {% block stylesheets %}
-    {% stylesheets '@FrontendBundle/Resources/public/css/general/*' %}
-    <link rel="stylesheet" href="{{asset_url}}"/>
-    {% endstylesheets %}
-    {% stylesheets '@FrontendBundle/Resources/public/css/table/datatables.min.css' %}
+    {% stylesheets '@FrontendBundle/Resources/public/css/vendor/dataTables/datatables.min.css' %}
     <link rel="stylesheet" href="{{asset_url}}"/>
     {% endstylesheets %}
 {% endblock %}

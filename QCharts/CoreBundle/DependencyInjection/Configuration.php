@@ -114,6 +114,10 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->booleanNode('allow_demo_users')
+                    ->defaultFalse()
+                    ->info('Allow access to anonymous visitors to access the application')
+                ->end()
             ->end()
         ;
 

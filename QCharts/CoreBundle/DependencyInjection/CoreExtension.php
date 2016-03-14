@@ -33,5 +33,6 @@ class CoreExtension extends Extension
         $container->setParameter('qcharts.user_roles', $config["roles"]);
         $container->setParameter('qcharts.urls', $config["urls"]);
         $container->setParameter('qcharts.variables', $config);
+        $container->setParameter('qcharts.allow_demo_users', $config["allow_demo_users"]);
     }
 }

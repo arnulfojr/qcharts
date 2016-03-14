@@ -66,7 +66,16 @@ FavoriteCommunicator.prototype.removeFavorite = function(q, callback) {
                 }
                 return;
             }
-            store.modalController.popConnectionError();
+
+            var dataInfo = {
+                title: "While removing it from favorites...",
+                body: response["textStatus"],
+                footer: ""
+            };
+            store.modalController.init();
+            store.modalController.setModal(dataInfo);
+            store.modalController.setSmallModal();
+            store.modalController.pop();
         }, function() {
             //error
             store.modalController.popConnectionError();
@@ -94,9 +103,18 @@ FavoriteCommunicator.prototype.addFavorite = function(q, callback) {
                 return;
             }
 
-            store.modalController.popConnectionError();
+            var dataInfo = {
+                title: "While adding to favorites...",
+                body: response["textStatus"],
+                footer: ""
+            };
+            store.modalController.init();
+            store.modalController.setModal(dataInfo);
+            store.modalController.setSmallModal();
+            store.modalController.pop();
 
-        }, function() {
+        }, function(response) {
+            console.log(response);
             store.modalController.popConnectionError();
         });
 
@@ -121,9 +139,9 @@ FavoriteController.prototype.constructor = FavoriteController;
 
 FavoriteController.prototype.initialize = function() {
     var store = this;
-    console.log(this);
+    //console.log(this);
     if (this.urls == undefined) {
-        console.log("not cahced urls");
+        //console.log("not cahced urls");
         this.init(function() {
             store.fetchFavorites(function(favorites) {
                 store.favorites = store.optimizeFavorites(favorites);

@@ -30,8 +30,9 @@ class QueryController extends Controller
         $authChecker = $this->get("security.authorization_checker");
         $roles = $this->getParameter("qcharts.user_roles");
         $urls = $this->getParameter("qcharts.urls");
+        $allow_demo_users = $this->getParameter("qcharts.allow_demo_users");
 
-        if (!$authChecker->isGranted($roles["user"]))
+        if (!$authChecker->isGranted($roles["user"]) && !$allow_demo_users)
         {
             return new RedirectResponse($urls["redirects"]["login"]);
         }

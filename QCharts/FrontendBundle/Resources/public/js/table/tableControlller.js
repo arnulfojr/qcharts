@@ -40,7 +40,7 @@ SnapshotTableController.prototype.init = function() {
 
     this.fetchUrls(function(urls) {
         store.urls = urls;
-        console.log(urls);
+        //console.log(urls);
         store.resultFetcher.url = urls["chart"];
         store.fetchResults();
     });

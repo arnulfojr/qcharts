@@ -6,7 +6,7 @@ of data from a database to its analysis and team collaboration.
 
 How to quick-install
 ==============
-- Require QCharts with composer.
+- Require QCharts via composer.
     + Alternate installation would be to add directly QCharts to a target project.
 ```
 composer require arnulfosolis/qcharts @dev
@@ -16,6 +16,11 @@ composer require arnulfosolis/qcharts @dev
 ```
 composer install
 ```
+
+- Add the Bundles to the target's ```AppKernel```.
+    + ```QCharts\CoreBundle\CoreBundle```
+    + ```QCharts\FrontendBundle\FrontendBundle```
+    + ```QCharts\ApiBundle\ApiBundle```
 
 - QCharts needs some configuration in the target project prior to the execution.
     + For a more in-depth configuration please refer to the ```CONFIG_README.md``` file located in QChart's directory.
@@ -42,7 +47,7 @@ php app/console doctrine:schema:update --force
 ```
 
 - Since the project comes included with a web application, QCharts requires assetic to be dumped.
-    + You have to register QChart's ```FrontendBundle``` in the assetic's configuration.
+    + You have to register QChart's ```FrontendBundle``` in the assetic's bundles configuration.
 ```
 php app/console assetic:dump
 ```

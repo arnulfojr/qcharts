@@ -70,6 +70,7 @@ class ApiDirectoryController extends Controller
             $formFactory = $this->get("form.factory");
             $doctrine = $this->get("doctrine");
             $directory = new Directory();
+            /** @var FormInterface $form */
             $form = $formFactory->create(new DirectoryType($doctrine), $directory);
             $form->submit($request->request->get($form->getName()));
 
@@ -295,7 +296,9 @@ class ApiDirectoryController extends Controller
     {
         $authChecker = $this->get("security.authorization_checker");
         $roles = $this->getParameter('qcharts.user_roles');
-        if (!$authChecker->isGranted($roles["user"]))
+        $allow_demo_users = $this->getParameter('qcharts.allow_demo_users');
+
+        if (!$authChecker->isGranted($roles["user"]) && !$allow_demo_users)
         {
             return new JsonResponse(ApiController::getNotValidCredentials());
         }
@@ -307,11 +310,13 @@ class ApiDirectoryController extends Controller
             $directoryService = $this->get("qcharts.directory.directory_service");
             $tree = $directoryService->getDirectories($rootDirectory);
             $serializer = $this->get("qcharts.serializer");
+
             $responseData = [
                 "status" => 200,
                 "textStatus" => "Directories returned",
                 "directories" => $tree
             ];
+
             $responseData = $serializer->serialize($responseData, 'json');
         }
         catch (NotFoundException $e)
@@ -363,8 +368,9 @@ class ApiDirectoryController extends Controller
         $authChecker = $this->get("security.authorization_checker");
         $roles = $this->getParameter("qcharts.user_roles");
         $serializer = $this->get("qcharts.serializer");
+        $allow_demo_users = $this->getParameter('qcharts.allow_demo_users');
 
-        if (!$authChecker->isGranted($roles["user"]))
+        if (!$authChecker->isGranted($roles["user"]) && !$allow_demo_users)
         {
             return new JsonResponse(ApiController::getNotValidCredentials());
         }

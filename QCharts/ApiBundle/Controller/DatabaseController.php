@@ -14,6 +14,7 @@ use QCharts\CoreBundle\Exception\InstanceNotFoundException;
 use QCharts\CoreBundle\Exception\ParameterNotPassedException;
 use QCharts\CoreBundle\Exception\SQLException;
 use QCharts\CoreBundle\Exception\ValidationFailedException;
+use QCharts\CoreBundle\Service\QueryService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use QCharts\CoreBundle\Exception\NoTableNamesException;
 use QCharts\CoreBundle\Exception\NotFoundException;
@@ -74,8 +75,9 @@ class DatabaseController extends Controller
         $snapshotService = $this->get("qcharts.core.snapshot_service");
 
         $roles = $this->getParameter('qcharts.user_roles');
+        $allow_demo_users = $this->getParameter('qcharts.allow_demo_users');
 
-        if ($authChecker->isGranted($roles["user"]))
+        if ($authChecker->isGranted($roles["user"]) || $allow_demo_users)
         {
             $opts = [];
             try
@@ -493,8 +495,9 @@ class DatabaseController extends Controller
 
         $roles = $this->getParameter('qcharts.user_roles');
 
-        if (!$authChecker->isGranted($roles["admin"])) {
-            return $this->getCredentialsNotValid();
+        if (!$authChecker->isGranted($roles["admin"]))
+        {
+            return new JsonResponse(ApiController::getNotValidCredentials());
         }
 
         $query = $request->request->get('query');
