@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 2/4/16
- * Time: 3:03 PM
- */
 
 namespace QCharts\ApiBundle\Controller;
 
@@ -51,11 +45,11 @@ class SnapshotController extends Controller
     {
         $authService = $this->get("security.authorization_checker");
         $roles = $this->getParameter("qcharts.user_roles");
-
+        $allow_demo_users = $this->getParameter("qcharts.allow_demo_users");
         $options = [];
         try
         {
-            ApiController::checkCredentials($authService, $roles, "user");
+            ApiController::checkCredentials($authService, $roles, "user", $allow_demo_users);
             $snapshotService = $this->get("qcharts.core.snapshot_service");
             $queryService = $this->get("qcharts.query");
             $queryId = $request->query->get("q", null);
@@ -135,10 +129,12 @@ class SnapshotController extends Controller
     {
         $authChecker = $this->get("security.authorization_checker");
         $roles = $this->getParameter("qcharts.user_roles");
+        $allow_demo_users = $this->getParameter("qcharts.allow_demo_users");
         $response = null;
+
         try
         {
-            ApiController::checkCredentials($authChecker, $roles, "user");
+            ApiController::checkCredentials($authChecker, $roles, "user", $allow_demo_users);
             $snapshotService = $this->get("qcharts.core.snapshot_service");
             $queryService = $this->get("qcharts.query");
 

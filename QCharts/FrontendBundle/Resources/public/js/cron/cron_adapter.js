@@ -29,8 +29,11 @@ CronController.prototype.init = function(stateInput) {
         initial: "*/5 * * * *",
         customValues: {
             "Each 5 min.": "*/5 * * * *",
-            "Each 15 min.": "0 0/15 * 1/1 *",
-            "Each 30 min.": "0 0/30 * * *"
+            "Each 15 min.": "*/15 * * * *",
+            "Each 15 min. from Monday to Friday": "*/15 * * * 1-5",
+            "Each 30 min.": "*/30 * * * *",
+            "Each 30 min. from Monday to Friday": "*/30 * * * 1-5",
+            "Hourly from Monday to Friday": "0 * * * 1-5"
         },
         onChange: function() {
             var value = $(store.input).val();

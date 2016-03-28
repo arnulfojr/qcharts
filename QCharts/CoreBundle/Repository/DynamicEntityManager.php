@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: arnulfosolis
- * Date: 1/21/16
- * Time: 00:00
- */
 
 namespace QCharts\CoreBundle\Repository;
 

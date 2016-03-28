@@ -1,23 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 1/19/16
- * Time: 3:44 PM
- */
 
 namespace QCharts\CoreBundle\Repository;
 
-
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Logging\DebugStack;
 use \InvalidArgumentException;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use QCharts\CoreBundle\Exception\DatabaseException;
-use QCharts\CoreBundle\Exception\TypeNotValidException;
+
 
 class DynamicRepository extends DynamicEntityManager
 {
