@@ -1,7 +1,7 @@
 {
     "name": "arnulfosolis/qcharts",
     "homepage": "https://github.com/arnulfojr/qcharts",
-    "description": "Business tool desing to aid the analysis of SQL data in a graphical way to empower users among a team.",
+    "description": "Business tool design to aid the analysis of SQL data in a graphical way to empower users among a team.",
     "license": "MIT",
     "type": "symfony-bundle",
     "minimum-stability": "dev",
@@ -22,8 +22,6 @@
         "symfony/symfony": "2.7.*",
         "doctrine/orm": "^2.4.8",
         "symfony/assetic-bundle": "~2.3",
-        "sensio/distribution-bundle": "~4.0",
-        "sensio/framework-extra-bundle": "^3.0.2",
         "jdorn/sql-formatter": "^1.2",
         "mtdowling/cron-expression": "1.1.*",
         "nelmio/api-doc-bundle": "2.*"
