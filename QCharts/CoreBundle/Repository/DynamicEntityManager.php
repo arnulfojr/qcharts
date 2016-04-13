@@ -3,7 +3,6 @@
 namespace QCharts\CoreBundle\Repository;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
 abstract class DynamicEntityManager
@@ -16,6 +15,9 @@ abstract class DynamicEntityManager
         return $this->em;
     }
 
+    /**
+     * @param EntityManagerInterface $entityManagerInterface
+     */
     public function setEntityManager(EntityManagerInterface $entityManagerInterface)
     {
         $this->em = $entityManagerInterface;

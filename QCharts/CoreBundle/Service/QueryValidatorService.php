@@ -4,7 +4,6 @@ namespace QCharts\CoreBundle\Service;
 
 use QCharts\CoreBundle\Exception\ValidationFailedException;
 use QCharts\CoreBundle\Repository\DynamicRepository;
-use QCharts\CoreBundle\Repository\QueryRepository;
 use QCharts\CoreBundle\ResultFormatter\OneDimensionTableFormatter;
 use QCharts\CoreBundle\Validation\ChartValidationFactory;
 use QCharts\CoreBundle\Validation\SyntaxSemanticValidationFactory;
@@ -113,8 +112,8 @@ class QueryValidatorService
         $this->limits->addLimit('Offset', []);
         $this->limits->addLimit('PieCompability', $configurations["validation"]["results"]);
         $this->limits->addLimit('NumericList', $configurations["chartType"]);
-        $this->limits->addLimit('TimeExecution', $this->getMaxTime($configurations["time"], $configurations["connection"]));
         $this->limits->addLimit('RowLimit', $this->getMaxRows($configurations["rows"]));
+        $this->limits->addLimit('TimeExecution', $this->getMaxTime($configurations["time"], $configurations["connection"]));
         $this->limits->addLimit('ExecutionTimeConfiguration', $this->getMaxTime($configurations["time"], $configurations["connection"]));
 
         $validatorFactory->setLimits($this->limits->getLimits());
@@ -192,26 +191,26 @@ class QueryValidatorService
         $time = $this->dynamicRepo->isMaxExecutionSet();
         $configLimits = $this->limits->getLimits();
 
-        if ($time)
+        if (is_numeric($time) && $time !== 0)
         {
             if ($timeLimit > 0 && $time > $timeLimit)
             {
                 return $timeLimit;
             }
-
             return $time;
         }
 
-        if ($timeLimit > 0)
+        $limit =
+            ($timeLimit > 0 && $timeLimit <= $configLimits["time"])
+                ? $timeLimit : $configLimits["time"];
+
+        if (is_string($time))
         {
-            if ($timeLimit > $configLimits["time"])
-            {
-                return $configLimits["time"];
-            }
-            return $timeLimit;
+            // limit is in seconds!
+            $this->dynamicRepo->setMaxExecutionTime($configLimits["time"], $time);
         }
 
-        return $configLimits["time"];
+        return $limit;
     }
 
     /**

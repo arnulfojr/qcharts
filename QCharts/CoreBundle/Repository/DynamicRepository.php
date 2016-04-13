@@ -77,6 +77,26 @@ class DynamicRepository extends DynamicEntityManager
     }
 
     /**
+     * @param $query
+     * @return int
+     * @throws DatabaseException
+     */
+    protected function set($query)
+    {
+        try
+        {
+            $connection = $this->getConnection();
+            $statement = $connection->prepare($query);
+            return $statement->execute();
+        }
+        catch (DBALException $e)
+        {
+            $exceptionText = "There was an error when setting the max_%%_time SESSION VARIABLE, your database's message:\n\n{$e->getMessage()}";
+            throw new DatabaseException($exceptionText, 500, $e);
+        }
+    }
+
+    /**
      * @return array
      */
     public function getConnectionNames()
@@ -122,7 +142,15 @@ class DynamicRepository extends DynamicEntityManager
     }
 
     /**
-     * @return bool|number
+     * Returns FALSE if the Connection returned no variable regarding to the time limit
+     * Returns NUMBER if the Connection encountered a variable regarding to the time limit
+     *  in seconds
+     * Returns STRING if the Connection encountered a variable regarding to the time limit but
+     *  the value is 0 (hence not set)
+     *
+     * http://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_max_execution_time
+     *
+     * @return bool|number|string
      */
     public function isMaxExecutionSet()
     {
@@ -137,12 +165,29 @@ class DynamicRepository extends DynamicEntityManager
         {
             if ($row["Value"] == 0)
             {
-                return false;
+                // return the name of the variable evaluated
+                return $row["Variable_name"];
             }
-            return $row["Value"];
+
+            $millisecondsLimit = $row["Value"];
+            return $millisecondsLimit / 1000; // return only seconds
         }
 
         return false;
+    }
+
+    /**
+     * @param int $duration
+     * @param string $variableName
+     * @return bool
+     * @throws DatabaseException
+     */
+    public function setMaxExecutionTime($duration, $variableName)
+    {
+        $millisecondsLimit = 1000 * $duration; // $duration is in seconds -> MySQL in milliseconds
+        $millisecondsLimit = intval($millisecondsLimit);
+        $query = DatabaseQueries::getSessionVariableUpdate($variableName, $millisecondsLimit);
+        return $this->set($query);
     }
 
     /**

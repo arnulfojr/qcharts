@@ -1,23 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 1/11/16
- * Time: 10:37 AM
- */
 
 namespace QCharts\CoreBundle\Validation\Validator;
-
 
 use QCharts\CoreBundle\Exception\OffLimitsException;
 use QCharts\CoreBundle\Exception\TypeNotValidException;
 use QCharts\CoreBundle\Exception\ValidationFailedException;
 use QCharts\CoreBundle\Validation\ValidationInterface\ValidatorInterface;
 
+/**
+ * Class TimeExecutionValidator
+ * @package QCharts\CoreBundle\Validation\Validator
+ */
 class TimeExecutionValidator implements ValidatorInterface
 {
-
-    private $duration;
+    /** @var integer $duration */
+    private $duration; // duration in seconds
 
     /** @var array $limits */
     private $limits;
@@ -25,6 +22,10 @@ class TimeExecutionValidator implements ValidatorInterface
     private $key = 'TimeExecution';
 
     /**
+     *
+     * Validates the duration with the limits given.
+     * NOTE: Duration is recommended to be given in seconds!
+     *
      * @return bool
      * @throws OffLimitsException
      * @throws ValidationFailedException
@@ -33,7 +34,8 @@ class TimeExecutionValidator implements ValidatorInterface
     {
         if (!is_null($this->duration) && $this->duration >= $this->limits[$this->key])
         {
-            throw new ValidationFailedException("The duration of the requested query is greater than the time limit requested", 500);
+            //throw new ValidationFailedException("The duration ({$this->duration}) of the requested query is greater than the time limit set ({$this->limits[$this->key]})", 500);
+            throw new ValidationFailedException("The duration of the requested query is greater than the time limit set", 500);
         }
 
         return true;

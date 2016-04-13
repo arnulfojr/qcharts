@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 1/11/16
- * Time: 12:22 PM
- */
 
 namespace QCharts\CoreBundle\Validation\Validator;
 
@@ -26,7 +20,9 @@ class ExecutionTimeConfigurationValidator implements ValidatorInterface
     {
         if ($this->duration == 0 || $this->duration > $this->limits[$this->key])
         {
-            throw new OffLimitsException("The assigned duration is off limits, duration: {$this->duration}", 500);
+            $message = "The assigned execution limit of this query is off limits, execution limit of the query: {$this->duration} sec(s)";
+            $message = $message.", global execution limit: {$this->limits[$this->key]}sec(s)";
+            throw new OffLimitsException($message, 500);
         }
         return true;
     }

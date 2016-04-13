@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 2/10/16
- * Time: 3:55 PM
- */
 
 namespace QCharts\ApiBundle\Controller;
 
@@ -26,7 +20,6 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use QCharts\CoreBundle\Entity\QueryRequest;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class DatabaseController extends Controller

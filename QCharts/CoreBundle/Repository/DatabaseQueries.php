@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 1/21/16
- * Time: 1:53 PM
- */
 
 namespace QCharts\CoreBundle\Repository;
 
@@ -19,7 +13,20 @@ class DatabaseQueries
     /**
      * SQL query to get the maximum execution duration of the query
      */
-    const SHOW_SESSION_EXECUTION = "SHOW SESSION variables like '%max_%%_time%'";
+    const SHOW_SESSION_EXECUTION = "SHOW SESSION variables LIKE 'max_%%_time';";
+
+    /**
+     *
+     * Returns the SET string
+     *
+     * @param string $variableName
+     * @param int $value
+     * @return string
+     */
+    static public function getSessionVariableUpdate($variableName, $value)
+    {
+        return "SET @@session.{$variableName} = {$value}";
+    }
 
 
     /**

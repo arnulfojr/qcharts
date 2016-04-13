@@ -13,8 +13,8 @@ CoreBundle Documentation
 ========================
 
 - In the ```CoreBundle``` all the logic is found.
-- The following services are made available from this namespace, ```CoreBundle\Service``` which are registered in the
-```CoreBundle/Resources/config/services.yml```.
+- The following services are made available from this namespace, ```CoreBundle\Service``` which are registered
+in the ```CoreBundle/Resources/config/services.yml```.
     + ```qcharts.query_repo```
     + ```qcharts.user_repo```
     + ```qcharts.query_form_factory```
