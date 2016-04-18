@@ -1,0 +1,15 @@
+
+qcharts.api.snapshot.get:
+    path: /api/snapshot
+    defaults: { _controller: DevApiBundle:Snapshot:snapshotList }
+    methods: [ GET ]
+
+qcharts.api.snapshot.snapshot_download:
+    path: /api/snapshot/download
+    defaults: { _controller: DevApiBundle:Snapshot:downLoadSnapshot }
+    methods: [ GET ]
+
+qcharts.api.snapshot_delete:
+    path: /api/snapshot
+    defaults: { _controller: DevApiBundle:Snapshot:deleteSnapshot }
+    methods: [ DELETE ]

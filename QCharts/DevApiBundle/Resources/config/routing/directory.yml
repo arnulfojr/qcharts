@@ -1,0 +1,25 @@
+
+qcharts.api.directory_register:
+    path: /api/directory
+    defaults: { _controller: DevApiBundle:ApiDirectory:register }
+    methods: [ POST ]
+
+qcharts.api.directory_delete:
+    path: /api/directory
+    defaults: { _controller: DevApiBundle:ApiDirectory:delete }
+    methods: [ DELETE ]
+
+qcharts.api.directory_edit:
+    path: /api/directory
+    defaults: { _controller: DevApiBundle:ApiDirectory:edit }
+    methods: [ PUT ]
+
+qcharts.api.directory_get:
+    path: /api/directory
+    defaults: { _controller: DevApiBundle:ApiDirectory:get }
+    methods: [ GET ]
+
+qcharts.api.directory_query:
+    path: /api/directory/query
+    defaults: { _controller: DevApiBundle:ApiDirectory:queriesInDirectory }
+    methods: [ GET ]

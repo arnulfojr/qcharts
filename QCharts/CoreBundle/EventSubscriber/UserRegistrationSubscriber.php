@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 1/4/16
- * Time: 12:52 PM
- */
 
 namespace QCharts\CoreBundle\EventSubscriber;
 
@@ -13,6 +7,10 @@ use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\FOSUserEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Class UserRegistrationSubscriber
+ * @package QCharts\CoreBundle\EventSubscriber
+ */
 class UserRegistrationSubscriber implements EventSubscriberInterface
 {
 

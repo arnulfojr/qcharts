@@ -1,6 +1,6 @@
 <?php
 
-namespace QCharts\ApiBundle\Controller;
+namespace QCharts\DevApiBundle\Controller;
 
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -9,15 +9,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use QCharts\CoreBundle\Exception\InstanceNotFoundException;
 use QCharts\CoreBundle\Exception\UserRoleException;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-/**
- * Class UserController
- * @package QCharts\ApiBundle\Controller
- */
 class UserController extends Controller
 {
     /**
-     * ApiDoc(
+     * @ApiDoc(
      *      description = "Returns the users and the information",
      *      parameters = {
      *          {
@@ -76,7 +73,7 @@ class UserController extends Controller
     }
 
     /**
-     * ApiDoc(
+     * @ApiDoc(
      *      description = "Promotes the given User with username",
      *      parameters = {
      *          {
@@ -139,7 +136,7 @@ class UserController extends Controller
 
     /**
      *
-     * ApiDoc(
+     * @ApiDoc(
      *      description = "Demotes the given User with username",
      *      parameters = {
      *          {

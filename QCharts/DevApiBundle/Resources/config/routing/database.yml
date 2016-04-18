@@ -1,0 +1,32 @@
+
+# api for the request with database related
+
+qcharts.api.run_query: #api_run_query:
+    path: /api/run
+    defaults: { _controller: DevApiBundle:Database:run }
+    methods: [ POST ]
+
+qcharts.api.chart_data: #api_chart_data:
+    path: /api/chartData
+    defaults: { _controller: DevApiBundle:Database:chartData }
+    methods: [ GET ]
+
+qcharts.api.connection_schemas: #api_connection_schemas:
+    path: /api/connections/schemas
+    defaults: { _controller: DevApiBundle:Database:schemas }
+    methods: [ GET ]
+
+qcharts.api.connection_names: #api_connections_names:
+    path: /api/connections
+    defaults: { _controller: DevApiBundle:Database:connections }
+    methods: [ GET ]
+
+qcharts.api.table_info: #api_table_info:
+    path: /api/tableInfoData
+    defaults: { _controller: DevApiBundle:Database:tableInformation }
+    methods: [ GET ]
+
+qcharts.api.tables: #api_tables:
+    path: /api/tables
+    defaults: { _controller: DevApiBundle:Database:tables }
+    methods: [ GET ]

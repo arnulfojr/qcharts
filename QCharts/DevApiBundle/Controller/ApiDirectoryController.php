@@ -1,6 +1,6 @@
 <?php
 
-namespace QCharts\ApiBundle\Controller;
+namespace QCharts\DevApiBundle\Controller;
 
 
 use QCharts\CoreBundle\Entity\Directory;
@@ -16,17 +16,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Class ApiDirectoryController
- * @package QCharts\ApiBundle\Controller
- */
 class ApiDirectoryController extends Controller
 {
 
     /**
-     * ApiDoc(
+     * @ApiDoc(
      *      description = "Registers a directory at the given directory",
      *      parameters = {
      *          {
@@ -99,7 +96,7 @@ class ApiDirectoryController extends Controller
 
     /**
      *
-     * ApiDoc(
+     * @ApiDoc(
      *      description = "",
      *      parameters = {
      *          {
@@ -175,7 +172,7 @@ class ApiDirectoryController extends Controller
     }
 
     /**
-     * ApiDoc(
+     * @ApiDoc(
      *      description = "Edit the desired Directory",
      *      parameters = {
      *          {
@@ -275,7 +272,7 @@ class ApiDirectoryController extends Controller
     }
 
     /**
-     * ApiDoc(
+     * @ApiDoc(
      *      description="Returns the directories in the given directory",
      *      parameters = {
      *          {
@@ -337,7 +334,7 @@ class ApiDirectoryController extends Controller
     }
 
     /**
-     * ApiDoc(
+     * @ApiDoc(
      *      description = "Returns the Queries in the requested directory",
      *      parameters = {
      *          {

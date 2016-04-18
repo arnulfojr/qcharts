@@ -1,20 +1,17 @@
 <?php
 
-namespace QCharts\ApiBundle\Controller;
+namespace QCharts\DevApiBundle\Controller;
 
 
 use QCharts\ApiBundle\Exception\InvalidCredentialsException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-/**
- * Class UrlController
- * @package QCharts\ApiBundle\Controller
- */
 class UrlController extends Controller
 {
     /**
-     * ApiDoc(
+     * @ApiDoc(
      *      description = "returns the URLs for Tables and Users"
      * )
      * @return JsonResponse

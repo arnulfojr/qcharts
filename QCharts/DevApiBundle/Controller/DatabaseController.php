@@ -1,6 +1,6 @@
 <?php
 
-namespace QCharts\ApiBundle\Controller;
+namespace QCharts\DevApiBundle\Controller;
 
 
 use QCharts\CoreBundle\Exception\DatabaseException;
@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use QCharts\CoreBundle\Exception\NoTableNamesException;
 use QCharts\CoreBundle\Exception\NotFoundException;
 use QCharts\CoreBundle\Exception\NotPlotableException;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use QCharts\CoreBundle\Exception\SnapshotException;
 use QCharts\CoreBundle\Exception\TypeNotValidException;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -20,14 +21,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use QCharts\CoreBundle\Entity\QueryRequest;
 
-/**
- * Class DatabaseController
- * @package QCharts\ApiBundle\Controller
- */
+
 class DatabaseController extends Controller
 {
     /**
-     * ApiDoc(
+     * @ApiDoc(
      * 		description="chartData Action, returns the data formatted for the chart",
      * 		parameters = {
      *          {
@@ -184,7 +182,7 @@ class DatabaseController extends Controller
 
     /**
      *
-     * ApiDoc(
+     * @ApiDoc(
      *      description = "Returns the information of the requested table from the database",
      *      parameters = {
      *          {
@@ -263,7 +261,7 @@ class DatabaseController extends Controller
 
     /**
      *
-     * ApiDoc(
+     * @ApiDoc(
      * 		description = "Returns the schema tables",
      *      parameters = {
      *          {
@@ -336,7 +334,7 @@ class DatabaseController extends Controller
 
     /**
      *
-     * ApiDoc(
+     * @ApiDoc(
      *      description = "Returns the name of the schemas found in the given connection",
      *      parameters = {
      *          {
@@ -401,7 +399,7 @@ class DatabaseController extends Controller
 
     /**
      *
-     * ApiDoc(
+     * @ApiDoc(
      *      description = "Returns the names of the current supported connections",
      *      statusCodes = {
      *          200 = "Success, connections returned",
@@ -448,7 +446,7 @@ class DatabaseController extends Controller
     }
 
     /**
-     * ApiDoc(
+     * @ApiDoc(
      * 		description="Run Action, returns the results directly from database",
      * 		parameters={
      * 			{

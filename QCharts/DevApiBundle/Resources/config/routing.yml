@@ -1,0 +1,26 @@
+#apibundle routing
+
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc
+
+directory:
+    resource: "@DevApiBundle/Resources/config/routing/directory.yml"
+
+query:
+    resource: "@DevApiBundle/Resources/config/routing/query.yml"
+
+database:
+    resource: "@DevApiBundle/Resources/config/routing/database.yml"
+
+snapshot:
+    resource: "@DevApiBundle/Resources/config/routing/snapshots.yml"
+
+#user:
+#    resource: "@DevApiBundle/Resources/config/routing/user.yml"
+
+favorite:
+    resource: "@DevApiBundle/Resources/config/routing/favorite.yml"
+
+urls:
+    resource: "@DevApiBundle/Resources/config/routing/url.yml"

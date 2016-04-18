@@ -1,0 +1,4 @@
+qcharts.api.urls: #api_urls:
+    path: /api/urls
+    defaults: { _controller: DevApiBundle:Url:urls }
+    methods: [ GET ]

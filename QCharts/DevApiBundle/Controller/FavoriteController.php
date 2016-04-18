@@ -1,6 +1,6 @@
 <?php
 
-namespace QCharts\ApiBundle\Controller;
+namespace QCharts\DevApiBundle\Controller;
 
 
 use QCharts\ApiBundle\Exception\InvalidCredentialsException;
@@ -8,17 +8,14 @@ use QCharts\CoreBundle\Exception\InstanceNotFoundException;
 use QCharts\CoreBundle\Exception\OverlappingException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Class FavoriteController
- * @package QCharts\ApiBundle\Controller
- */
 class FavoriteController extends Controller
 {
 
     /**
-     * ApiDoc(
+     * @ApiDoc(
      *     description="Returns the favorite Query from the current user",
      *     statusCodes = {
      *          200 = "Returns the favorites from the current user"
@@ -64,7 +61,7 @@ class FavoriteController extends Controller
 
     /**
      *
-     * ApiDoc(
+     * @ApiDoc(
      *     description = "Adds the given Query as a favorite of the current user",
      *     parameters = {
      *          {
@@ -138,7 +135,7 @@ class FavoriteController extends Controller
     }
 
     /**
-     * ApiDoc(
+     * @ApiDoc(
      *     description = "Removes the given query request from the favorites list of the user",
      *     parameters = {
      *          {

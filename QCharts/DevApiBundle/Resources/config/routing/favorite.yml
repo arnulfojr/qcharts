@@ -1,0 +1,12 @@
+qcharts.api.favorite_get:
+    path: /api/favorite
+    defaults: { _controller: DevApiBundle:Favorite:getFavorites }
+    methods: [ GET ]
+qcharts.api.favorite_add:
+    path: /api/favorite
+    defaults: { _controller: DevApiBundle:Favorite:registerFavorite }
+    methods: [ POST ]
+qcharts.api.favorite_remove:
+    path: /api/favorite
+    defaults: { _controller: DevApiBundle:Favorite:removeFavorite }
+    methods: [ DELETE ]

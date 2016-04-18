@@ -1,6 +1,6 @@
 <?php
 
-namespace QCharts\ApiBundle\Controller;
+namespace QCharts\DevApiBundle\Controller;
 
 use QCharts\ApiBundle\Exception\ExceptionMessage;
 use QCharts\ApiBundle\Exception\InvalidCredentialsException;
@@ -19,11 +19,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-/**
- * Class ApiController
- * @package QCharts\ApiBundle\Controller
- */
+
 class ApiController extends Controller
 {
     /* Key constants from the user's roles in configuration */
@@ -61,7 +59,7 @@ class ApiController extends Controller
     }
 
     /**
-     * ApiDoc(
+     * @ApiDoc(
      *      description = "Save a query request",
      *      parameters = {
      *          {
@@ -216,7 +214,7 @@ class ApiController extends Controller
 
     /**
      *
-     * ApiDoc(
+     * @ApiDoc(
      *      description = "Edit the given query",
      *      parameters = {
      *          {
@@ -409,7 +407,7 @@ class ApiController extends Controller
 
     /**
      *
-     * ApiDoc(
+     * @ApiDoc(
      *      description = "Deletes the passed Query",
      *      parameters = {
      *          {
@@ -477,7 +475,7 @@ class ApiController extends Controller
 
     /**
      *
-     * ApiDoc(
+     * @ApiDoc(
      *      description = "Get Action, returns the information of the requested query",
      *      parameters = {
      *          {

@@ -1,13 +1,17 @@
 QCharts
 =============
 
-ApiBundle Documentation
-=======================
+DevApiBundle Documentation
+==========================
 
-+ QCharts offers the Api Documentation in the route ```/api/doc``` under 
++ QCharts offers the ApiDocumentation in the route ```/api/doc```.
+    - ApiDoc Bundle integrated in the dev environment is recommended.
+    - NOTE: This Bundle is not designed to be used in the production
+    environment, use ```ApiBundle``` instead.
+
++ IMPORTANT: Make sure to include Nelmio's ApiDoc Bundle in your
+targeted project if your target project intends to use
 the ```DevApiBundle```.
-    - ApiDoc Bundle integrated in the dev environment recommended.
-    - If using the ApiDoc Bundle use the ```DevApiBundle``` instead.
 
 + ApiBundle Routing, defined in ```ApiBundle/Resources/config/routing.yml``` and
 Actions are found in Controllers found in the ```QCharts/ApiBundle/Controller``` namespace:

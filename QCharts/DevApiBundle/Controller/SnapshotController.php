@@ -1,6 +1,6 @@
 <?php
 
-namespace QCharts\ApiBundle\Controller;
+namespace QCharts\DevApiBundle\Controller;
 
 
 use QCharts\ApiBundle\Exception\InvalidCredentialsException;
@@ -13,16 +13,14 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-/**
- * Class SnapshotController
- * @package QCharts\ApiBundle\Controller
- */
 class SnapshotController extends Controller
 {
     /**
      *
-     * ApiDoc(
+     * @ApiDoc(
      *     description = "Returns the list of snapshots from the queried Query",
      *     parameters = {
      *          {
@@ -105,7 +103,7 @@ class SnapshotController extends Controller
 
     /**
      *
-     * ApiDoc(
+     * @ApiDoc(
      *     description = "Download snapshot file",
      *     parameters = {
      *          {
@@ -188,7 +186,7 @@ class SnapshotController extends Controller
     }
 
     /**
-     * ApiDoc(
+     * @ApiDoc(
      *     description = "Deletes the requested snapshot file",
      *     parameters = {
      *          {

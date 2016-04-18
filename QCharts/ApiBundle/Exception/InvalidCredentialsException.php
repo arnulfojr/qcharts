@@ -3,6 +3,10 @@
 
 namespace QCharts\ApiBundle\Exception;
 
+/**
+ * Class InvalidCredentialsException
+ * @package QCharts\ApiBundle\Exception
+ */
 class InvalidCredentialsException extends \Exception
 {
     /**

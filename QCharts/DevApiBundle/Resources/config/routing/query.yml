@@ -1,0 +1,17 @@
+
+qcharts.api.query_register:
+    path: /api/query
+    defaults: { _controller: DevApiBundle:Api:register }
+    methods: [ POST ]
+qcharts.api.query_edit:
+    path: /api/query
+    defaults: { _controller: DevApiBundle:Api:edit }
+    methods: [ PUT ]
+qcharts.api.query_delete:
+    path: /api/query
+    defaults: { _controller: DevApiBundle:Api:delete }
+    methods: [ DELETE ]
+qcharts.api.query_get:
+    path: /api/query
+    defaults: { _controller: DevApiBundle:Api:get }
+    methods: [ GET ]
