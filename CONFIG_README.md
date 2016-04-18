@@ -6,11 +6,13 @@ Since QCharts is base in the users you have attached in your database (default c
 it needs some security preparations.
 
 + Please follow the next steps for a proper installation:
-    - Install QCharts using composer ```composer install arnulfosolis/qcharts```
+    - Install QCharts using composer ```composer install arnulfosolis/qcharts @dev```
         + If you choose to add QCharts as a part of the project,
         then go ahead and add the QCharts directory in the target project.
     - Then, make sure to add the three QCharts Bundles in the target's ```AppKernel```.
         + ```QCharts\ApiBundle\ApiBundle```
+            - For API Documentation use ```QCharts\DevApiBundle\DevApiBundle```
+                + For more information read the ```README``` file in the Bundle.
         + ```QCharts\FrontendBundle\FrontendBundle```
         + ```QCharts\CoreBundle\CoreBundle```
     - If you try to run or clean the cache of the target project at this point,
@@ -89,7 +91,7 @@ core:
 #Full example of QChart's configurations 
 #QCharts
 core:
-    allow_demo_users: False
+    allow_demo_users: False # optional field, default: False
     urls:
        redirects: #custom user information urls
            login: /myLogin
