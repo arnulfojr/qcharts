@@ -29,7 +29,8 @@
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
         "phpunit/phpunit" : "4.*",
-        "phpspec/phpspec":"2.*"
+        "phpspec/phpspec":"2.*",
+        "nelmio/api-doc-bundle": "2.*"
     },
     "scripts": {
         "post-install-cmd": [
