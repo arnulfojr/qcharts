@@ -49,8 +49,8 @@ class SnapshotService
     /**
      * @param QueryRequest $queryRequest
      * @param array $results
+     * @throws SnapshotException
      * @throws TypeNotValidException
-     * @throws WriteReadException
      */
     public function writeSnapshot(QueryRequest $queryRequest, array $results)
     {
@@ -59,19 +59,23 @@ class SnapshotService
             return;
         }
 
-        $this->snapshotManager->init();
-        $this->snapshotManager->setQueryRequest($queryRequest);
         try
         {
+            $this->snapshotManager->init();
+            $this->snapshotManager->setQueryRequest($queryRequest);
             $this->snapshotManager->writeSnapshot($results);
         }
         catch (WriteReadException $e)
         {
-            throw $e;
+            throw new SnapshotException(
+                "While attempting to write or read something bad happened: {$e->getMessage()}",
+                $e->getCode(),
+                $e
+            );
         }
         catch (IOException $e)
         {
-            throw $e;
+            throw new SnapshotException("While writing the snapshot an error occurred: {$e->getMessage()}", $e->getCode(), $e);
         }
     }
 

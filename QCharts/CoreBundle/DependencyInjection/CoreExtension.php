@@ -35,4 +35,13 @@ class CoreExtension extends Extension
         $container->setParameter('qcharts.variables', $config);
         $container->setParameter('qcharts.allow_demo_users', $config["allow_demo_users"]);
     }
+
+    /**
+     * @return string
+     */
+    public function getAlias()
+    {
+        return "qcharts";
+    }
+
 }

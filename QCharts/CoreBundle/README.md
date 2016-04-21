@@ -66,8 +66,8 @@ CoreBundle Config
         and the ```<value-to-display>``` to display in the frontend interface.
 ```yml
 #app/config/config.yml
-#QCharts full core configuration
-core:
+# QCharts full Core configuration
+qcharts:
     urls:
         redirects:
             login: /someURL
@@ -295,7 +295,7 @@ is supported. If this chart type uses the same formatting than the ```HCUniversa
 step you need, since all new values will take the universal steps, unless specified.
 
 ```yml
-core:
+qcharts:
     ...
     limits:
         #...
@@ -327,7 +327,7 @@ the formatter to the factory. For showing how to do this implementation we will 
     
 ```yml
 # config file
-core:
+qcharts:
     limits:
         #...
     charts:

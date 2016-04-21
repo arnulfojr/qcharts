@@ -47,8 +47,10 @@ CalendarController.prototype.init = function() {
 CalendarController.prototype.updateCalendar = function() {
     var store = this;
     this.calendar.fullCalendar("removeEvents");
+    this.calendar.fullCalendar("removeResource", this.snapshots);
     this.fetchSnapshots(function(rawSnapshots) {
         store.snapshots = store.processSnapshots(rawSnapshots);
+        store.calendar.fullCalendar("addEventSource", store.snapshots);
         store.setEvents(store.snapshots);
     });
 };
@@ -147,7 +149,6 @@ CalendarController.prototype.processSnapshots = function(rawSnapshots) {
             };
 
             formatted.push(temp);
-            store.calendar.fullCalendar('renderEvent', temp, true);
         }
     }
 

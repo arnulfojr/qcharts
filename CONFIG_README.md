@@ -17,7 +17,7 @@ it needs some security preparations.
         + ```QCharts\CoreBundle\CoreBundle```
     - If you try to run or clean the cache of the target project at this point,
     it will fail since the ```QCharts\CoreBundle``` needs some configuration!
-        + The following fields are required for activating the default values under the ```core``` definition in the 
+        + The following fields are required for activating the default values under the ```qcharts``` definition in the 
         configuration file of the targeted project:
             - ```urls```: Since QCharts is independent from the target project User class, some redirect urls
             are recommended to be defined as the login and logout url (relative paths),
@@ -64,7 +64,7 @@ it needs some security preparations.
 #minimum configuration under the target project's config.yml
 
 #qcharts config:
-core:
+qcharts:
     urls:
     limits:
     paths:
@@ -90,7 +90,7 @@ core:
 ```yml
 #Full example of QChart's configurations 
 #QCharts
-core:
+qcharts:
     allow_demo_users: False # optional field, default: False
     urls:
        redirects: #custom user information urls

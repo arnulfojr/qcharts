@@ -27,5 +27,18 @@ class FrontendExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__."/../Resources/config"));
         $loader->load('services.yml');
 
+        //var_dump($config);
+
+        $container->setParameter('qcharts.frontend.fos_user_ui', $config["fos_user_ui"]);
+
     }
+
+    /**
+     * @return string
+     */
+    public function getAlias()
+    {
+        return "qcharts_frontend";
+    }
+
 }

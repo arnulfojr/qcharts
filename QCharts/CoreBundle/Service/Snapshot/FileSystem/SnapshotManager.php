@@ -43,16 +43,28 @@ class SnapshotManager extends SnapshotRepository
 
     /**
      * @param QueryRequest|null $queryRequest
+     * @throws SnapshotException
      */
     public function init(QueryRequest $queryRequest = null)
     {
         //check if this level exists
-        parent::init();
+        try
+        {
+            parent::init();
 
-        $this->setPath($this->getFullPath());
+            $this->setPath($this->getFullPath());
 
-        (!is_null($queryRequest)) ? $this->setQueryRequest($queryRequest) : null;
-        $this->prepareDirectory($this->getFullPath());
+            (!is_null($queryRequest)) ? $this->setQueryRequest($queryRequest) : null;
+            $this->prepareDirectory($this->getFullPath());
+        }
+        catch (IOException $e)
+        {
+            throw new SnapshotException(
+                "While setting the Snapshots something happened: {$e->getMessage()}",
+                $e->getCode(),
+                $e
+            );
+        }
     }
 
     /**

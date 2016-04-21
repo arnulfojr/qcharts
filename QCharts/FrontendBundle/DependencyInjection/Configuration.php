@@ -21,11 +21,25 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('frontend');
+        $rootNode = $treeBuilder->root('qcharts_frontend');
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.
+
+        $defaultValue = [
+            'fos_user_ui'=>false
+        ];
+
+        $rootNode
+            ->treatNullLike($defaultValue)
+            ->children()
+                ->scalarNode('fos_user_ui')
+                    ->defaultValue(false)
+                    ->info("boolean value, true if you're using FOSUserBundle and wish to use QCharts User's UI")
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }

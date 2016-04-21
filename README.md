@@ -30,7 +30,7 @@ please refer to the ```CONFIG_README.md``` file under ```QCharts``` directory fo
 ```yml
 #app/config/config.yml
 #A minimum configuration of QCharts
-core:
+qcharts:
     urls:
     limits:
     paths:
@@ -78,3 +78,9 @@ Future development
 ==================
 - In time machine, compare snapshots
 - Reduce unnecessary snapshot files with redundant data.
+
+Contact
+=======
+- Arnulfo Solis
+- E-Mail: arnulfojr@kuzzy.com
+- Twitter: @arnulfojr
