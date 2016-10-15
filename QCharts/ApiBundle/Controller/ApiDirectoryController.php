@@ -394,6 +394,13 @@ class ApiDirectoryController extends Controller
                 "textStatus"=>$e->getMessage()
             ];
         }
+        catch (DatabaseException $e)
+        {
+            $options = [
+                "status"=>$e->getCode(),
+                "textStatus"=>$e->getMessage()
+            ];
+        }
         finally
         {
             $options = $serializer->serialize($options, $encodingType);

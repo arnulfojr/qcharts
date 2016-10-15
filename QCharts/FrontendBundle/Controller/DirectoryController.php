@@ -1,16 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 1/28/16
- * Time: 5:36 PM
- */
+
 
 namespace QCharts\FrontendBundle\Controller;
 
 
 use QCharts\ApiBundle\Controller\ApiController;
-use QCharts\ApiBundle\Controller\ApiDirectoryController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,10 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 class DirectoryController extends Controller
 {
     /**
-     * @param Request $request
      * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function directoryAction(Request $request)
+    public function directoryAction()
     {
         //TODO: finish this implementation
         $authChecker = $this->get("security.authorization_checker");

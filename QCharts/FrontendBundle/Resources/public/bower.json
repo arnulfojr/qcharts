@@ -1,0 +1,43 @@
+{
+  "name": "qcharts",
+  "version": "0.0.1",
+  "description": "QCharts dependencies",
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals",
+    "node",
+    "yui"
+  ],
+  "keywords": [
+    "qcharts"
+  ],
+  "authors": [
+    "Arnulfo Solis"
+  ],
+  "license": "MIT",
+  "homepage": "http://qcharts.myarny.org",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "animate.css": "~3.5.2",
+    "bootstrap": "~3.3.7",
+    "highcharts": "~4.2.6",
+    "jquery-cron": "0.1.4.3",
+    "jquery": "~3.1.0",
+    "moment": "~2.14.1",
+    "fullcalendar": "~2.9.1",
+    "HighTables": "~0.1.1",
+    "startbootstrap-grayscale": "https://github.com/BlackrockDigital/startbootstrap-grayscale.git#^3.3.7",
+    "datatables.net": "^1.10.12",
+    "datatables.net-bs": "^1.10.12",
+    "datatables.net-buttons": "^1.2.2",
+    "datatables.net-buttons-bs": "^1.2.2",
+    "ace-builds": "ace-build#^1.2.5"
+  }
+}

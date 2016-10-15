@@ -1,18 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 1/7/16
- * Time: 10:28 AM
- */
 
 namespace QCharts\CoreBundle\Exception;
 
 use \Exception;
 
-class UserRoleException extends Exception
+class UserRoleException extends QChartsBaseException
 {
-    public function __construct($message, $code = 0, $previous = null)
+    public function __construct($message, $code = 0, Exception $previous = null)
     {
         parent::__construct($message, $code, $previous = null);
     }

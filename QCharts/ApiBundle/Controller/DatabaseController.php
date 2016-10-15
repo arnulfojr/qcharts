@@ -144,6 +144,13 @@ class DatabaseController extends Controller
                     "textStatus" => $e->getMessage()
                 ];
             }
+            catch (DatabaseException $e)
+            {
+                $opts = [
+                    "status" => $e->getCode(),
+                    "textStatus" => $e->getMessage()
+                ];
+            }
             catch (TypeNotValidException $e)
             {
                 $opts = [

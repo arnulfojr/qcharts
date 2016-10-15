@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 12/10/15
- * Time: 9:38 AM
- */
 
 namespace QCharts\CoreBundle\Service;
 

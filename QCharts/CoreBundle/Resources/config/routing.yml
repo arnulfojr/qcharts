@@ -1,4 +1,5 @@
 #no routing
+
 #query_homepage:
 #    path:     /query/register
 #    defaults: { _controller: CoreBundle:Core:register }

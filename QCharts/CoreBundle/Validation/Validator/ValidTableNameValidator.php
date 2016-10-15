@@ -1,22 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 1/8/16
- * Time: 2:57 PM
- */
 
 namespace QCharts\CoreBundle\Validation\Validator;
-
 
 use QCharts\CoreBundle\Exception\TypeNotValidException;
 use QCharts\CoreBundle\Exception\ValidationFailedException;
 use QCharts\CoreBundle\Validation\ValidationInterface\StringRegexInstanceClass;
 use QCharts\CoreBundle\Validation\ValidationInterface\ValidatorInterface;
 
+/**
+ * Class ValidTableNameValidator
+ * @package QCharts\CoreBundle\Validation\Validator
+ */
 class ValidTableNameValidator extends StringRegexInstanceClass implements ValidatorInterface
 {
-
+    /* This pattern gets any space pattern */
+    const ANY_SPACE_META_SEQUENCE_PATTERN = '(\s+)';
     /** @var string $queryString */
     private $queryString;
     /** @var array $limits */
@@ -35,12 +33,11 @@ class ValidTableNameValidator extends StringRegexInstanceClass implements Valida
         $tableNames = array_map("strtolower", $this->limits["table_names"]);
         $tableNamesString = $this->getTableNamesStringForRegex($tableNames);
 
-        $regex = "/(from ({$tableNamesString}))/";
+        $regex = "/(from".ValidTableNameValidator::ANY_SPACE_META_SEQUENCE_PATTERN."({$tableNamesString}))/";
         $hasJoinCommand = "/join/";
-        // TODO: remove new lines after the from and join!
         if ($this->stringHasRegexInstance($queryString, $hasJoinCommand))
         {
-            $regexJoinCommand = "/(join ({$tableNamesString}))/";
+            $regexJoinCommand = "/(join".ValidTableNameValidator::ANY_SPACE_META_SEQUENCE_PATTERN."({$tableNamesString}))/";
             $result = $this->stringHasRegexInstance($queryString, $regex)
                 && $this->stringHasRegexInstance($queryString, $regexJoinCommand);
             if (!$result)

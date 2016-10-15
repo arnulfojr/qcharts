@@ -1,54 +1,56 @@
-{% extends  '@Frontend/base.html.twig'%}
+{% extends  '@Frontend/base.html.twig' %}
 
 {% block mainView %}
-	<!-- main Block :) -->
-	{% if app.user and is_granted(user_roles.admin) %}
-	    <!-- is a developer -->
-	    <div class="container">
-                <div class="row">
-                    <div class="col-sm-12 createButtonContainer">
-                        <a class="btn pull-right btn-default" href="{{ path('qcharts.frontend.query_register') }}">Add new Query</a>
+    <!-- main Block :) -->
+    {% if app.user and is_granted(user_roles.admin) %}
+        <!-- is a developer -->
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 createButtonContainer">
+                    <a class="btn pull-right btn-default" href="{{ path('qcharts.frontend.query_register') }}">
+                        Add new Query
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <!-- is a reporter -->
+    {% endif %}
+    <!-- list of queries -->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- favorites browser! -->
+                <div class="panel panel-default panel-dir-browser">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            My Favorites
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-sm-12" id="favContainer"></div>
                     </div>
                 </div>
             </div>
-
-	{% else %}
-		<!-- is a reporter -->
-	{% endif %}
-    <!-- list of queries -->
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <!-- favorites browser! -->
-                    <div class="panel panel-default panel-dir-browser">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                My Favorites
-                                <!--<span class="glyphicon glyphicon-heart animated pulse fav-icon pull-right"></span>-->
-                            </h4>
-                        </div>
-                        <div class="panel-body">
-                            <div class="col-sm-12" id="favContainer"></div>
+            <div class="col-sm-12">
+                <!-- directory browser -->
+                <div class="panel panel-default panel-dir-browser main-page-panel">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            Query browser
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-sm-12" id="pathContainer"></div>
+                        <div class="col-sm-12">
+                            <div class="col-xs-12" id="directoryContent"></div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-12">
-                    <!-- directory browser -->
-                    <div class="panel panel-default panel-dir-browser main-page-panel">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                Query browser
-                            </h4>
-                        </div>
-                        <div class="panel-body">
-                            <div class="col-sm-12" id="pathContainer"></div>
-                            <div class="col-sm-12">
-                                <div class="col-xs-12" id="directoryContent"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <script>
+            </div>
+            <script>
+                $(document).ready(function () {
                     var editable = "{{ isAdmin }}";
                     var dirController = new DirectoryController(
                             'directoryContent',
@@ -79,24 +81,25 @@
                             id: "homeBtn"
                         }
                     };
-
-                </script>
-            </div>
+                });
+            </script>
         </div>
+    </div>
     <!-- end of list -->
 {% endblock %}
 
 {% block stylesheets %}
-	{% stylesheets '@FrontendBundle/Resources/public/css/base/*' %}
-		<link rel="stylesheet" href="{{asset_url}}"/>
-	{% endstylesheets %}
+    {% stylesheets '@FrontendBundle/Resources/public/css/base/*' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
 {% endblock %}
 
 {% block js %}
+    {% javascripts '@FrontendBundle/Resources/public/js/general/Classes.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
     {% javascripts
-        '@FrontendBundle/Resources/public/js/main/*'
-        '@FrontendBundle/Resources/public/js/general/Classes.js'
-    %}
+    '@FrontendBundle/Resources/public/js/main/*' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     {% javascripts '@FrontendBundle/Resources/public/js/table/*' %}

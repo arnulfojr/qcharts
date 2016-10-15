@@ -4,26 +4,23 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
+    <!-- Bootstrap 3 based -->
+    <link rel="stylesheet" href="{{ asset('bundles/frontend/qcharts/vendor/bootstrap/dist/css/bootstrap.min.css') }}"/>
+    {% stylesheets filter='cssrewrite'
+    '@FrontendBundle/Resources/public/qcharts/vendor/startbootstrap-grayscale/css/grayscale.min.css'
+    '@FrontendBundle/Resources/public/qcharts/vendor/animate.css/animate.min.css'
+    '@FrontendBundle/Resources/public/css/base/*' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
     {% block stylesheets %}
     {% endblock %}
 
     {% javascripts
-        '@FrontendBundle/Resources/public/js/vendor/jquery/ajquery.min.js'
-        '@FrontendBundle/Resources/public/js/vendor/bootstrap/*'
-        '@FrontendBundle/Resources/public/js/vendor/grayscale/*'
-    %}
-    <script src="{{asset_url}}"></script>
+    '@FrontendBundle/Resources/public/qcharts/vendor/jquery/dist/jquery.min.js'
+    '@FrontendBundle/Resources/public/qcharts/vendor/bootstrap/dist/js/bootstrap.min.js' %}
+    <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-    {% stylesheets filter='cssrewrite'
-        '@FrontendBundle/Resources/public/css/vendor/grayscale/*'
-        '@FrontendBundle/Resources/public/css/vendor/animate/*'
-        '@FrontendBundle/Resources/public/css/base/*'
-    %}
-    <link rel="stylesheet" href="{{ asset_url }}"/>
-    {% endstylesheets %}
 
     {% block attributes %}
     {% endblock %}
@@ -43,7 +40,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ url('qcharts.frontend.homepage') }}"><span class="glyphicon glyphicon-home" id="homeBtn"></span></a>
+                <a class="navbar-brand" href="{{ url('qcharts.frontend.homepage') }}"><span
+                            class="glyphicon glyphicon-home" id="homeBtn"></span></a>
             </div>
             <div class="collapse navbar-collapse" id="main-nav">
                 <ul class="nav navbar-nav navbar-right">
@@ -52,7 +50,7 @@
                     </li>
                     {% if is_granted(user_roles.super_admin) %}
                         {#<li>#}
-                            {#<a href="{{ path('qcharts.frontend.user_admin') }}">User Admin</a>#}
+                        {#<a href="{{ path('qcharts.frontend.user_admin') }}">User Admin</a>#}
                         {#</li>#}
                         <li>
                             <a href="{{ url('qcharts.frontend.snapshot_console') }}">
@@ -100,7 +98,8 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="modalTitle">Modal title</h4>
             </div>
             <div class="modal-body" id="modalBody">

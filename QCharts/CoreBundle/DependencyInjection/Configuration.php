@@ -2,6 +2,7 @@
 
 namespace QCharts\CoreBundle\DependencyInjection;
 
+use QCharts\CoreBundle\DependencyInjection\Defaults\DefaultsFactory;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -20,65 +21,33 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('qcharts');
 
-        $defaultValues = [
-            "line"=>"Line",
-            "spline"=>"SpLine",
-            "area"=>"Area",
-            "pie"=>"Pìe Chart",
-            "bar"=>"Bar Chart",
-            "column"=>"Column Chart",
-            "table"=>"Table of Contents",
-            "polar_line"=>"Polar Lines",
-            "polar_area"=>"Polar Area",
-            "polar_spline"=>"Polar SpLine",
-            "polar_bar" => "Polar Bar",
-            "polar_column" => "Polar Column"
-        ];
-
-//        $defaultLimits = [
-//            "row"=>1000,
-//            "time"=>1
-//        ];
-
-        $snapshotsPath = "/";
-
-        $urls = [
-            "redirects"=>[
-                "login" => "/login",
-                "logout"=>"/logout",
-                "user_profile"=>"/profile"
-            ]
-        ];
-
-        $default = [
-            "paths" => [
-                "snapshots" => $snapshotsPath
-            ]
-        ];
+        $defaultCharts = DefaultsFactory::getValues("charts");
+        $defaultUrls = DefaultsFactory::getValues("urls");
+        $defaultPaths = DefaultsFactory::getValues("paths");
 
         $rootNode
-            ->treatNullLike($default)
+            ->treatNullLike($defaultPaths)
             ->children()
                 ->arrayNode('paths')
                 ->info("Paths used by QCharts")
-                ->treatNullLike($default["paths"])
+                ->treatNullLike($defaultPaths["paths"])
                     ->children()
                         ->scalarNode('snapshots')
-                            ->defaultValue($snapshotsPath)
+                            ->defaultValue($defaultPaths["paths"]["snapshots"])
                             ->info('Absolute path to locate the queries snapshots')
                         ->end()
                     ->end()
                 ->end()
                 ->arrayNode('urls')
                 ->info('URLs to use when redirects are needed, login redirect for example')
-                ->treatNullLike($urls)
+                ->treatNullLike($defaultUrls)
                     ->children()
                         ->arrayNode('redirects')
                             ->info('key: value, array syntax')
-                            ->treatNullLike($urls["redirects"])
+                            ->treatNullLike($defaultUrls["redirects"])
                                 ->prototype('variable')
                                 ->end()
-                            ->defaultValue($urls["redirects"])
+                            ->defaultValue($defaultUrls["redirects"])
                         ->end()
                     ->end()
                 ->end()
@@ -98,10 +67,10 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('charts')
                     ->info('RECOMMENDED, The type of charts supported, format = [key]: [value to display]')
-                    ->treatNullLike($defaultValues)
+                    ->treatNullLike($defaultCharts)
                     ->prototype('variable')
                     ->end()
-                    ->defaultValue($defaultValues)
+                    ->defaultValue($defaultCharts)
                 ->end()
                 ->arrayNode('limits')
                     ->info('The limits of the query execution')

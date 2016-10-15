@@ -1,19 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 1/8/16
- * Time: 5:16 PM
- */
+
 
 namespace QCharts\CoreBundle\Validation\Validator;
 
-
-use QCharts\CoreBundle\Exception\NotPlotableException;
 use QCharts\CoreBundle\Exception\TypeNotValidException;
 use QCharts\CoreBundle\Exception\ValidationFailedException;
 use QCharts\CoreBundle\ResultFormatter\ResultsPrepareFormatter;
 use QCharts\CoreBundle\Service\QueryResultsFormatter;
+use QCharts\CoreBundle\Exception\NotPlotableException;
 use QCharts\CoreBundle\Validation\ValidationInterface\ValidatorInterface;
 
 class NumericListValidator implements ValidatorInterface
@@ -65,6 +59,7 @@ class NumericListValidator implements ValidatorInterface
                 array_map([$this, 'isValueNumeric'], $values);
                 return true;
             }
+            // TODO: fix this!
         }
         catch (NotPlotableException $e)
         {
@@ -81,7 +76,10 @@ class NumericListValidator implements ValidatorInterface
     {
         if (!is_numeric($value))
         {
-            throw new NotPlotableException("When ploting {$this->limits['NumericList']} Charts columns, except the most right column, should be numeric values", 405);
+            throw new NotPlotableException(
+                "When ploting {$this->limits['NumericList']} Charts columns, except the most right column, should be numeric values",
+                405
+            );
         }
         return true;
     }

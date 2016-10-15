@@ -1,94 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous"/>
+    <!-- Bootstrap 3 based -->
+    <link rel="stylesheet" href="{{ asset('bundles/frontend/qcharts/vendor/bootstrap/dist/css/bootstrap.min.css') }}"/>
 
-        {% stylesheets
-            '@FrontendBundle/Resources/public/css/vendor/grayscale/*'
-            '@FrontendBundle/Resources/public/css/base/*'
-        %}
-        <link rel="stylesheet" href="{{ asset_url }}"/>
-        {% endstylesheets %}
+    {% stylesheets
+    '@FrontendBundle/Resources/public/qcharts/vendor/startbootstrap-grayscale/css/grayscale.min.css'
+    '@FrontendBundle/Resources/public/css/base/*' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
 
-        {% stylesheets '@FrontendBundle/Resources/public/css/login/*' %}
-        <link rel="stylesheet" href="{{asset_url}}"/>
-        {% endstylesheets %}
+    {% stylesheets '@FrontendBundle/Resources/public/css/login/*' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
 
-    </head>
-    <body class="animated fadeIn">
-        <header>
-            <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
-                <div class="container">
-                    <div class="navbar-header">
+</head>
+<body class="animated fadeIn">
+<header>
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
 
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav">
-                            <span class="sr-only">Toggle navigation></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="{{ path('qcharts.frontend.homepage') }}"><span class="glyphicon glyphicon-home" id="homeBtn"></span></a>
-                    </div>
-                    <div class="collapse navbar-collapse" id="main-nav">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li>
-                                <a href="{{ path('qcharts.frontend.about') }}">About this</a>
-                            </li>
-                            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                            <li>
-                                <a href="{{ path('fos_user_profile_show') }}">My profile</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('fos_user_security_logout') }}">
-                                    {{ 'layout.logged_in_as'|trans({'%username%': app.user.name}, 'FOSUserBundle') }} - {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-                                </a>
-                            </li>
-                            {% else %}
-                            <li>
-                                <a href="{{ path('fos_user_registration_register') }}">Register</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('fos_user_security_login') }}">
-                                    {{ 'layout.login'|trans({}, 'FOSUserBundle') }}
-                                </a>
-                            </li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
-        
-        <section class="home">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-12">
-                    {% if app.request.hasPreviousSession %}
-                        {% for type, messages in app.session.flashbag.all() %}
-                            {% for message in messages %}
-                                <div class="flash-{{ type }}">
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                        {% endfor %}
-                    {% endif %}
-                    </div>
-                    <div class="col-sm-12">
-                        {% block content %}
-                        	{% block fos_user_content %}
-                        	{% endblock fos_user_content %}
-                        {% endblock %}
-                    </div>
-                </div>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav">
+                    <span class="sr-only">Toggle navigation></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ path('qcharts.frontend.homepage') }}"><span
+                            class="glyphicon glyphicon-home" id="homeBtn"></span></a>
             </div>
-        </section>
+            <div class="collapse navbar-collapse" id="main-nav">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{{ path('qcharts.frontend.about') }}">About this</a>
+                    </li>
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        <li>
+                            <a href="{{ path('fos_user_profile_show') }}">My profile</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('fos_user_security_logout') }}">
+                                {{ 'layout.logged_in_as'|trans({'%username%': app.user.name}, 'FOSUserBundle') }}
+                                - {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                            </a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{{ path('fos_user_registration_register') }}">Register</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('fos_user_security_login') }}">
+                                {{ 'layout.login'|trans({}, 'FOSUserBundle') }}
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
 
-    </body>
-    {% javascripts '@FrontendBundle/Resources/public/js/general/*' %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+<section class="home">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                {% if app.request.hasPreviousSession %}
+                    {% for type, messages in app.session.flashbag.all() %}
+                        {% for message in messages %}
+                            <div class="flash-{{ type }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="col-sm-12">
+                {% block content %}
+                    {% block fos_user_content %}
+                    {% endblock fos_user_content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+{% javascripts '@FrontendBundle/Resources/public/js/general/*' %}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
 
 </html>

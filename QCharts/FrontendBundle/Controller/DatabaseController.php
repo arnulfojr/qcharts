@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 2/10/16
- * Time: 5:27 PM
- */
 
 namespace QCharts\FrontendBundle\Controller;
 

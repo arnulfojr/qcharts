@@ -167,77 +167,89 @@
 	</div>
     <script>
 
-        var editor = new EditorManager(
-            'codeEditor',
-            'ace/theme/twilight',
-            'ace/mode/sql',
-            'query_request_query_query');
+        /**
+         * This is the main function to be executed when document is ready
+         */
+        function main() {
+            var editor = new EditorManager(
+                    'codeEditor',
+                    'ace/theme/twilight',
+                    'ace/mode/sql',
+                    'query_request_query_query');
 
-        editor.initializeEditor();
-        editor.bindWithInputById();
+            editor.initializeEditor();
+            editor.bindWithInputById();
 
-        var callbacks = {
-        	onDone: function (data) {
-        		if (data["status"] == 200 || data["status"] == 201) {
-        			alert(data["textStatus"]);
-        			window.location.replace("{{ url('qcharts.frontend.homepage') }}");
-        		}else{
-        			alert(data["textStatus"]);
-        		}
-        		console.log(data);
-        	},
-        	onFail: function() {
-        		alert('Connection error');
-        	}
+            var callbacks = {
+                onDone: function (data) {
+                    if (data["status"] == 200 || data["status"] == 201) {
+                        alert(data["textStatus"]);
+                        window.location.replace("{{ url('qcharts.frontend.homepage') }}");
+                    }else{
+                        alert(data["textStatus"]);
+                    }
+                    console.log(data);
+                },
+                onFail: function() {
+                    alert('Connection error');
+                }
+            };
+
+            var registerFormManager = new FormManager('myForm', '{{ url("qcharts.api.query_register") }}', 'POST', $.ajax, undefined, callbacks);
+
+            registerFormManager.bindFormWithService();
+
+            var comsService = new CommunicatorService($.ajax, undefined, "{{ url('qcharts.api.run_query') }}");
+            editor.bindWithVariable(comsService);
+            comsService.bindWithButton('runBtn');
+            comsService.bindInputForLimitById('query_request_config_queryLimit');
+            comsService.bindInputForConnectionById('query_request_config_databaseConnection');
+
+            editor.setUpTestRunCommand(comsService);
+
+            var tableController = new TableController(
+                    'databaseTableNames',
+                    'myForm',
+                    'query_request_config_databaseConnection',
+                    'schemaSelect',
+                    $.ajax,
+                    "{{ url('qcharts.api.urls') }}",
+                    'modal'
+            );
+
+            tableController.setEditor(editor);
+            tableController.init("myDynamicTable");
+
+            var cronController = new CronController("myForm", "query_request[cronExpression]", "modal");
+            cronController.init("query_request_config_isCached");
+
+            var dirController = new DirectoryController(
+                    'directoryContent',
+                    'pathContainer',
+                    'dirForm',
+                    'modal',
+                    'homeBtn',
+                    $.ajax,
+                    '{{ url("qcharts.api.urls") }}'
+            );
+
+            dirController.setInputFromForm("myForm");
+            dirController.init();
         };
 
-        var registerFormManager = new FormManager('myForm', '{{ url("qcharts.api.query_register") }}', 'POST', $.ajax, undefined, callbacks);
-        
-        registerFormManager.bindFormWithService();
-        
-        var comsService = new CommunicatorService($.ajax, undefined, "{{ url('qcharts.api.run_query') }}");
-        editor.bindWithVariable(comsService);
-        comsService.bindWithButton('runBtn');
-        comsService.bindInputForLimitById('query_request_config_queryLimit');
-        comsService.bindInputForConnectionById('query_request_config_databaseConnection');
+        /**
+         * Execute the frontend script
+         */
+        $(document).ready(main);
 
-        editor.setUpTestRunCommand(comsService);
-
-        var tableController = new TableController(
-                'databaseTableNames',
-                'myForm',
-                'query_request_config_databaseConnection',
-                'schemaSelect',
-                $.ajax,
-                "{{ url('qcharts.api.urls') }}",
-                'modal'
-        );
-
-        tableController.setEditor(editor);
-        tableController.init("myDynamicTable");
-
-        var cronController = new CronController("myForm", "query_request[cronExpression]", "modal");
-        cronController.init("query_request_config_isCached");
-
-        var dirController = new DirectoryController(
-                'directoryContent',
-                'pathContainer',
-                'dirForm',
-                'modal',
-                'homeBtn',
-                $.ajax,
-                '{{ url("qcharts.api.urls") }}'
-        );
-
-        dirController.setInputFromForm("myForm");
-        dirController.init();
     </script>
-
 
 {% endblock %}
 
 {% block js %}
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js"></script>
+
+    <script src="{{ asset('bundles/frontend/qcharts/vendor/ace-builds/src-min-noconflict/ace.js') }}" charset="utf-8"></script>
+
 	{% javascripts
         '@FrontendBundle/Resources/public/js/main/*'
         '@FrontendBundle/Resources/public/js/general/Classes.js'

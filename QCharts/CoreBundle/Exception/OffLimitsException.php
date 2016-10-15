@@ -1,16 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 1/11/16
- * Time: 11:02 AM
- */
 
 namespace QCharts\CoreBundle\Exception;
 
-use \Exception;
-
-class OffLimitsException extends Exception
+class OffLimitsException extends QChartsBaseException
 {
     /** @var array $data */
     private $data;

@@ -291,28 +291,37 @@ ObjectBuilder.prototype.createForm = function(fields, inputs) {
 };
 
 /**
+ * Returns a row containing a checkbox, if labelText is empty then it sets a default name
  * @param checkboxId
+ * @param labelText
  * @returns {Element}
  */
-ObjectBuilder.prototype.createCheckBox = function(checkboxId) {
-    var container = document.createElement('div');
-    container.setAttribute("class", "checkbox");
-    var label = document.createElement("label");
-    var paragraph = document.createElement("p");
-    paragraph.innerHTML = "Add mulitple names";
-    paragraph.setAttribute("class", "details");
+ObjectBuilder.prototype.createCheckBox = function(checkboxId, labelText) {
 
+    var row = document.createElement("div");
+    var col = document.createElement("div");
     var checkbox = document.createElement("input");
+    var label = document.createElement("label");
+    var checkboxContainer = document.createElement("div");
+    labelText = (labelText != undefined && labelText != "") ? labelText : "Add multiple names";
+
+    row.setAttribute("class", "row");
+    col.setAttribute("class", "col-xs-12");
+    checkboxContainer.setAttribute("class", "col-xs-9");
+
     checkbox.setAttribute("id", checkboxId);
     checkbox.setAttribute("type", "checkbox");
-    label.appendChild(checkbox);
-    label.appendChild(paragraph);
-    container.appendChild(label);
-    var col = document.createElement("div");
-    col.setAttribute("class", "col-sm-12");
-    col.appendChild(container);
+    checkbox.setAttribute("class", "form-control");
 
-    return col;
+    label.setAttribute("class", "control-label col-xs-3 details");
+    label.innerHTML = labelText;
+
+    checkboxContainer.appendChild(checkbox);
+    col.appendChild(label);
+    col.appendChild(checkboxContainer);
+    row.appendChild(col);
+    return row;
+
 };
 
 /**

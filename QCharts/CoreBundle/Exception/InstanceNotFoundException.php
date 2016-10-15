@@ -2,9 +2,7 @@
 
 namespace QCharts\CoreBundle\Exception;
 
-use \Exception;
-
-class InstanceNotFoundException extends Exception
+class InstanceNotFoundException extends QChartsBaseException
 {
     public function __construct($message, $code = 0, $previous = null)
     {

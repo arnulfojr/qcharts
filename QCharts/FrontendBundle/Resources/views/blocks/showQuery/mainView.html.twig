@@ -1,11 +1,13 @@
 {% extends '@Frontend/showQueryBase.html.twig' %}
 
 {% block mainView %}
-	<div class="col-sm-12">
-		<div class="col-sm-12">
-			<h2>{{queryRequest.title}}, <small>created by: {{queryRequest.createdBy.name}}</small></h2>
-		</div>
-	</div>
+    <div class="col-sm-12">
+        <div class="col-sm-12">
+            <h2>{{ queryRequest.title }},
+                <small>created by: {{ queryRequest.createdBy.name }}</small>
+            </h2>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-sm-12" id="topPanel">
@@ -83,7 +85,7 @@
                         </h4>
                     </div>
                     <div class="panel-body childPanel" style=" display: block; ">
-                        {{queryRequest.description}}
+                        {{ queryRequest.description }}
                     </div>
                 </div>
             </div>
@@ -98,9 +100,10 @@
                         </h4>
                     </div>
                     <div class="panel-body childPanel">
-                        {{queryRequest.query.queryHTML | raw}}
+                        {{ queryRequest.query.queryHTML | raw }}
                         {% if app.user and is_granted(user_roles.admin) %}
-                            <a class="btn btn-edit btn-small" href="{{ path('qcharts.frontend.query_edit', {"queryId": queryRequest.id}) }}">Edit</a>
+                            <a class="btn btn-edit btn-small"
+                               href="{{ path('qcharts.frontend.query_edit', {"queryId": queryRequest.id}) }}">Edit</a>
                         {% endif %}
                     </div>
                 </div>
@@ -132,10 +135,10 @@
                     </thead>
                     <tbody>
                     {% if queryRequest.config.isCached == 0 %}
-                    <tr>
-                        <td>Database Connection time</td>
-                        <td id="queryDuration"></td>
-                    </tr>
+                        <tr>
+                            <td>Database Connection time</td>
+                            <td id="queryDuration"></td>
+                        </tr>
                     {% endif %}
                     {% if queryRequest.config.isCached >= 1 %}
                         <tr>
@@ -154,46 +157,46 @@
                     </tbody>
                 </table>
                 {% if queryRequest.config.isCached == 2 %}
-                <div class="panel-body">
-                    <div id="snapshotCalendar"></div>
-                </div>
+                    <div class="panel-body">
+                        <div id="snapshotCalendar"></div>
+                    </div>
                 {% endif %}
             </div>
         </div>
         {% if queryRequest.config.typeOfChart != "table" %}
-        <div class="col-sm-12 col-md-7 col-lg-8">
+            <div class="col-sm-12 col-md-7 col-lg-8">
 
-            <!-- graphic -->
-            <div id="graphContainer"></div>
-            <!-- endgraphic -->
+                <!-- graphic -->
+                <div id="graphContainer"></div>
+                <!-- endgraphic -->
 
-            <!-- compare Graphs -->
-            <div id="compareContainer"></div>
-            <!-- end compare-Graphs -->
+                <!-- compare Graphs -->
+                <div id="compareContainer"></div>
+                <!-- end compare-Graphs -->
 
-        </div>
+            </div>
         {% endif %}
     </div>
 
     <!-- table -->
-	<div class="col-sm-12 table-section">
-		<div class="col-sm-12">
-			<h2>Resulting data from Query</h2>
-			<small>{{exceptionMessage}}</small>
+    <div class="col-sm-12 table-section">
+        <div class="col-sm-12">
+            <h2>Resulting data from Query</h2>
+            <small>{{ exceptionMessage }}</small>
 
-		</div>
-		<div class="col-sm-12 ">
+        </div>
+        <div class="col-sm-12 ">
             <table class="table table-condensed table-bordered" id="resultsTable"></table>
         </div>
-	</div>
-	<!-- end table -->
-	<!-- chart script -->
-	<script type="text/javascript">
-
+    </div>
+    <!-- end table -->
+    <!-- chart script -->
+    <script type="text/javascript">
+        /* Sets the chart manager */
         var chart = new ChartManager(
                 "graphContainer",
                 '{{ queryRequest.title }}',
-                '{{ queryRequest.description }}',
+                "{{ queryRequest.description | escape('js') }}",
                 $.ajax, {{ queryRequest.id }},
                 '{{ queryRequest.config.typeOfChart }}',
                 "{{ url('qcharts.api.chart_data') }}",
@@ -231,11 +234,11 @@
         {# Is snapshot mode #}
 
         var snapshotDownloadController = new SnapshotFileDownload(
-            configuration["download"]["button"]["id"],
-            $.ajax,
-            "{{ url('qcharts.api.urls') }}",
-            configuration["queryId"],
-            configuration
+                configuration["download"]["button"]["id"],
+                $.ajax,
+                "{{ url('qcharts.api.urls') }}",
+                configuration["queryId"],
+                configuration
         );
 
         snapshotDownloadController.init();
@@ -255,21 +258,18 @@
         calendarController.init();
         {% endif %}
 
-	</script>
-	<!-- end chart script -->
+    </script>
+    <!-- end chart script -->
 {% endblock %}
 
 {% block stylesheets %}
-
     {% stylesheets
-        '@FrontendBundle/Resources/public/css/vendor/dataTables/*'
-        '@FrontendBundle/Resources/public/css/vendor/dataTables/plugins/*'
-        '@FrontendBundle/Resources/public/css/vendor/fullCalendar/fullCalendar.min.css'
-        '@FrontendBundle/Resources/public/css/calendarTheme/*'
-    %}
-    <link rel="stylesheet" href="{{asset_url}}"/>
+    '@FrontendBundle/Resources/public/qcharts/vendor/datatables.net-bs/css/dataTables.bootstrap.min.css'
+    '@FrontendBundle/Resources/public/css/vendor/dataTables/plugins/*'
+    '@FrontendBundle/Resources/public/qcharts/vendor/fullcalendar/dist/fullcalendar.min.css'
+    '@FrontendBundle/Resources/public/css/calendarTheme/*' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
-
 {% endblock %}
 
 {% block attributes %}
@@ -279,31 +279,37 @@
 {% block js %}
 
     {% javascripts
-        '@FrontendBundle/Resources/public/js/general/Classes.js'
-        '@FrontendBundle/Resources/public/js/vendor/highcharts/ahighcharts.js'
-        '@FrontendBundle/Resources/public/js/vendor/highcharts/plugins/*'
-        '@FrontendBundle/Resources/public/js/vendor/highcharts/theme/*'
-        '@FrontendBundle/Resources/public/js/vendor/moment/*'
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-
-    {% javascripts '@FrontendBundle/Resources/public/js/main/*'%}
+    '@FrontendBundle/Resources/public/js/general/Classes.js'
+    '@FrontendBundle/Resources/public/qcharts/vendor/moment/min/moment.min.js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
     {% javascripts
-        '@FrontendBundle/Resources/public/js/table/*'
-        '@FrontendBundle/Resources/public/js/vendor/dataTables/*'
-        '@FrontendBundle/Resources/public/js/vendor/dataTables/plugins/*'
-    %}
-        <script src="{{ asset_url }}"></script>
+    '@FrontendBundle/Resources/public/qcharts/vendor/highcharts/highcharts.js'
+    '@FrontendBundle/Resources/public/qcharts/vendor/highcharts/highcharts-more.js'
+    '@FrontendBundle/Resources/public/qcharts/vendor/highcharts/modules/exporting.js'
+    '@FrontendBundle/Resources/public/qcharts/vendor/highcharts/modules/offline-exporting.js'
+    '@FrontendBundle/Resources/public/qcharts/vendor/highcharts/themes/dark-unica.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% javascripts '@FrontendBundle/Resources/public/js/main/*' %}
+    <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
     {% javascripts
-        '@FrontendBundle/Resources/public/js/vendor/fullCalendar/*'
-        '@FrontendBundle/Resources/public/js/calendar/*'
-    %}
+    '@FrontendBundle/Resources/public/js/table/*'
+    '@FrontendBundle/Resources/public/qcharts/vendor/datatables.net/js/jquery.dataTables.min.js'
+    '@FrontendBundle/Resources/public/qcharts/vendor/datatables.net-bs/js/dataTables.bootstrap.min.js'
+    '@FrontendBundle/Resources/public/qcharts/vendor/datatables.net-buttons/js/dataTables.buttons.min.js'
+    '@FrontendBundle/Resources/public/qcharts/vendor/datatables.net-buttons-bs/js/buttons.bootstrap.min.js'
+    '@FrontendBundle/Resources/public/js/vendor/dataTables/plugins/*' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% javascripts
+    '@FrontendBundle/Resources/public/qcharts/vendor/fullcalendar/dist/fullcalendar.min.js'
+    '@FrontendBundle/Resources/public/js/calendar/*' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 

@@ -36,7 +36,7 @@ class ResultsPrepareFormatter
         {
             foreach($row as $key=>$value)
             {
-                $headers[$key][] = $value;
+                $headers[$key][] = ($value !== null) ? $value : 0;
             }
         }
         return $headers;

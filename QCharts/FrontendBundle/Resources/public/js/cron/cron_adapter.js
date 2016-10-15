@@ -28,11 +28,11 @@ CronController.prototype.init = function(stateInput) {
     var options = {
         initial: "*/5 * * * *",
         customValues: {
-            "Each 5 min.": "*/5 * * * *",
-            "Each 15 min.": "*/15 * * * *",
-            "Each 15 min. from Monday to Friday": "*/15 * * * 1-5",
-            "Each 30 min.": "*/30 * * * *",
-            "Each 30 min. from Monday to Friday": "*/30 * * * 1-5",
+            "Every 5 min.": "*/5 * * * *",
+            "Every 15 min.": "*/15 * * * *",
+            "Every 15 min. from Monday to Friday": "*/15 * * * 1-5",
+            "Every 30 min.": "*/30 * * * *",
+            "Every 30 min. from Monday to Friday": "*/30 * * * 1-5",
             "Hourly from Monday to Friday": "0 * * * 1-5"
         },
         onChange: function() {
@@ -46,25 +46,21 @@ CronController.prototype.init = function(stateInput) {
         }
     };
 
-    $(document).ready(function() {
-        store.addExtrasToForm();
-        store.setStateInput(stateInput);
-        console.log(store.input.value);
-        if (store.input.val() != undefined && store.input.val() != "") {
-            //set the initial value!
-            options["initial"] = store.input.val();
-        }
-        store.cron = $("#" + store.cronId).cron(options);
-        store.cron.cron("value", store.input.val());
-        store.cron.find("select").addClass("form-control");
-        if (store.useState) {
-            //hide it
-            store.toggle(store.stateInput.value);
-        }
+    store.addExtrasToForm();
+    store.setStateInput(stateInput);
+    if (store.input.val() != undefined && store.input.val() != "") {
+        //set the initial value!
+        options["initial"] = store.input.val();
+    }
+    store.cron = $("#" + store.cronId).cron(options);
+    store.cron.cron("value", store.input.val());
+    store.cron.find("select").addClass("form-control");
+    if (store.useState) {
+        //hide it
+        store.toggle(store.stateInput.value);
+    }
 
-        store.isInit = false;
-
-    });
+    store.isInit = false;
 
 };
 

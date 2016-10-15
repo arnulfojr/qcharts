@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 2/3/16
- * Time: 3:55 PM
- */
 
 namespace QCharts\CoreBundle\Exception;
 

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 2/3/16
- * Time: 5:07 PM
- */
 
 namespace QCharts\CoreBundle\Service\ServiceInterface;
 
@@ -30,6 +24,10 @@ abstract class DynamicDependencies
         return $this->dependencies;
     }
 
+    /**
+     * @param $dependencyName
+     * @return bool
+     */
     public function hasDependency($dependencyName)
     {
         return array_key_exists($dependencyName, $this->dependencies);

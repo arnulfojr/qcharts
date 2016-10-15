@@ -2,7 +2,9 @@
 
 namespace QCharts\FrontendBundle\Twig;
 
-class FetchingModesFilter extends \Twig_Extension
+use \Twig_Extension;
+
+class FetchingModesFilter extends Twig_Extension
 {
 
     /**

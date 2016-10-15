@@ -108,12 +108,21 @@ class QueryRepository extends EntityRepository
      * @param null $directoryId
      * @return array
      * @throws NotFoundException
+     * @throws DatabaseException
      */
     public function getQueriesInDirectory($directoryId = null)
     {
         //if directoryId is null the fetch the queries in the master-root
-        $query = $this->getQueryByDirectory($directoryId);
-        return $query->getResult();
+        try
+        {
+            $query = $this->getQueryByDirectory($directoryId);
+            $queries_in_dir = $query->getResult();
+            return $queries_in_dir;
+        }
+        catch (DBALException $e)
+        {
+            throw new DatabaseException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
     /**
@@ -123,7 +132,7 @@ class QueryRepository extends EntityRepository
      */
     protected function getQueryByDirectory($directoryId = null)
     {
-        if ($directoryId)
+        if (!is_null($directoryId))
         {
             if (is_numeric($directoryId))
             {

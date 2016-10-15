@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 2/1/16
- * Time: 1:46 PM
- */
 
 namespace QCharts\CoreBundle\Command;
-
 
 use Cron\CronExpression;
 use QCharts\CoreBundle\Entity\QueryRequest;

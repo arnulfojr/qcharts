@@ -25,8 +25,6 @@ class CoreExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        //var_dump($config);
-
         $container->setParameter('qcharts.paths', $config["paths"]);
         $container->setParameter('qcharts.limits', $config["limits"]);
         $container->setParameter('qcharts.chart_types', $config["charts"]);

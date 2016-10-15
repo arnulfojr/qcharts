@@ -3,6 +3,10 @@
 {% form_theme editForm 'FrontendBundle:Form:custom_form_bootstrap_ace.html.twig' %}
 {% form_theme dirForm 'FrontendBundle:Form:custom_form_bootstrap_ace.html.twig' %}
 
+{% block title %}
+    <title>Edit: {{ queryRequest.title }}</title>
+{% endblock %}
+
 {% block mainView %}
     <h2>{{title}}</h2>
     <div class="col-sm-12 col-md-12 col-lg-6">
@@ -162,90 +166,100 @@
 		</div>
 	</div>
     <script>
+        /**
+         * This main function will be executed then the document is ready.
+         */
+        function main() {
 
-        var editor = new EditorManager(
-            'codeEditor',
-            'ace/theme/twilight',
-            'ace/mode/sql',
-            'query_request_query_query');
+            var editor = new EditorManager(
+                    'codeEditor',
+                    'ace/theme/twilight',
+                    'ace/mode/sql',
+                    'query_request_query_query');
 
-        editor.initializeEditor();
-        editor.bindWithInputById();
+            editor.initializeEditor();
+            editor.bindWithInputById();
 
-        var queryId = "{{ queryRequest.id }}";
+            var queryId = "{{ queryRequest.id }}";
 
-        var editFormManager = new FormManager('myForm', "{{ url('qcharts.api.query_get') }}",
-                'PUT', $.ajax, "{{ url('qcharts.frontend.query_view', { 'queryId': queryRequest.id }) }}", undefined, queryId);
-        editFormManager.bindFormWithService();
+            var editFormManager = new FormManager('myForm', "{{ url('qcharts.api.query_get') }}",
+                    'PUT', $.ajax, "{{ url('qcharts.frontend.query_view', { 'queryId': queryRequest.id }) }}", undefined, queryId);
+            editFormManager.bindFormWithService();
 
-        var options = {
-            "modal": {
-                "id": "modal"
-            },
-            "loading": {
-                "id": "homeBtn"
-            }
-        };
+            var options = {
+                "modal": {
+                    "id": "modal"
+                },
+                "loading": {
+                    "id": "homeBtn"
+                }
+            };
 
-        var deleteController = new DeleteController(queryId, 'query_request_delete', $.ajax, "{{ url('qcharts.api.urls') }}", options);
-        deleteController.initialize();
+            var deleteController = new DeleteController(queryId, 'query_request_delete', $.ajax, "{{ url('qcharts.api.urls') }}", options);
+            deleteController.initialize();
 
-        var comService = new CommunicatorService($.ajax, undefined, "{{ url('qcharts.api.run_query') }}");
-        editor.bindWithVariable(comService);
-        comService.bindWithButton('runBtn');
-        comService.bindInputForLimitById('query_request_config_queryLimit');
-        comService.bindInputForConnectionById('query_request_config_databaseConnection');
+            var comService = new CommunicatorService($.ajax, undefined, "{{ url('qcharts.api.run_query') }}");
+            editor.bindWithVariable(comService);
+            comService.bindWithButton('runBtn');
+            comService.bindInputForLimitById('query_request_config_queryLimit');
+            comService.bindInputForConnectionById('query_request_config_databaseConnection');
 
-        editor.setUpTestRunCommand(comService);
+            editor.setUpTestRunCommand(comService);
 
 
-        var cronController = new CronController("myForm", "query_request[cronExpression]", "modal");
-        cronController.init("query_request_config_isCached");
+            var cronController = new CronController("myForm", "query_request[cronExpression]", "modal");
+            cronController.init("query_request_config_isCached");
 
-        var tableController = new TableController(
-                'databaseTableNames',
-                'myForm',
-                'query_request_config_databaseConnection',
-                'schemaSelect',
-                $.ajax,
-                '{{ url("qcharts.api.urls") }}',
-                'modal'
-        );
+            var tableController = new TableController(
+                    'databaseTableNames',
+                    'myForm',
+                    'query_request_config_databaseConnection',
+                    'schemaSelect',
+                    $.ajax,
+                    '{{ url("qcharts.api.urls") }}',
+                    'modal'
+            );
 
-        // TODO: fix the bug that when selecting the live on just a page load the cron expression is not set!
+            // TODO: fix the bug that when selecting the live on just a page load the cron expression is not set!
 
-        tableController.setEditor(editor);
-        tableController.init("myDynamicTable");
+            tableController.setEditor(editor);
+            tableController.init("myDynamicTable");
 
-        var dirController = new DirectoryController(
-                'directoryContent',
-                'pathContainer',
-                'dirForm',
-                'modal',
-                'homeBtn',
-                $.ajax,
-                "{{ url('qcharts.api.urls') }}"
-        );
-        dirController.setInputFromForm("myForm");
-        dirController.init();
+            var dirController = new DirectoryController(
+                    'directoryContent',
+                    'pathContainer',
+                    'dirForm',
+                    'modal',
+                    'homeBtn',
+                    $.ajax,
+                    "{{ url('qcharts.api.urls') }}"
+            );
+            dirController.setInputFromForm("myForm");
+            dirController.init();
+        }
+
+        $(document).ready(main);
 
     </script>
 {% endblock %}
 
 {% block js %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js"></script>
+
+    <!-- Ace Build -->
+    <script src="{{ asset('bundles/frontend/qcharts/vendor/ace-builds/src-min-noconflict/ace.js') }}" charset="utf-8"></script>
 
     {% javascripts
         '@FrontendBundle/Resources/public/js/main/*'
         '@FrontendBundle/Resources/public/js/general/Classes.js'
     %}
-    <script src="{{ asset_url }}"></script>
+    <script src="{{ asset_url }}" charset="utf-8"></script>
     {% endjavascripts %}
 
     {% javascripts
-    "@FrontendBundle/Resources/public/js/vendor/cron/*"
-    "@FrontendBundle/Resources/public/js/cron/*"
+    '@FrontendBundle/Resources/public/qcharts/vendor/jquery-cron/cron/jquery-cron-min.js'
+    '@FrontendBundle/Resources/public/js/cron/*'
     %}
+    <!-- Cron -->
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
@@ -272,7 +286,7 @@
     <link rel="stylesheet" href="{{asset_url}}"/>
     {% endstylesheets %}
 
-    {% stylesheets '@FrontendBundle/Resources/public/css/vendor/cron/*' %}
+    {% stylesheets '@FrontendBundle/Resources/public/qcharts/vendor/jquery-cron/cron/jquery-cron.css' %}
     <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 

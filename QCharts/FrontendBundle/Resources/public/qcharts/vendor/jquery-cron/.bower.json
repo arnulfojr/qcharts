@@ -1,0 +1,27 @@
+{
+  "name": "jquery-cron",
+  "homepage": "https://github.com/shootermv/jquery-cron",
+  "main": [
+    "./cron/jquery-cron.js"
+  ],
+  "authors": [
+    "Shawn Chin"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "0.1.4.3",
+  "_resolution": {
+    "type": "tag",
+    "tag": "0.1.4.3",
+    "commit": "a7b76c56f7f75c74ba14348aa2c478821f188239"
+  },
+  "_source": "https://github.com/shootermv/jquery-cron.git",
+  "_target": "0.1.4.3",
+  "_originalSource": "jquery-cron"
+}

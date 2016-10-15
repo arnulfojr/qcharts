@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tsp-admin
- * Date: 1/18/16
- * Time: 12:12 PM
- */
 
 namespace QCharts\CoreBundle\ResultFormatter;
 

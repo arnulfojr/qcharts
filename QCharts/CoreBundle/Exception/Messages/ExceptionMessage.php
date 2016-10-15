@@ -53,12 +53,12 @@ class ExceptionMessage
     }
 
     /**
-     * @param $descr
+     * @param $description
      * @return string
      */
-    static public function ENTITY_NOT_FOUND($descr)
+    static public function ENTITY_NOT_FOUND($description)
     {
-        return "No matches were found in the query, {$descr}";
+        return "No matches were found in the query, {$description}";
     }
 
     /**
